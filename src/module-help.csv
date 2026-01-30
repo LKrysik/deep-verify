@@ -1,0 +1,3 @@
+module,phase,name,code,sequence,workflow-file,command,required,agent,options,description,output-location,outputs,
+dv,anytime,Deep Verify,DV,10,_bmad/dv/workflows/deep-verify/workflow.md,bmad_dv_verify,false,deep-verifier,Full Verify,"Run full Deep Verify verification workflow on an artifact",dv_reports_output_folder,"verification report",
+dv,anytime,Quick Verify,QV,20,_bmad/dv/workflows/deep-verify/workflow.md,bmad_dv_verify,false,deep-verifier,Quick Verify,"Run quick verification (Phase 1 only with early exit)",dv_reports_output_folder,"verification report",
