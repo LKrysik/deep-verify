@@ -77,6 +77,11 @@ SOFT CONSTRAINTS (reduce attractiveness):
 
 ### 02.4 Build Morphological Box
 
+**What is a Morphological Box?**
+A visualization tool (from Zwicky's morphological analysis) that shows all dimensions
+as rows and all options per dimension as columns. It makes the full decision space
+visible and helps identify valid/invalid combinations.
+
 ```
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                         MORPHOLOGICAL BOX                                  ║

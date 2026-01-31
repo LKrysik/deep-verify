@@ -58,6 +58,15 @@ KNOWN UNKNOWNS (questions you have):
 
 ### 00.3 Surface Unknown Unknowns
 
+**Knowledge categories:**
+- **Known Facts** = Things you know and can verify
+- **Assumptions** = Things you believe but haven't verified
+- **Known Unknowns** = Questions you know you have
+- **Unknown Unknowns** = Blind spots you don't know exist yet
+
+This step targets **Unknown Unknowns** — the most dangerous category because
+you can't research what you don't know to ask about.
+
 📂 Load method: `data/method-procedures/E001_Abductive_Reasoning.md`
 
 Use abductive reasoning to discover blind spots:

@@ -129,21 +129,6 @@ Combines:
 - SE's full step progression (0→1→2→3→4→5→6)
 - Fear resolution in Step 4
 - Fear Map in final report
-
-When to use:
-- User expresses uncertainty: "I don't know if this will work"
-- User has concerns: "I'm worried about..."
-- User sees blockers: "This seems impossible because..."
-- User needs validation: "Am I crazy for thinking..."
-
-Method selection in Step 0:
-□ E008 Failure Reason Exploration — when fear is general/undefined
-□ E009 Reverse Abduction — when user thinks something is impossible
-□ E010 Cognitive MVP — when user is paralyzed by risk
-□ E011 Control Analysis — when user worries about many things
-□ E012 Fundamental Block — when user sees specific blockers
-□ E013 Contrast Exploration — when user lacks context/examples
-□ E014 Growth Test — when user questions if effort is worth it
 ```
 
 ---
@@ -157,17 +142,20 @@ Deep Explore supports optional parameters for customization:
 │ Parameter          │ Values              │ Effect                             │
 ├────────────────────┼─────────────────────┼────────────────────────────────────┤
 │ --max-iterations   │ 1-10 (default: 3)   │ Max feedback loop cycles           │
-│ --depth            │ 1-5 (default: 3)    │ Methods per step (1=min, 5=max)    │
 │ --focus            │ options|consequences│ Emphasize specific aspect          │
 │                    │ |fears|risks|all    │                                    │
 │ --output           │ markdown|json|brief │ Output format                      │
-│ --domain           │ tech|business|      │ Load domain-specific patterns      │
-│                    │ personal|policy     │                                    │
 │ --verification     │ strict|balanced|fast│ How much to verify vs assume       │
 │ --methods          │ E001,M001,... list  │ Explicit method selection          │
 │ --skip-steps       │ 2,3,5 (step nums)   │ Skip specific steps                │
 │ --timebox          │ 15m|30m|1h|2h       │ Time limit (triggers compression)  │
 └────────────────────┴─────────────────────┴────────────────────────────────────┘
+
+Available methods for --methods:
+• Epistemological: E001-E007 (core), E008-E014 (fear-based)
+• Mapping: M001-M003
+• Deepening: M011-M013
+• Challenge: M021-M023
 ```
 
 ### Parameter Examples
@@ -181,8 +169,8 @@ claude "DE --verification strict: Architecture decision"
 # Deep with specific method focus
 claude "DE --deep --methods E001,E002,E006,M021: Market entry"
 
-# Fear-based with business domain
-claude "FE --domain business: Will my startup fail?"
+# Fear-based with specific methods
+claude "FE --methods E008,E011,E012: Will my startup fail?"
 
 # Hybrid with max iterations limit
 claude "FSE --max-iterations 2: Career change decision"
@@ -259,15 +247,15 @@ LLMs have context window limits. Deep Explore manages this:
    □ Frame the decision (one sentence)
    □ Assess stakes: LOW/MEDIUM/HIGH
    □ Inventory: Known Facts, Assumptions, Known Unknowns
-   □ Surface Unknown Unknowns (use E001 Abductive Reasoning)
+   □ 📂 E001 → Surface Unknown Unknowns
    □ Prioritize research needs
 
    IF USER HAS FEARS/CONCERNS (Fear-Based Mode):
-   □ Apply E008 Failure Reason Exploration to structure fears
-   □ Apply E011 Control Analysis to separate actionable concerns
-   □ Apply E012 Fundamental Block Analysis to find true walls
-   □ Apply E009 Reverse Abduction if user sees "impossible"
-   □ Apply E013 Contrast Exploration to gain context
+   □ 📂 E008 → Structure fears into risk map
+   □ 📂 E011 → Separate actionable concerns
+   □ 📂 E012 → Find true walls vs false walls
+   □ 📂 E009 → Reverse from success (if "impossible")
+   □ 📂 E013 → Gain context from others
    → Fears become structured research queue
 
    Output: Knowledge Map + Research Queue (+ Fear Map if FE mode)
@@ -293,16 +281,10 @@ LLMs have context window limits. Deep Explore manages this:
 📂 Step 2: MAP (Divergent)
    Load: steps/step-02-map.md
 
-   □ Load method: data/method-procedures/M001_Dimension_Discovery.md
-   □ Discover dimensions (axes of choice)
-
-   □ Load method: data/method-procedures/M002_Option_Enumeration.md
-   □ Enumerate options per dimension
-
-   □ Load method: data/method-procedures/M003_Constraint_Mapping.md
-   □ Map hard and soft constraints
-
-   □ Build Morphological Box
+   □ 📂 M001 → Discover dimensions (axes of choice)
+   □ 📂 M002 → Enumerate options per dimension
+   □ 📂 M003 → Map hard and soft constraints
+   □ Build Morphological Box (see step file for format)
 
    Output: Option Map (draft)
 
@@ -312,18 +294,12 @@ LLMs have context window limits. Deep Explore manages this:
 📂 Step 3: DEEPEN
    Load: steps/step-03-deepen.md
 
-   □ Apply E002 Counterfactual Thinking to key options
-   □ Apply E004 Boundary Analysis to key options
-   □ Apply E005 Causal Models to understand relationships
-
-   □ Load method: data/method-procedures/M011_Consequence_Analysis.md
-   □ Map consequences (mark VERIFIED vs ASSUMED)
-
-   □ Load method: data/method-procedures/M012_Reversibility_Check.md
-   □ Assess reversibility of each option
-
-   □ Load method: data/method-procedures/M013_Dependency_Analysis.md
-   □ Map decision dependencies
+   □ 📂 E002 → Apply Counterfactual Thinking to key options
+   □ 📂 E004 → Apply Boundary Analysis to key options
+   □ 📂 E005 → Apply Causal Models to understand relationships
+   □ 📂 M011 → Map consequences (mark VERIFIED vs ASSUMED)
+   □ 📂 M012 → Assess reversibility of each option
+   □ 📂 M013 → Map decision dependencies
 
    Output: Consequence Map with verification status
 
@@ -333,24 +309,17 @@ LLMs have context window limits. Deep Explore manages this:
 📂 Step 4: CHALLENGE (Adversarial)
    Load: steps/step-04-challenge.md
 
-   □ Apply E006 Falsification to key beliefs
-
-   □ Load method: data/method-procedures/M021_Premortem.md
-   □ Imagine failure, trace causes
-
-   □ Load method: data/method-procedures/M022_Black_Swan_Hunt.md
-   □ Find low-probability high-impact events
-
-   □ Load method: data/method-procedures/M023_Assumption_Stress_Test.md
-   □ Break assumptions one by one
-
+   □ 📂 E006 → Apply Falsification to key beliefs
+   □ 📂 M021 → Imagine failure, trace causes
+   □ 📂 M022 → Find low-probability high-impact events
+   □ 📂 M023 → Break assumptions one by one
    □ Check for cognitive biases
    □ Update map based on findings
 
    IF FEAR-BASED EXPLORATION MODE:
-   □ Apply E010 Cognitive MVP — find smallest test to learn
-   □ Apply E014 Growth Test — assess if path develops user
-   □ Revisit E008 risks — which are now addressed?
+   □ 📂 E010 → Find smallest test to learn
+   □ 📂 E014 → Assess if path develops user
+   □ 📂 E008 → Revisit risks — which are now addressed?
    □ Update Fear Map with verified/falsified concerns
 
    Output: Challenged map with strengthened/weakened items
@@ -361,11 +330,11 @@ LLMs have context window limits. Deep Explore manages this:
 📂 Step 5: SYNTHESIZE
    Load: steps/step-05-synthesize.md
 
-   □ Apply E003 Minimal Assertions to compress insights
+   □ 📂 E003 → Compress insights to minimal assertions
    □ Cluster natural strategic options
    □ Identify decision sequence (what first, what can wait)
    □ Assess decision readiness per item
-   □ Apply E007 Information Questions for remaining gaps
+   □ 📂 E007 → Identify remaining gaps
 
    Output: Synthesis ready for report
 
@@ -409,7 +378,7 @@ LLMs have context window limits. Deep Explore manages this:
 | Success path discovered (E009) | +1.5 | New possibility revealed |
 | Comparable analyzed (E013) | +0.5 | Context gained from others |
 
-### Coverage Thresholds
+### Coverage Thresholds (SE mode — default)
 
 | Score | Coverage Level | Meaning |
 |-------|----------------|---------|
@@ -417,6 +386,8 @@ LLMs have context window limits. Deep Explore manages this:
 | 15 ≤ C < 25 | ADEQUATE | Key areas covered |
 | 8 ≤ C < 15 | PARTIAL | Major gaps likely |
 | C < 8 | INSUFFICIENT | Premature to decide |
+
+**Note:** Thresholds vary by mode. QE has lower thresholds (comprehensive: 12), DE has higher (comprehensive: 35). See `data/coverage-scoring.yaml` for all mode thresholds.
 
 ---
 
@@ -535,98 +506,16 @@ When you need specific data, announce and load:
 
 ---
 
-## DIRECTORY STRUCTURE
+## KEY PATHS
 
 ```
 deep-explore-v2/
-├── workflow.md                      ← YOU ARE HERE
-├── data/
-│   ├── method-procedures/                # Exploration methods
-│   │   ├── E001_Abductive_Reasoning.md       # Foundational
-│   │   ├── E002_Counterfactual_Thinking.md   # Foundational
-│   │   ├── E003_Minimal_Assertions.md        # Foundational
-│   │   ├── E004_Boundary_Analysis.md         # Foundational
-│   │   ├── E005_Causal_Models.md             # Foundational
-│   │   ├── E006_Falsification.md             # Foundational
-│   │   ├── E007_Information_Questions.md     # Foundational
-│   │   ├── E008_Failure_Reason_Exploration.md   # Fear-Based
-│   │   ├── E009_Reverse_Abduction.md            # Fear-Based
-│   │   ├── E010_Cognitive_MVP.md                # Fear-Based
-│   │   ├── E011_Control_Influence_Analysis.md   # Fear-Based
-│   │   ├── E012_Fundamental_Block_Analysis.md   # Fear-Based
-│   │   ├── E013_Contrast_Exploration.md         # Fear-Based
-│   │   ├── E014_Growth_Test.md                  # Fear-Based
-│   │   ├── M001_Dimension_Discovery.md       # Mapping
-│   │   ├── M002_Option_Enumeration.md        # Mapping
-│   │   ├── M003_Constraint_Mapping.md        # Mapping
-│   │   ├── M011_Consequence_Analysis.md      # Deepening
-│   │   ├── M012_Reversibility_Check.md       # Deepening
-│   │   ├── M013_Dependency_Analysis.md       # Deepening
-│   │   ├── M021_Premortem.md                 # Challenge
-│   │   ├── M022_Black_Swan_Hunt.md           # Challenge
-│   │   └── M023_Assumption_Stress_Test.md    # Challenge
-│   ├── research-methods.md              # How to research unknowns
-│   ├── coverage-scoring.yaml            # Scoring rules
-│   ├── exploration-report-template.md   # Output format
-│   └── examples.md                      # Worked examples
-└── steps/
-    ├── step-00-knowledge-audit.md
-    ├── step-01-research.md
-    ├── step-02-map.md
-    ├── step-03-deepen.md
-    ├── step-04-challenge.md
-    ├── step-05-synthesize.md
-    └── step-06-output.md
+├── workflow.md                           ← This file (start here)
+├── steps/step-{00-06}-*.md               ← Step procedures
+├── data/method-procedures/{ID}_*.md      ← Method procedures
+├── data/coverage-scoring.yaml            ← Scoring rules
+├── data/exploration-report-template.md   ← Output template
+└── data/research-methods.md              ← Research guidance
 ```
 
----
-
-## CLI INVOCATION EXAMPLES
-
-### Claude CLI
-```bash
-# Quick explore
-claude "QE: Should we use TypeScript or Python for this project?" < context.md
-
-# Standard explore
-claude "DE: Explore product strategy for Deep Verify" \
-  --context requirements.md market_research.md
-
-# Deep explore
-claude "DE --deep: Strategic decision about market entry" < business_context.md
-
-# Fear-based exploration
-claude "FE: I'm worried my startup idea won't work" < my_idea.md
-
-# Fear-based with specific concern
-claude "FE: This feels impossible - no one will pay for this" < product_spec.md
-```
-
-### With Deep Verify
-```bash
-# Explore then verify chosen option
-claude "DE: Architecture options for API" < requirements.md > exploration.md
-# User reviews, decides on option
-claude "DV: Verify REST API design" < api_design.md
-```
-
----
-
-## VERSION HISTORY
-
-- **V2.1** — Fear-Based Exploration mode
-  - Added fear-based methods (E008-E014)
-  - Added Fear-Based Exploration (FE) execution mode
-  - Updated Step 0 to handle fears/concerns
-  - Updated Step 4 to resolve fears with evidence
-  - Methods: Failure Reason, Reverse Abduction, Cognitive MVP,
-    Control Analysis, Fundamental Block, Contrast, Growth Test
-
-- **V2.0** — Knowledge-first approach with epistemological foundations
-  - Added foundational methods (E001-E007)
-  - Added Step 0: Knowledge Audit
-  - Added Step 1: Research
-  - Added feedback loops between steps
-  - Added VERIFIED/ASSUMED distinction
-  - Changed output from MAP to UNDERSTANDING
-  - Added coverage scoring system
+Method file naming: `{ID}_{Name}.md` where ID is E001-E014 or M001-M023.

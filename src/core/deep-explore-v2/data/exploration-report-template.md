@@ -8,7 +8,7 @@
 ║                                                                            ║
 ║  DECISION: [one sentence from Step 0]                                      ║
 ║  DATE: [exploration date]                                                  ║
-║  MODE: [QE/SE/DE/FE]                                                       ║
+║  MODE: [QE/SE/DE/FE/FSE]                                                    ║
 ║  TIME: [total time invested]                                               ║
 ║  COVERAGE SCORE: [C] - [COMPREHENSIVE/ADEQUATE/PARTIAL/INSUFFICIENT]      ║
 ║                                                                            ║

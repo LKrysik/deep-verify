@@ -27,26 +27,10 @@ scoring:
   success_path_discovered: 1.5
   comparable_analyzed: 0.5
 
+# Thresholds by mode
+# Each mode has different expectations based on scope and focus
+# Use thresholds[MODE] to get appropriate levels for current execution
 thresholds:
-  # Default thresholds (SE mode)
-  comprehensive:
-    min_score: 25
-    meaning: "Most of decision space explored"
-  adequate:
-    min_score: 15
-    meaning: "Key areas covered, minor gaps possible"
-  partial:
-    min_score: 8
-    meaning: "Major gaps likely, proceed with caution"
-  insufficient:
-    min_score: 0
-    meaning: "Premature to decide, more exploration needed"
-
-# Mode-adjusted thresholds
-# QE skips steps, so lower thresholds are appropriate
-# DE is thorough, so higher thresholds expected
-# FE focuses on fears not breadth, so different scale
-mode_thresholds:
   QE:  # Quick Explore - reduced expectations
     comprehensive: 12
     adequate: 8
@@ -55,10 +39,10 @@ mode_thresholds:
     note: "QE is intentionally light; lower scores are expected"
 
   SE:  # Standard Explore - default thresholds
-    comprehensive: 25
-    adequate: 15
-    partial: 8
-    insufficient: 0
+    comprehensive: 25   # Most of decision space explored
+    adequate: 15        # Key areas covered, minor gaps possible
+    partial: 8          # Major gaps likely, proceed with caution
+    insufficient: 0     # Premature to decide, more exploration needed
 
   DE:  # Deep Explore - higher expectations
     comprehensive: 35
