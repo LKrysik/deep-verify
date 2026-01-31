@@ -1,0 +1,105 @@
+# Coverage Scoring Rules for Deep Explore V2
+
+scoring:
+  # Knowledge expansion
+  dimension_discovered: 2.0
+  option_enumerated: 1.0
+  unknown_unknown_surfaced: 1.5
+  assumption_falsified: 1.0
+
+  # Verification
+  consequence_verified: 1.0
+  consequence_assumed: 0.3
+
+  # Understanding
+  boundary_identified: 0.5
+  causal_relationship_mapped: 0.5
+
+  # Challenge
+  premortem_cause_found: 0.3
+  black_swan_identified: 0.3
+
+  # Fear-Based Mode (FE)
+  fear_classified: 0.5
+  false_wall_identified: 1.0
+  true_wall_confirmed: 1.0
+  controllable_concern_found: 0.5
+  success_path_discovered: 1.5
+  comparable_analyzed: 0.5
+
+thresholds:
+  # Default thresholds (SE mode)
+  comprehensive:
+    min_score: 25
+    meaning: "Most of decision space explored"
+  adequate:
+    min_score: 15
+    meaning: "Key areas covered, minor gaps possible"
+  partial:
+    min_score: 8
+    meaning: "Major gaps likely, proceed with caution"
+  insufficient:
+    min_score: 0
+    meaning: "Premature to decide, more exploration needed"
+
+# Mode-adjusted thresholds
+# QE skips steps, so lower thresholds are appropriate
+# DE is thorough, so higher thresholds expected
+# FE focuses on fears not breadth, so different scale
+mode_thresholds:
+  QE:  # Quick Explore - reduced expectations
+    comprehensive: 12
+    adequate: 8
+    partial: 4
+    insufficient: 0
+    note: "QE is intentionally light; lower scores are expected"
+
+  SE:  # Standard Explore - default thresholds
+    comprehensive: 25
+    adequate: 15
+    partial: 8
+    insufficient: 0
+
+  DE:  # Deep Explore - higher expectations
+    comprehensive: 35
+    adequate: 25
+    partial: 15
+    insufficient: 0
+    note: "DE invests more time; expect higher coverage"
+
+  FE:  # Fear-Based - different scoring focus
+    comprehensive: 20
+    adequate: 12
+    partial: 6
+    insufficient: 0
+    note: "FE scores on fear resolution, not option breadth"
+    primary_metrics:
+      - fear_classified
+      - false_wall_identified
+      - true_wall_confirmed
+      - controllable_concern_found
+
+  FSE:  # Fearful Standard - combines both
+    comprehensive: 30
+    adequate: 20
+    partial: 12
+    insufficient: 0
+    note: "FSE combines fear + option mapping"
+
+calculation: |
+  C = (dimensions × 2)
+    + (options × 1)
+    + (verified_consequences × 1)
+    + (assumed_consequences × 0.3)
+    + (unknown_unknowns × 1.5)
+    + (falsified_assumptions × 1)
+    + (boundaries × 0.5)
+    + (causal_relationships × 0.5)
+
+  # Additional for Fear-Based Mode (FE):
+    + (fears_classified × 0.5)
+    + (false_walls_identified × 1)
+    + (true_walls_confirmed × 1)
+    + (controllable_concerns × 0.5)
+    + (success_paths_discovered × 1.5)
+    + (comparables_analyzed × 0.5)
