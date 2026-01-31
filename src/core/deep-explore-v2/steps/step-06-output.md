@@ -57,7 +57,7 @@ SECTION 7: SUGGESTED NEXT STEPS
 □ If ready to decide
 □ If want to explore deeper
 
-SECTION 8: FEAR RESOLUTION (if Fear-Based Mode)
+SECTION 8: FEAR RESOLUTION (when fear_analysis=on)
 □ Original fears (from Step 0)
 □ Resolution status (RESOLVED/ADDRESSED/REMAINS)
 □ Minimal tests designed (from Step 4)
@@ -83,7 +83,7 @@ Assumptions falsified:     [N] × 1 = [score]
 Boundaries identified:     [N] × 0.5 = [score]
 Causal relationships:      [N] × 0.5 = [score]
 
-IF FEAR-BASED MODE:
+IF fear_analysis=on:
 Fears classified:          [N] × 0.5 = [score]
 False walls identified:    [N] × 1 = [score]
 True walls confirmed:      [N] × 1 = [score]
@@ -114,7 +114,7 @@ C < 8: INSUFFICIENT
 ║                                                                            ║
 ║  DECISION: [from Step 0]                                                   ║
 ║  DATE: [today]                                                             ║
-║  MODE: [QE/SE/DE/FE]                                                       ║
+║  CONFIG: depth=[quick|standard|deep] fear_analysis=[on|off]                ║
 ║  TIME: [total]                                                             ║
 ║  COVERAGE: [score] - [level]                                               ║
 ║                                                                            ║
@@ -138,7 +138,7 @@ User now has:
 - Assessment of decision readiness
 - Guidance on next steps
 
-**If Fear-Based Mode, user also has:**
+**When fear_analysis=on, user also has:**
 - Resolution status for each original fear
 - Minimal tests designed to learn (failure = data)
 - Clear separation of controllable vs uncontrollable

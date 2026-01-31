@@ -220,9 +220,9 @@ SIGNIFICANT/CRITICAL: [count] → Must update map before proceeding
 
 ---
 
-## 04.6 Fear Resolution (IF FEAR-BASED MODE)
+## 04.6 Fear Resolution (when fear_analysis=on)
 
-**When to use:** User went through Fear-Based Exploration in Step 0.
+**Triggered when:** Fear analysis was enabled in Step 0.
 
 ### Design Minimal Tests
 
@@ -315,7 +315,7 @@ RESOLUTION KEY:
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-## Output: Fear Resolution (if Fear-Based Mode)
+## Output: Fear Resolution (when fear_analysis=on)
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗

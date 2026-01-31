@@ -112,9 +112,9 @@ RESEARCH QUEUE:
 
 ---
 
-## 00.5 Fear-Based Exploration (IF USER HAS CONCERNS)
+## 00.5 Fear Analysis (when fear_analysis=on)
 
-**When to use:** User expresses uncertainty, fear, or sees blockers.
+**Triggered when:** User expresses uncertainty, fear, or sees blockers. Automatically enabled with `--fear` flag.
 
 📂 Load method: `data/method-procedures/E008_Failure_Reason_Exploration.md`
 
@@ -209,7 +209,7 @@ Which conditions are actually achievable? [list]
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-## Output: Fear Map (if Fear-Based Mode)
+## Output: Fear Map (when fear_analysis=on)
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗

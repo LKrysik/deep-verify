@@ -1,10 +1,107 @@
-# Deep Explore V2.0 — Knowledge-First Decision Exploration
+# Deep Explore V2.1 — Knowledge-First Decision Exploration
+
+---
+
+## INVOCATION
+
+**Kiedy użytkownik chce eksplorować decyzję, ZAWSZE rozpocznij od tego dialogu:**
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                      DEEP EXPLORE                                          ║
+║                      Eksploracja przestrzeni decyzyjnej                    ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  Zanim zaczniemy, wybierz głębokość eksploracji:                          ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐  ║
+║  │  [1] QUICK  (10-20 min)                                             │  ║
+║  │                                                                      │  ║
+║  │  Co dostaniesz:                                                      │  ║
+║  │  • Podstawowa mapa opcji (3 wymiary minimum)                        │  ║
+║  │  • Kluczowe konsekwencje dla top 2 opcji                            │  ║
+║  │  • Szybka ocena gotowości do decyzji                                │  ║
+║  │  • Najważniejsze ryzyka                                              │  ║
+║  │                                                                      │  ║
+║  │  Kiedy używać:                                                       │  ║
+║  │  → Pilna decyzja, mało czasu                                        │  ║
+║  │  → Wstępna orientacja przed głębszą analizą                         │  ║
+║  │  → Decyzja o niskiej stawce                                          │  ║
+║  └─────────────────────────────────────────────────────────────────────┘  ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐  ║
+║  │  [2] STANDARD  (45-90 min)                                          │  ║
+║  │                                                                      │  ║
+║  │  Co dostaniesz:                                                      │  ║
+║  │  • Pełna mapa opcji (4-6 wymiarów)                                  │  ║
+║  │  • Konsekwencje dla top 3-5 opcji (VERIFIED vs ASSUMED)             │  ║
+║  │  • Challenge: premortem, bias check, stress test założeń            │  ║
+║  │  • Strategiczne klastry opcji                                        │  ║
+║  │  • Pełny raport z sekwencją decyzji                                 │  ║
+║  │                                                                      │  ║
+║  │  Kiedy używać:                                                       │  ║
+║  │  → Ważna decyzja wymagająca przemyślenia                            │  ║
+║  │  → Potrzebujesz pewności przed działaniem                           │  ║
+║  │  → Decyzja o średniej/wysokiej stawce                               │  ║
+║  └─────────────────────────────────────────────────────────────────────┘  ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐  ║
+║  │  [3] DEEP  (2-4 godziny)                                            │  ║
+║  │                                                                      │  ║
+║  │  Co dostaniesz:                                                      │  ║
+║  │  • Wyczerpująca mapa WSZYSTKICH opcji                               │  ║
+║  │  • Głęboka analiza konsekwencji dla każdej opcji                    │  ║
+║  │  • Wielokrotne iteracje z feedback loops                            │  ║
+║  │  • External research gdzie potrzebny                                │  ║
+║  │  • Devil's advocate, black swan hunting                             │  ║
+║  │  • Pełna analiza zależności i punktów zwrotnych                     │  ║
+║  │                                                                      │  ║
+║  │  Kiedy używać:                                                       │  ║
+║  │  → Krytyczna, nieodwracalna decyzja                                 │  ║
+║  │  → Bardzo wysoka stawka (kariera, firma, życie)                     │  ║
+║  │  → Masz czas i chcesz maksymalnej pewności                          │  ║
+║  └─────────────────────────────────────────────────────────────────────┘  ║
+║                                                                            ║
+║  Wybierz: [1] / [2] / [3]                                                 ║
+║                                                                            ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+**Po wyborze użytkownika:**
+1. Zapisz wybrany poziom: `depth = quick | standard | deep`
+2. Przeskanuj input użytkownika pod kątem sygnałów strachu/obaw (patrz: FEAR DETECTION)
+3. Rozpocznij wykonanie od Step 0
+
+---
+
+## FEAR DETECTION (automatyczne)
+
+**Nie pytaj użytkownika o fear analysis. Wykryj automatycznie z języka.**
+
+Jeśli w opisie decyzji użytkownik użył słów/fraz:
+- "boję się", "martwię się", "obawiam się"
+- "co jeśli się nie uda", "a jeśli to nie zadziała"
+- "zablokowany", "nie wiem jak zacząć", "niemożliwe"
+- "ryzyko", "stracę", "porażka"
+- "paraliż", "nie mogę się zdecydować"
+- "wszyscy mówią że to złe", "nikt tego nie robi"
+
+**→ Włącz `fear_analysis = on`**
+
+Oznacza to:
+- W Step 0: dodaj Fear Inventory (E008), Control Analysis (E011), Blocker Analysis (E012)
+- W Step 4: dodaj Fear Resolution, Minimal Tests (E010), Growth Assessment (E014)
+- W raporcie: dodaj Section 8 (Fear Resolution)
+
+**Jeśli brak sygnałów strachu → `fear_analysis = off`** (standardowa eksploracja)
+
+---
 
 ## CORE PHILOSOPHY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  DEEP EXPLORE V2 = KNOWLEDGE EXPANSION + UNCERTAINTY MAPPING + EXPLORATION  │
+│  DEEP EXPLORE = KNOWLEDGE EXPANSION + UNCERTAINTY MAPPING + EXPLORATION     │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │  INPUT:   Decision problem, strategic question, complex choice              │
@@ -22,35 +119,73 @@
 
 ---
 
+## DEPTH LEVELS — Co wykonujesz na każdym poziomie
+
+### QUICK (depth = quick)
+
+```
+STEPS:           0 → 1 → 2 → 3 → 4 → 5 → 6  (wszystkie, ale skrócone)
+MAX ITERATIONS:  1 (brak feedback loops)
+RESEARCH:        Top 2-3 items z kolejki
+DIMENSIONS:      3 minimum
+OPTIONS:         Top 2 opcje analizowane głęboko
+CHALLENGE:       Tylko kluczowe założenia, basic bias check
+COVERAGE TARGET: C ≥ 12 = COMPREHENSIVE
+```
+
+### STANDARD (depth = standard)
+
+```
+STEPS:           0 → 1 → 2 → 3 → 4 → 5 → 6  (pełne wykonanie)
+MAX ITERATIONS:  3 (feedback loops dozwolone)
+RESEARCH:        Wszystkie P1 i P2 items
+DIMENSIONS:      4-6 wymiarów
+OPTIONS:         Top 3-5 opcji analizowanych
+CHALLENGE:       Pełna procedura: premortem, black swan, bias check
+COVERAGE TARGET: C ≥ 25 = COMPREHENSIVE
+```
+
+### DEEP (depth = deep)
+
+```
+STEPS:           0 → 1 → 2 → 3 → 4 → 5 → 6  (pełne + pogłębione)
+MAX ITERATIONS:  Unlimited (do rozwiązania lub decyzji użytkownika)
+RESEARCH:        Wszystkie items + exploratory research
+DIMENSIONS:      Wyczerpujące odkrywanie
+OPTIONS:         Wszystkie viable opcje
+CHALLENGE:       Wielokrotne rundy, devil's advocate, external validation
+COVERAGE TARGET: C ≥ 35 = COMPREHENSIVE
+```
+
+---
+
 ## FOUNDATIONAL METHODS
 
-Deep Explore V2 is built on these epistemological foundations:
+Deep Explore is built on these epistemological foundations:
 
-### Epistemological Core (E001-E007)
+### Epistemological Core (E001-E007) — zawsze używane
 
-| ID | Method | Purpose | File |
-|----|--------|---------|------|
-| E001 | Abductive Reasoning | Generate hypotheses from observations | `data/method-procedures/E001_Abductive_Reasoning.md` |
-| E002 | Counterfactual Thinking | Identify causal factors and leverage points | `data/method-procedures/E002_Counterfactual_Thinking.md` |
-| E003 | Minimal Assertions | Compress knowledge to actionable principles | `data/method-procedures/E003_Minimal_Assertions.md` |
-| E004 | Boundary Analysis | Find limits where things stop working | `data/method-procedures/E004_Boundary_Analysis.md` |
-| E005 | Causal Models | Map influence relationships | `data/method-procedures/E005_Causal_Models.md` |
-| E006 | Falsification | Test beliefs by trying to disprove them | `data/method-procedures/E006_Falsification.md` |
-| E007 | Information Questions | Identify highest-value questions | `data/method-procedures/E007_Information_Questions.md` |
+| ID | Method | Purpose |
+|----|--------|---------|
+| E001 | Abductive Reasoning | Generate hypotheses from observations |
+| E002 | Counterfactual Thinking | Identify causal factors and leverage points |
+| E003 | Minimal Assertions | Compress knowledge to actionable principles |
+| E004 | Boundary Analysis | Find limits where things stop working |
+| E005 | Causal Models | Map influence relationships |
+| E006 | Falsification | Test beliefs by trying to disprove them |
+| E007 | Information Questions | Identify highest-value questions |
 
-### Fear-Based Exploration (E008-E014)
+### Fear-Based Methods (E008-E014) — gdy fear_analysis = on
 
-For users with concerns, fears, or uncertainty about a decision. These methods transform anxiety into structured exploration.
-
-| ID | Method | Purpose | File |
-|----|--------|---------|------|
-| E008 | Failure Reason Exploration | Transform fear into structured risk map | `data/method-procedures/E008_Failure_Reason_Exploration.md` |
-| E009 | Reverse Abduction | Discover paths by assuming success | `data/method-procedures/E009_Reverse_Abduction.md` |
-| E010 | Cognitive MVP | Find smallest action that teaches something | `data/method-procedures/E010_Cognitive_MVP.md` |
-| E011 | Control vs Influence Analysis | Separate controllable from uncontrollable | `data/method-procedures/E011_Control_Influence_Analysis.md` |
-| E012 | Fundamental Block Analysis | Find true "walls" vs false walls | `data/method-procedures/E012_Fundamental_Block_Analysis.md` |
-| E013 | Contrast Exploration | Learn from others' successes and failures | `data/method-procedures/E013_Contrast_Exploration.md` |
-| E014 | Growth Test | Filter decisions by whether they develop you | `data/method-procedures/E014_Growth_Test.md` |
+| ID | Method | Purpose |
+|----|--------|---------|
+| E008 | Failure Reason Exploration | Transform fear into structured risk map |
+| E009 | Reverse Abduction | Discover paths by assuming success |
+| E010 | Cognitive MVP | Find smallest action that teaches something |
+| E011 | Control vs Influence Analysis | Separate controllable from uncontrollable |
+| E012 | Fundamental Block Analysis | Find true "walls" vs false walls |
+| E013 | Contrast Exploration | Learn from others' successes and failures |
+| E014 | Growth Test | Filter decisions by whether they develop you |
 
 ---
 
@@ -59,6 +194,7 @@ For users with concerns, fears, or uncertainty about a decision. These methods t
 ```
                     ┌──────────────────────────────────────────┐
                     │          FEEDBACK LOOPS                  │
+                    │     (tylko dla standard i deep)          │
                     ▼                                          │
 ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐     │
 │ STEP 0  │───►│ STEP 1  │───►│ STEP 2  │───►│ STEP 3  │─────┤
@@ -66,8 +202,8 @@ For users with concerns, fears, or uncertainty about a decision. These methods t
 └─────────┘    └────┬────┘    └────┬────┘    └────┬────┘     │
                     │              │              │           │
                     └──────────────┴──────────────┘           │
-                                          │                   │
-                                          ▼                   │
+                                         │                   │
+                                         ▼                   │
                     ┌─────────┐    ┌─────────┐    ┌─────────┐
                     │ STEP 4  │───►│ STEP 5  │───►│ STEP 6  │
                     │CHALLENGE│    │SYNTHESIZE    │ OUTPUT  │
@@ -76,169 +212,9 @@ For users with concerns, fears, or uncertainty about a decision. These methods t
 
 ---
 
-## EXECUTION MODES
+## EXECUTION PATH
 
-### Quick Explore (QE)
-```
-Time: 10-20 min | Steps: 0 (light) → 1 (focused) → 2 → 6
-Triggers: `QE`, `quick explore`, `--quick`, `-q`
-Output: Preliminary map with "QE limitations" noted
-```
-
-### Standard Explore (SE)
-```
-Time: 45-90 min | Steps: All (0-6)
-Triggers: `DE`, `explore`, `--full`, default
-Output: Full exploration report
-
-NOTE ON "DE" TRIGGER: "DE" stands for "Deep Explore" (the tool name).
-When used alone, it invokes Standard Explore (the default mode).
-For Deep Explore mode, use `DE --deep` or `--strategic`.
-```
-
-### Deep Explore (DE)
-```
-Time: 2-4 hours | Steps: All + iterations + external research
-Triggers: `DE --deep`, `--strategic`, `--critical`
-Output: Comprehensive understanding with multiple passes
-```
-
-### Fear-Based Exploration (FE)
-```
-Time: 30-60 min | Steps: 0 (with E008-E014) → 1 → 4 → 6
-Triggers: `FE`, `fear explore`, `--fear`, `--concerns`, `-f`
-Output: Structured understanding of fears, risks, and paths forward
-
-NOTE: FE skips Steps 2-3 (mapping). If you need BOTH fear analysis
-AND option mapping, use FSE (Fearful Standard Exploration) mode.
-```
-
-### Fearful Standard Exploration (FSE) — Hybrid Mode
-```
-Time: 60-120 min | Steps: All (0-6) with E008-E014 in Step 0
-Triggers: `FSE`, `--fear --full`, `-f --full`
-Output: Full exploration report with fear resolution
-
-When to use:
-- User has fears AND needs comprehensive option mapping
-- Complex decision with emotional and analytical components
-- Want fear analysis but don't want to skip mapping phase
-
-Combines:
-- FE's fear methods (E008-E014) in Step 0
-- SE's full step progression (0→1→2→3→4→5→6)
-- Fear resolution in Step 4
-- Fear Map in final report
-```
-
----
-
-## PARAMETERS
-
-Deep Explore supports optional parameters for customization:
-
-```
-┌────────────────────┬─────────────────────┬────────────────────────────────────┐
-│ Parameter          │ Values              │ Effect                             │
-├────────────────────┼─────────────────────┼────────────────────────────────────┤
-│ --max-iterations   │ 1-10 (default: 3)   │ Max feedback loop cycles           │
-│ --focus            │ options|consequences│ Emphasize specific aspect          │
-│                    │ |fears|risks|all    │                                    │
-│ --output           │ markdown|json|brief │ Output format                      │
-│ --verification     │ strict|balanced|fast│ How much to verify vs assume       │
-│ --methods          │ E001,M001,... list  │ Explicit method selection          │
-│ --skip-steps       │ 2,3,5 (step nums)   │ Skip specific steps                │
-│ --timebox          │ 15m|30m|1h|2h       │ Time limit (triggers compression)  │
-└────────────────────┴─────────────────────┴────────────────────────────────────┘
-
-Available methods for --methods:
-• Epistemological: E001-E007 (core), E008-E014 (fear-based)
-• Mapping: M001-M003
-• Deepening: M011-M013
-• Challenge: M021-M023
-```
-
-### Parameter Examples
-```bash
-# Quick with 15-minute timebox
-claude "QE --timebox 15m: Which framework?"
-
-# Standard with strict verification
-claude "DE --verification strict: Architecture decision"
-
-# Deep with specific method focus
-claude "DE --deep --methods E001,E002,E006,M021: Market entry"
-
-# Fear-based with specific methods
-claude "FE --methods E008,E011,E012: Will my startup fail?"
-
-# Hybrid with max iterations limit
-claude "FSE --max-iterations 2: Career change decision"
-```
-
-### Iteration Control
-
-Feedback loops can cycle between steps. To prevent infinite loops:
-
-```
-MAX ITERATIONS (--max-iterations, default: 3):
-├── Iteration 1: Normal execution
-├── Iteration 2: If gaps found, research and retry
-├── Iteration 3: Final attempt
-└── After max: PROCEED with current state + WARNING
-
-When max iterations reached without resolution:
-1. Note unresolved items in report
-2. Mark affected consequences as ASSUMED
-3. Add to "What We Still Don't Know" section
-4. Suggest follow-up research in Next Steps
-```
-
----
-
-## CONTEXT BUDGET MANAGEMENT
-
-LLMs have context window limits. Deep Explore manages this:
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  CONTEXT BUDGET STRATEGY                                                     │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  PRIORITY 1 (always include):                                               │
-│  • Current step file                                                        │
-│  • Active method procedure                                                  │
-│  • Current artifacts (Maps, Queues)                                         │
-│                                                                              │
-│  PRIORITY 2 (include if space):                                             │
-│  • Previous step outputs (summaries)                                        │
-│  • User's original input                                                    │
-│  • Research findings                                                        │
-│                                                                              │
-│  PRIORITY 3 (compress or summarize):                                        │
-│  • Earlier step details                                                     │
-│  • Intermediate reasoning                                                   │
-│  • Raw research data                                                        │
-│                                                                              │
-│  COMPRESSION TRIGGERS:                                                       │
-│  • After Step 2: Compress Step 0-1 to summaries                            │
-│  • After Step 4: Compress Step 2-3 to key findings                         │
-│  • Before Step 6: Compress all to report-ready format                      │
-│                                                                              │
-│  IF CONTEXT OVERFLOWS:                                                       │
-│  1. Summarize oldest content first                                          │
-│  2. Keep artifacts (Maps) intact                                            │
-│  3. Note in report: "Context compressed at Step X"                          │
-│  4. If critical info lost: Flag for multi-session exploration              │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## QUICK EXECUTION PATH
-
-**For most explorations, execute this sequence:**
+**Po wyborze poziomu przez użytkownika, wykonaj:**
 
 ```
 📂 Step 0: KNOWLEDGE AUDIT
@@ -250,7 +226,7 @@ LLMs have context window limits. Deep Explore manages this:
    □ 📂 E001 → Surface Unknown Unknowns
    □ Prioritize research needs
 
-   IF USER HAS FEARS/CONCERNS (Fear-Based Mode):
+   IF fear_analysis = on:
    □ 📂 E008 → Structure fears into risk map
    □ 📂 E011 → Separate actionable concerns
    □ 📂 E012 → Find true walls vs false walls
@@ -258,7 +234,7 @@ LLMs have context window limits. Deep Explore manages this:
    □ 📂 E013 → Gain context from others
    → Fears become structured research queue
 
-   Output: Knowledge Map + Research Queue (+ Fear Map if FE mode)
+   Output: Knowledge Map + Research Queue (+ Fear Map if fear_analysis=on)
 
    ↓ PROCEED if research queue is defined
    ↓ STAY if framing is unclear
@@ -272,10 +248,15 @@ LLMs have context window limits. Deep Explore manages this:
    □ Update Knowledge Map
    □ Add new unknowns to queue if discovered
 
+   DEPTH ADJUSTMENT:
+   • quick: Research top 2-3 items only
+   • standard: Research all P1 and P2 items
+   • deep: Research all items + exploratory research
+
    Output: Research Summary + Updated Knowledge Map
 
    ↓ PROCEED if critical unknowns addressed
-   ↓ STAY if more research needed
+   ↓ STAY if more research needed (check iteration limit)
    ↑ RETURN TO STEP 0 if framing changed
 
 📂 Step 2: MAP (Divergent)
@@ -285,6 +266,11 @@ LLMs have context window limits. Deep Explore manages this:
    □ 📂 M002 → Enumerate options per dimension
    □ 📂 M003 → Map hard and soft constraints
    □ Build Morphological Box (see step file for format)
+
+   DEPTH ADJUSTMENT:
+   • quick: 3 dimensions minimum
+   • standard: 4-6 dimensions
+   • deep: Exhaustive dimension discovery
 
    Output: Option Map (draft)
 
@@ -301,6 +287,11 @@ LLMs have context window limits. Deep Explore manages this:
    □ 📂 M012 → Assess reversibility of each option
    □ 📂 M013 → Map decision dependencies
 
+   DEPTH ADJUSTMENT:
+   • quick: Top 2 options only
+   • standard: Top 3-5 options
+   • deep: All viable options
+
    Output: Consequence Map with verification status
 
    ↓ PROCEED if critical consequences verified
@@ -316,14 +307,19 @@ LLMs have context window limits. Deep Explore manages this:
    □ Check for cognitive biases
    □ Update map based on findings
 
-   IF FEAR-BASED EXPLORATION MODE:
+   IF fear_analysis = on:
    □ 📂 E010 → Find smallest test to learn
    □ 📂 E014 → Assess if path develops user
    □ 📂 E008 → Revisit risks — which are now addressed?
    □ Update Fear Map with verified/falsified concerns
 
+   DEPTH ADJUSTMENT:
+   • quick: Key beliefs only, basic bias check
+   • standard: Full challenge procedure
+   • deep: Multiple rounds, devil's advocate, external validation
+
    Output: Challenged map with strengthened/weakened items
-           (+ Updated Fear Map with resolution status if FE mode)
+           (+ Updated Fear Map with resolution status if fear_analysis=on)
 
    ↓ PROCEED always (challenge is mandatory)
 
@@ -351,6 +347,7 @@ LLMs have context window limits. Deep Explore manages this:
    □ Section 5: Consequence Map
    □ Section 6: Decision Readiness
    □ Section 7: Suggested Next Steps
+   □ Section 8: Fear Resolution (only if fear_analysis=on)
 
    Output: EXPLORATION REPORT
 ```
@@ -361,84 +358,38 @@ LLMs have context window limits. Deep Explore manages this:
 
 ### Exploration Coverage Score (C)
 
-| Exploration Quality | Points | Notes |
-|---------------------|--------|-------|
-| New dimension discovered | +2 | Fundamental axis of choice |
-| New option in dimension | +1 | Adds to possibility space |
-| Consequence VERIFIED | +1 | Researched, not assumed |
-| Consequence ASSUMED | +0.3 | Believed but not verified |
-| Unknown Unknown surfaced | +1.5 | Discovered blind spot |
-| Assumption falsified | +1 | Removed false belief |
-| Boundary identified | +0.5 | Limit of applicability found |
-| Causal relationship mapped | +0.5 | Influence understood |
-| Fear classified (E008) | +0.5 | STRUCTURAL/OPERATIONAL/COGNITIVE |
-| False wall identified (E012) | +1 | Blocker removed |
-| True wall confirmed (E012) | +1 | Saved wasted effort |
-| Controllable concern found (E011) | +0.5 | Actionable item identified |
-| Success path discovered (E009) | +1.5 | New possibility revealed |
-| Comparable analyzed (E013) | +0.5 | Context gained from others |
+| Exploration Quality | Points |
+|---------------------|--------|
+| New dimension discovered | +2 |
+| New option in dimension | +1 |
+| Consequence VERIFIED | +1 |
+| Consequence ASSUMED | +0.3 |
+| Unknown Unknown surfaced | +1.5 |
+| Assumption falsified | +1 |
+| Boundary identified | +0.5 |
+| Causal relationship mapped | +0.5 |
 
-### Coverage Thresholds (SE mode — default)
+**When fear_analysis = on, additional:**
 
-| Score | Coverage Level | Meaning |
-|-------|----------------|---------|
-| C ≥ 25 | COMPREHENSIVE | Most of space explored |
-| 15 ≤ C < 25 | ADEQUATE | Key areas covered |
-| 8 ≤ C < 15 | PARTIAL | Major gaps likely |
-| C < 8 | INSUFFICIENT | Premature to decide |
+| Fear Resolution Quality | Points |
+|------------------------|--------|
+| Fear classified | +0.5 |
+| False wall identified | +1 |
+| True wall confirmed | +1 |
+| Controllable concern found | +0.5 |
+| Success path discovered | +1.5 |
+| Comparable analyzed | +0.5 |
 
-**Note:** Thresholds vary by mode. QE has lower thresholds (comprehensive: 12), DE has higher (comprehensive: 35). See `data/coverage-scoring.yaml` for all mode thresholds.
+### Coverage Thresholds (by depth)
 
----
+| Score | quick | standard | deep |
+|-------|-------|----------|------|
+| COMPREHENSIVE | C ≥ 12 | C ≥ 25 | C ≥ 35 |
+| ADEQUATE | C ≥ 8 | C ≥ 15 | C ≥ 25 |
+| PARTIAL | C ≥ 4 | C ≥ 8 | C ≥ 15 |
+| INSUFFICIENT | C < 4 | C < 8 | C < 15 |
 
-## METHOD RECOMMENDATION ENGINE
-
-Based on input type and signals, prioritize specific methods:
-
-### By Input Type
-
-| Input Type | Recommended Methods | Rationale |
-|------------|---------------------|-----------|
-| Technical decision | E001, E004, M001, M011, M013 | Boundaries, dependencies matter |
-| Business/strategy | E002, E005, E007, M021, M022 | Causation, black swans matter |
-| Personal/life | E008-E014, E003, M012 | Fears, reversibility matter |
-| Policy/governance | E006, M003, M023 | Falsification, constraints matter |
-| Creative/product | E001, E002, M001, M002 | Hypotheses, options matter |
-
-### By Signal Detection
-
-| If you detect... | Add these methods | Why |
-|------------------|-------------------|-----|
-| User expresses fear/worry | E008, E011, E012 | Transform fear to map |
-| User says "impossible" | E009, E012 | Find hidden paths |
-| Many unknowns | E001, E007 | Generate hypotheses, prioritize |
-| Complex dependencies | E005, M013 | Map causal structure |
-| High stakes | M021, M022, M023 | Stress test everything |
-| Time pressure | E003, E010 | Compress, find minimal tests |
-| Conflicting info | E006, E004 | Falsify, find boundaries |
-| User paralyzed | E010, E014 | Minimal action, growth frame |
-
-### By Mode
-
-| Mode | Core Methods | Optional Methods |
-|------|--------------|------------------|
-| QE | E001, M001, M002 | E007 (if time) |
-| SE | E001-E007, M001-M023 | All available |
-| DE | All + multiple passes | Deep dive any |
-| FE | E008-E014, E001, E006 | M021 (for fears) |
-| FSE | E001-E014, M001-M023 | All available |
-
-### Method Selection Algorithm
-
-```
-1. DETECT mode from trigger
-2. LOAD core methods for mode
-3. SCAN input for signals (fear words, complexity markers, stakes)
-4. ADD recommended methods based on signals
-5. IF --methods parameter: OVERRIDE with explicit list
-6. IF --depth parameter: LIMIT count per step
-7. EXECUTE in step order
-```
+**Note:** When fear_analysis=on, thresholds increase by +5.
 
 ---
 
@@ -446,31 +397,35 @@ Based on input type and signals, prioritize specific methods:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  EXPLORATION COMMANDMENTS (V2)                                              │
+│  EXPLORATION COMMANDMENTS                                                    │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  1. KNOWLEDGE BEFORE MAPPING                                                │
+│  1. ALWAYS START WITH INVOCATION                                            │
+│     Display the depth selection dialog before doing anything                │
+│     Wait for user choice before proceeding                                  │
+│                                                                              │
+│  2. KNOWLEDGE BEFORE MAPPING                                                │
 │     Never map options in a space you don't understand                       │
 │     Step 0 + Step 1 are NOT optional                                        │
 │                                                                              │
-│  2. VERIFY BEFORE CLAIMING                                                  │
+│  3. VERIFY BEFORE CLAIMING                                                  │
 │     Mark every consequence as VERIFIED or ASSUMED                           │
 │     Critical assumptions MUST be verified or flagged                        │
 │                                                                              │
-│  3. FEEDBACK LOOPS ARE MANDATORY                                            │
-│     When you discover unknowns → go back and research                       │
-│     Never proceed with false completeness                                   │
+│  4. RESPECT DEPTH LIMITS                                                    │
+│     quick = 1 iteration, no loops                                           │
+│     standard = max 3 iterations                                             │
+│     deep = until resolved                                                   │
 │                                                                              │
-│  4. USE FOUNDATIONAL METHODS                                                │
-│     Apply E001-E007 throughout exploration                                  │
-│     Apply E008-E014 when user has fears/concerns                            │
-│     These are not optional - they enable real exploration                   │
+│  5. AUTO-DETECT FEAR                                                        │
+│     Don't ask about fear analysis - detect from language                    │
+│     If detected, enable silently and include in report                      │
 │                                                                              │
-│  5. USER DECIDES, AI EXPLORES                                               │
+│  6. USER DECIDES, AI EXPLORES                                               │
 │     Output is UNDERSTANDING, not recommendation                             │
 │     Present options fairly, let user weigh trade-offs                       │
 │                                                                              │
-│  6. LOAD FILES WHEN NEEDED                                                  │
+│  7. LOAD FILES WHEN NEEDED                                                  │
 │     Announce: "📂 Loading [path]"                                           │
 │     Follow the procedure in the loaded file                                 │
 │                                                                              │
@@ -493,15 +448,7 @@ When you need specific data, announce and load:
 | Start Step 5 | `steps/step-05-synthesize.md` | "📂 Loading Step 5: Synthesize" |
 | Start Step 6 | `steps/step-06-output.md` | "📂 Loading Step 6: Output" |
 | Execute method | `data/method-procedures/[ID]_[Name].md` | "📂 Loading method: [Name]" |
-| Fear analysis | `data/method-procedures/E008_Failure_Reason_Exploration.md` | "📂 Loading: Failure Reason Exploration" |
-| Reverse success | `data/method-procedures/E009_Reverse_Abduction.md` | "📂 Loading: Reverse Abduction" |
-| Minimal test | `data/method-procedures/E010_Cognitive_MVP.md` | "📂 Loading: Cognitive MVP" |
-| Control analysis | `data/method-procedures/E011_Control_Influence_Analysis.md` | "📂 Loading: Control Analysis" |
-| Block analysis | `data/method-procedures/E012_Fundamental_Block_Analysis.md` | "📂 Loading: Fundamental Block Analysis" |
-| Learn from others | `data/method-procedures/E013_Contrast_Exploration.md` | "📂 Loading: Contrast Exploration" |
-| Growth filter | `data/method-procedures/E014_Growth_Test.md` | "📂 Loading: Growth Test" |
 | Generate report | `data/exploration-report-template.md` | "📂 Loading report template" |
-| Research guidance | `data/research-methods.md` | "📂 Loading research methods" |
 | Scoring | `data/coverage-scoring.yaml` | "📂 Loading scoring rules" |
 
 ---

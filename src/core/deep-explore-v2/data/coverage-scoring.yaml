@@ -1,75 +1,66 @@
-# Coverage Scoring Rules for Deep Explore V2
+# Coverage Scoring Rules for Deep Explore V2.1
+# Simplified: 3 depth levels + automatic fear detection
 
 scoring:
-  # Knowledge expansion
-  dimension_discovered: 2.0
-  option_enumerated: 1.0
-  unknown_unknown_surfaced: 1.5
-  assumption_falsified: 1.0
+  # Core exploration metrics (always apply)
+  core:
+    dimension_discovered: 2.0
+    option_enumerated: 1.0
+    unknown_unknown_surfaced: 1.5
+    assumption_falsified: 1.0
+    consequence_verified: 1.0
+    consequence_assumed: 0.3
+    boundary_identified: 0.5
+    causal_relationship_mapped: 0.5
+    premortem_cause_found: 0.3
+    black_swan_identified: 0.3
 
-  # Verification
-  consequence_verified: 1.0
-  consequence_assumed: 0.3
+  # Fear analysis metrics (apply when fear_analysis = on, auto-detected)
+  fear_analysis:
+    fear_classified: 0.5
+    false_wall_identified: 1.0
+    true_wall_confirmed: 1.0
+    controllable_concern_found: 0.5
+    success_path_discovered: 1.5
+    comparable_analyzed: 0.5
 
-  # Understanding
-  boundary_identified: 0.5
-  causal_relationship_mapped: 0.5
-
-  # Challenge
-  premortem_cause_found: 0.3
-  black_swan_identified: 0.3
-
-  # Fear-Based Mode (FE)
-  fear_classified: 0.5
-  false_wall_identified: 1.0
-  true_wall_confirmed: 1.0
-  controllable_concern_found: 0.5
-  success_path_discovered: 1.5
-  comparable_analyzed: 0.5
-
-# Thresholds by mode
-# Each mode has different expectations based on scope and focus
-# Use thresholds[MODE] to get appropriate levels for current execution
+# Thresholds by depth level
 thresholds:
-  QE:  # Quick Explore - reduced expectations
+  quick:
     comprehensive: 12
     adequate: 8
     partial: 4
     insufficient: 0
-    note: "QE is intentionally light; lower scores are expected"
+    max_iterations: 1
+    dimensions_target: 3
+    options_analyzed: 2
+    description: "Szybka eksploracja - podstawy w 10-20 min"
 
-  SE:  # Standard Explore - default thresholds
-    comprehensive: 25   # Most of decision space explored
-    adequate: 15        # Key areas covered, minor gaps possible
-    partial: 8          # Major gaps likely, proceed with caution
-    insufficient: 0     # Premature to decide, more exploration needed
+  standard:
+    comprehensive: 25
+    adequate: 15
+    partial: 8
+    insufficient: 0
+    max_iterations: 3
+    dimensions_target: "4-6"
+    options_analyzed: "3-5"
+    description: "Pełna eksploracja - 45-90 min"
 
-  DE:  # Deep Explore - higher expectations
+  deep:
     comprehensive: 35
     adequate: 25
     partial: 15
     insufficient: 0
-    note: "DE invests more time; expect higher coverage"
+    max_iterations: 10  # effectively unlimited
+    dimensions_target: "all viable"
+    options_analyzed: "all viable"
+    description: "Głęboka eksploracja - 2-4 godziny"
 
-  FE:  # Fear-Based - different scoring focus
-    comprehensive: 20
-    adequate: 12
-    partial: 6
-    insufficient: 0
-    note: "FE scores on fear resolution, not option breadth"
-    primary_metrics:
-      - fear_classified
-      - false_wall_identified
-      - true_wall_confirmed
-      - controllable_concern_found
+# Fear analysis modifier
+# When auto-detected, thresholds increase by this amount
+fear_analysis_bonus: 5
 
-  FSE:  # Fearful Standard - combines both
-    comprehensive: 30
-    adequate: 20
-    partial: 12
-    insufficient: 0
-    note: "FSE combines fear + option mapping"
-
+# Calculation formula
 calculation: |
   C = (dimensions × 2)
     + (options × 1)
@@ -79,8 +70,10 @@ calculation: |
     + (falsified_assumptions × 1)
     + (boundaries × 0.5)
     + (causal_relationships × 0.5)
+    + (premortem_causes × 0.3)
+    + (black_swans × 0.3)
 
-  # Additional for Fear-Based Mode (FE):
+  # When fear_analysis = on (auto-detected), add:
     + (fears_classified × 0.5)
     + (false_walls_identified × 1)
     + (true_walls_confirmed × 1)

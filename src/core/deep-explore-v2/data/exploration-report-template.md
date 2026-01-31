@@ -3,12 +3,15 @@
 ```
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                      DEEP EXPLORE REPORT                                   ║
-║                      Version 2.0                                           ║
+║                      Version 2.1                                           ║
 ╠═══════════════════════════════════════════════════════════════════════════╣
 ║                                                                            ║
 ║  DECISION: [one sentence from Step 0]                                      ║
 ║  DATE: [exploration date]                                                  ║
-║  MODE: [QE/SE/DE/FE/FSE]                                                    ║
+║                                                                            ║
+║  DEPTH: [quick | standard | deep]                                          ║
+║  FEAR ANALYSIS: [on | off] (auto-detected)                                 ║
+║                                                                            ║
 ║  TIME: [total time invested]                                               ║
 ║  COVERAGE SCORE: [C] - [COMPREHENSIVE/ADEQUATE/PARTIAL/INSUFFICIENT]      ║
 ║                                                                            ║
@@ -136,7 +139,7 @@ IF YOU WANT DEEPER EXPLORATION:
 
 
 ══════════════════════════════════════════════════════════════════════════════
- SECTION 8: FEAR RESOLUTION (if Fear-Based Mode)
+ SECTION 8: FEAR RESOLUTION (only when fear_analysis = on)
 ══════════════════════════════════════════════════════════════════════════════
 
 ORIGINAL FEARS (from Step 0):
@@ -175,9 +178,11 @@ WALLS ANALYSIS:
  EXPLORATION METADATA
 ══════════════════════════════════════════════════════════════════════════════
 
+Depth selected: [quick | standard | deep]
 Steps completed: [0-6]
 Methods used: [list]
 Research items: [count]
+Iterations: [count]
 
 Limitations:
 • [what wasn't explored]
