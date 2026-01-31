@@ -1,0 +1,309 @@
+# Decision Archetypes
+
+Common patterns in decision spaces that often lead to suboptimal outcomes.
+Use to check if your exploration has fallen into a known trap.
+
+---
+
+## DA-001: False Dichotomy
+
+**Pattern:** Only 2 options presented when more exist.
+
+**Signals:**
+- "Should we do A or B?"
+- "The choice is between X and Y"
+- "Either we [option1] or we [option2]"
+
+**Reality:**
+- There's almost always a third (or fourth, or fifth) option
+- Often C = hybrid of A and B
+- Often D = reframe that makes A/B irrelevant
+
+**Check:** 
+"Have we found at least 4 options? If only 2, what's the third way?"
+
+**Examples:**
+- "Build or buy?" → Also: partner, acquire, open-source, hybrid
+- "Python or Java?" → Also: Go, Rust, TypeScript, multiple languages
+
+---
+
+## DA-002: Local Optimum Trap
+
+**Pattern:** Best option within current frame, but frame is wrong.
+
+**Signals:**
+- Quick consensus on "obviously best" option
+- No consideration of whether question is right
+- Optimization of details before validating direction
+
+**Reality:**
+- Best answer to wrong question is still wrong
+- Reframing often reveals better options entirely
+- "Best database" irrelevant if you shouldn't use a database
+
+**Check:**
+"Are we solving the right problem? What if we stepped back one level?"
+
+**Examples:**
+- "Best email marketing tool" when you should question email marketing
+- "Fastest algorithm" when you should question if computation is needed
+
+---
+
+## DA-003: Sunk Cost Anchor
+
+**Pattern:** Past investments influence decision when they shouldn't.
+
+**Signals:**
+- "We've already invested X in this approach"
+- "We can't abandon Y after all that work"
+- "The team learned Z, we should use it"
+
+**Reality:**
+- Past costs are gone regardless of decision
+- Only future costs and benefits matter
+- Skills/investments that don't serve future are liabilities
+
+**Check:**
+"If we started fresh today with no history, what would we choose?"
+
+**Examples:**
+- Continuing with bad vendor because of integration effort
+- Keeping legacy system because of rewrite cost (ignoring ongoing maintenance)
+
+---
+
+## DA-004: Availability Heuristic
+
+**Pattern:** Recent or vivid options dominate consideration.
+
+**Signals:**
+- Option chosen because "everyone is using it"
+- Recent conference talk influenced choice
+- Competitor's visible choice drives yours
+
+**Reality:**
+- Popular ≠ right for you
+- Visible ≠ most common
+- Recent ≠ proven
+
+**Check:**
+"Are we overweighting options we've heard about recently? What options existed 5 years ago that are still valid?"
+
+**Examples:**
+- Choosing Kubernetes because of hype when simpler works
+- Selecting AI solution because of news coverage
+
+---
+
+## DA-005: Premature Optimization
+
+**Pattern:** Optimizing before understanding.
+
+**Signals:**
+- Deep analysis of option details before exploring option space
+- "Let me explain why A is better than B" before finding C, D, E
+- Convergence before divergence complete
+
+**Reality:**
+- Can't optimize if you haven't explored
+- Deep optimization of wrong option = waste
+- Explore before exploit
+
+**Check:**
+"Have we completed Phase 1 (MAP) before diving into details? Is Coverage Score adequate?"
+
+**Examples:**
+- Optimizing database schema before validating data model
+- A/B testing button colors before validating product-market fit
+
+---
+
+## DA-006: Analysis Paralysis
+
+**Pattern:** Endless exploration, never converging.
+
+**Signals:**
+- Coverage Score keeps growing but decision not made
+- "We need to explore one more option"
+- Fear of closing options
+
+**Reality:**
+- Decision has cost, but so does delay
+- Perfect information never available
+- At some point, must decide with uncertainty
+
+**Check:**
+"Is additional exploration providing proportional value? Have we set decision criteria upfront?"
+
+**Mitigation:**
+- Set exploration time limit before starting
+- Define "good enough" Coverage Score
+- Remember: reversible decisions can be made faster
+
+---
+
+## DA-007: Hobson's Choice
+
+**Pattern:** Fake choice where only one real option exists.
+
+**Signals:**
+- All other options quickly eliminated by "constraints"
+- Single vendor/approach presented as "only one that works"
+- Options that no reasonable person would choose listed for completeness
+
+**Reality:**
+- If there's truly only one option, you don't need Deep Explore
+- More often, constraints are artificial
+- Single-option scenarios should be challenged hard
+
+**Check:**
+"Are the 'constraints' that eliminate options truly hard? Who benefits from this being a single-option situation?"
+
+**Examples:**
+- Vendor claims only their solution meets requirements
+- Internal champion pre-eliminates competitors
+
+---
+
+## DA-008: Buridan's Ass
+
+**Pattern:** Options appear equal, decision paralyzed.
+
+**Signals:**
+- "Both options seem about the same"
+- Long deliberation between similar choices
+- Coin-flip considered
+
+**Reality:**
+- They're probably not equal - you haven't found the difference
+- Even if equal, decide fast (opportunity cost of delay)
+- If truly equal, either is fine - pick and move on
+
+**Check:**
+"What criteria would reveal a difference? If truly equal, what's the cost of delay vs. picking one?"
+
+**Examples:**
+- Choosing between two similar cloud providers
+- Selecting between comparable candidates
+
+---
+
+## DA-009: Optimism Bias
+
+**Pattern:** Best-case assumptions throughout.
+
+**Signals:**
+- All estimates are "if everything goes well"
+- Risks mentioned but discounted
+- "We're better than average" assumption
+
+**Reality:**
+- Things usually don't go well
+- Your project is probably not exceptional
+- Premortem finds the optimism hiding
+
+**Check:**
+"Have we run Premortem (#21)? What would a pessimist say about our assumptions?"
+
+---
+
+## DA-010: Groupthink Convergence
+
+**Pattern:** Social pressure toward consensus hides valid options.
+
+**Signals:**
+- Quick agreement without dissent
+- "Everyone thinks X is best"
+- Minority views not explored
+
+**Reality:**
+- Disagreement often indicates unexplored territory
+- Consensus can be pressure, not correctness
+- Devil's advocate reveals hidden options
+
+**Check:**
+"What would someone who disagrees say? Why might the minority view be right?"
+
+---
+
+## DA-011: Authority Anchor
+
+**Pattern:** Expert or leader opinion accepted without exploration.
+
+**Signals:**
+- "The CTO said we should use X"
+- "Industry experts recommend Y"
+- Exploration skipped because authority decided
+
+**Reality:**
+- Experts can be wrong
+- Their context may differ from yours
+- Authority opinion is input, not conclusion
+
+**Check:**
+"If the authority was wrong, how would we know? What's their evidence?"
+
+---
+
+## DA-012: Scope Creep Drift
+
+**Pattern:** Abstraction level shifts during exploration.
+
+**Signals:**
+- Started strategic, now discussing implementation details
+- Started with one decision, now exploring three
+- Dimensions keep multiplying
+
+**Reality:**
+- Different levels need different explorations
+- Mixing levels creates confusion
+- Scope discipline enables completion
+
+**Check:**
+"Are we still at the abstraction level we set in Frame? If scope has grown, should we split into multiple explorations?"
+
+---
+
+## How to Use Archetypes
+
+### During Exploration
+
+After each phase, quick-check:
+
+```
+□ DA-001: Do we have >2 options per dimension?
+□ DA-002: Are we sure we're solving the right problem?
+□ DA-003: Are past investments influencing us?
+□ DA-004: Are we overweighting recent/visible options?
+□ DA-005: Did we explore before optimizing?
+□ DA-006: Are we exploring too long?
+□ DA-007: Is this a real choice or predetermined?
+□ DA-008: If options seem equal, what are we missing?
+□ DA-009: Have we stress-tested with premortem?
+□ DA-010: Is there suppressed disagreement?
+□ DA-011: Are we deferring to authority without evidence?
+□ DA-012: Has scope drifted from original frame?
+```
+
+### When Archetype Detected
+
+1. **Name it:** "We might be in False Dichotomy"
+2. **Evidence:** "Because we only have 2 options listed"
+3. **Apply check:** "Let's generate third option before proceeding"
+4. **Document:** Note in exploration record
+
+---
+
+## Coverage Score Adjustments
+
+When archetype is detected and addressed:
+
+| Archetype Found & Addressed | Points |
+|-----------------------------|--------|
+| False Dichotomy → found new options | +1 per new option |
+| Local Optimum → reframed problem | +2 |
+| Sunk Cost → removed from consideration | +0.5 |
+| Hobson's Choice → challenged constraints | +1 per option recovered |
+| Scope Creep → refocused | No points, but enables completion |

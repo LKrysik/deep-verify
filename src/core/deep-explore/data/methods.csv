@@ -1,0 +1,32 @@
+num,tier,phase,method_name,description,output_pattern
+1,1,MAP,Dimension Discovery,Identify all axes of choice in the decision space - decompose apparent question into independent dimensions,dimensions → independence check → coverage
+2,1,MAP,Option Enumeration,Systematically list ALL options for each dimension using SCAMPER and extreme options,options → sources → hybrid combinations
+3,1,MAP,Constraint Mapping,Identify truly HARD constraints vs soft preferences - eliminate impossible combinations only,constraints → HARD test → valid space calculation
+11,2,ILLUMINATE,Consequence Analysis,Map first/second/third order effects - GAINS/COSTS/OPENS/CLOSES for each option,consequence tree → categorization → timeline
+12,2,ILLUMINATE,Reversibility Check,Assess which decisions can be undone and at what cost - identify points of no return,reversibility rating → recovery cost → decision urgency
+13,2,ILLUMINATE,Dependency Analysis,Map which decisions depend on others - what must be decided first,dependency graph → critical path → parallel decisions
+14,2,ILLUMINATE,Stakeholder Impact,Analyze how each option affects different stakeholders - surface hidden opposition,stakeholder map → impact matrix → alliance/resistance
+15,2,ILLUMINATE,Future Optionality,Assess which options preserve vs foreclose future possibilities - real options value,optionality rating → option value → flexibility premium
+16,2,ILLUMINATE,Integration Points,Identify where options connect to existing systems/processes - hidden complexity,touchpoints → complexity rating → migration cost
+17,2,ILLUMINATE,Resource Trade-off,Map resource requirements for each option - reveal hidden costs,resource matrix → scarcity analysis → trade-off curves
+18,2,ILLUMINATE,Opportunity Cost,Calculate what you give up by choosing each option - make trade-offs explicit,alternatives foregone → value foregone → net value
+21,3,CHALLENGE,Premortem,Imagine failure and trace causes - surface risks that optimism hides,failure story → causes → preventable/detectable/recoverable
+22,3,CHALLENGE,Black Swan Hunt,Search for low-probability high-impact events that could change everything,rare events → impact assessment → monitoring plan
+23,3,CHALLENGE,Assumption Stress Test,Take each key assumption and imagine it's wrong - what breaks?,assumption list → failure modes → robustness rating
+24,3,CHALLENGE,Regret Minimization,Project forward and ask what you'd regret NOT considering,future self perspective → unexplored territory → coverage gaps
+25,3,CHALLENGE,Devil's Advocate,Argue passionately against the currently favored option - find weaknesses,attack construction → weakness discovery → defense gaps
+26,3,CHALLENGE,Red Team Options,Imagine a competitor chose each option - how would they exploit it against you?,competitive dynamics → vulnerabilities → defensive measures
+31,4,SYNTHESIZE,Option Clustering,Group similar strategies into families - reveal underlying strategic choices,clusters → family characteristics → meta-options
+32,4,SYNTHESIZE,Decision Sequencing,Determine what must be decided first vs what can wait,sequence map → dependencies → parallel tracks
+33,4,SYNTHESIZE,Real Options Identification,Find decisions that can be delayed while preserving optionality,delay candidates → option preservation → decision timing
+34,4,SYNTHESIZE,Information Value Analysis,Calculate what information would most reduce uncertainty - design experiments,uncertainty map → information value → experiment design
+35,4,SYNTHESIZE,Decision Criteria Extraction,Surface the implicit criteria being used to evaluate options,criteria list → weights → explicit trade-offs
+36,4,SYNTHESIZE,Path Dependency Mapping,Show how early choices constrain later ones - reveal strategic forks,decision tree → lock-in points → strategic forks
+41,5,CONVERGE,Trade-off Presentation,Present options as explicit trade-offs without recommendation,trade-off matrix → user choice → documentation
+42,5,CONVERGE,Uncertainty Documentation,Document what remains unknown and how it affects the decision,known unknowns → impact assessment → monitoring plan
+43,5,CONVERGE,Experiment Design,For COMPLEX problems design small experiments to learn before committing,hypothesis → minimal experiment → learning criteria
+44,5,CONVERGE,Decision Record,Document the decision context rationale and review triggers,decision → rationale → review triggers
+51,META,ANY,Archetype Check,Scan for known decision traps (false dichotomy sunk cost etc),archetype scan → trap detection → mitigation
+52,META,ANY,Coverage Assessment,Evaluate whether exploration is sufficient for decision,coverage score → gaps → recommendation
+53,META,ANY,Abstraction Level Check,Verify exploration staying at intended level - prevent scope creep,level check → drift detection → refocus
+54,META,ANY,Cynefin Reassessment,Re-evaluate problem type as understanding deepens,problem type → approach adjustment → method selection
