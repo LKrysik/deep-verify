@@ -1,0 +1,157 @@
+# Deep Cognitive Project State
+# Version: 0.1 (PoC)
+# Single Source of Truth
+
+version: "0.1"
+
+project:
+  name: ""  # Will be set when project starts
+  created: null
+  description: ""
+
+# ═══════════════════════════════════════════════════════════════
+# CURRENT STATE
+# ═══════════════════════════════════════════════════════════════
+
+current:
+  phase: idea  # idea | specification | architecture | implementation | testing | done
+  phase_progress: 0.0
+
+  active_agents: []
+  # Example:
+  # - id: agent-main
+  #   task: task-001
+  #   status: working
+
+  blocking_items: []
+  # Example:
+  # - type: decision
+  #   id: ADR-001
+  #   title: "..."
+  #   blocks: [task-002]
+
+# ═══════════════════════════════════════════════════════════════
+# PHASES HISTORY
+# ═══════════════════════════════════════════════════════════════
+
+phases:
+  idea:
+    status: not_started  # not_started | in_progress | completed
+    started: null
+    completed: null
+    verification_score: null
+    artifacts: []
+    decisions_made: []
+    clarity_score: null
+
+  specification:
+    status: not_started
+    started: null
+    completed: null
+    verification_score: null
+    artifacts: []
+    decisions_made: []
+    requirements:
+      functional: 0
+      non_functional: 0
+      coverage: 0.0
+
+  architecture:
+    status: not_started
+    started: null
+    completed: null
+    verification_score: null
+    artifacts: []
+    decisions_made: []
+    decisions_pending: []
+
+  implementation:
+    status: not_started
+    started: null
+    completed: null
+    artifacts: []
+
+  testing:
+    status: not_started
+    started: null
+    completed: null
+    coverage: null
+
+# ═══════════════════════════════════════════════════════════════
+# VERIFICATION GATES
+# ═══════════════════════════════════════════════════════════════
+
+verification_gates:
+  - gate: idea_to_spec
+    status: pending
+    threshold: 0.70
+    score: null
+    passed_at: null
+
+  - gate: spec_to_arch
+    status: not_reached
+    threshold: 0.85
+    score: null
+    passed_at: null
+
+  - gate: arch_to_impl
+    status: not_reached
+    threshold: 0.80
+    score: null
+    passed_at: null
+
+  - gate: impl_to_test
+    status: not_reached
+    threshold: 0.90
+    score: null
+    passed_at: null
+
+  - gate: test_to_done
+    status: not_reached
+    threshold: 0.85
+    score: null
+    passed_at: null
+
+# ═══════════════════════════════════════════════════════════════
+# UNKNOWN UNKNOWNS TRACKING
+# ═══════════════════════════════════════════════════════════════
+
+unknowns:
+  discovered: []
+  # Example:
+  # - id: UNK-001
+  #   description: "..."
+  #   discovered_at: 2026-02-01T10:00:00Z
+  #   discovered_via: deep-challenge
+  #   status: discovered | addressed | added_to_requirements
+  #   addressed_in: null
+
+  to_explore: []
+  # Example:
+  # - id: UNK-002
+  #   description: "..."
+  #   priority: high | medium | low
+  #   suggested_operation: deep-explore
+
+# ═══════════════════════════════════════════════════════════════
+# TASK QUEUE
+# ═══════════════════════════════════════════════════════════════
+
+task_queue:
+  pending: []
+  in_progress: []
+  completed: []
+
+# ═══════════════════════════════════════════════════════════════
+# METRICS
+# ═══════════════════════════════════════════════════════════════
+
+metrics:
+  decisions_made: 0
+  decisions_pending: 0
+  unknowns_discovered: 0
+  unknowns_addressed: 0
+  verification_gates_passed: 0
+  verification_gates_remaining: 5
+  total_sessions: 0
+  total_operations: 0

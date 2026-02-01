@@ -1,0 +1,50 @@
+# Deep Cognitive — Task Template
+# Copy this to create new tasks: task-{id}.yaml
+
+id: task-XXX
+title: ""
+type: cognitive_operation  # cognitive_operation | implementation | review
+
+status: pending  # pending | in_progress | completed | blocked
+assigned_to: null  # agent-main, agent-code-001, etc.
+started_at: null
+completed_at: null
+
+# What this task does
+operation: null  # deep-challenge, deep-verify, etc.
+scope: ""
+
+# Dependencies
+depends_on: []      # [task-001, task-002]
+blocks: []          # [task-003, task-004]
+blocked_by: []      # Computed: tasks in depends_on that are not completed
+
+# Input context (what agent needs to know)
+input_context:
+  artifacts: []
+  # Example:
+  # - path: docs/idea.md
+  #   sections: [problem_statement, success_criteria]
+
+  decisions: []     # [ADR-001, ADR-002]
+
+  questions_to_resolve: []
+  # Example:
+  # - "What database should we use?"
+
+# Expected outputs
+expected_outputs: []
+# Example:
+# - type: artifact_section
+#   path: docs/prd.md
+#   section: functional_requirements
+# - type: decision
+#   id: ADR-003
+
+# Working memory snapshot (for resumability)
+working_memory_snapshot:
+  last_updated: null
+  current_focus: null
+  progress: 0.0
+  open_threads: []
+  tentative_conclusions: []
