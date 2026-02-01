@@ -1,506 +1,468 @@
-# Deep Explore V1.0 — Structured Decision Space Exploration
+# Deep Explore V2.1 — Knowledge-First Decision Exploration
+
+---
+
+## INVOCATION
+
+**Kiedy użytkownik chce eksplorować decyzję, ZAWSZE rozpocznij od tego dialogu:**
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                      DEEP EXPLORE                                          ║
+║                      Eksploracja przestrzeni decyzyjnej                    ║
+╠═══════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  Zanim zaczniemy, wybierz głębokość eksploracji:                          ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐  ║
+║  │  [1] QUICK  (10-20 min)                                             │  ║
+║  │                                                                      │  ║
+║  │  Co dostaniesz:                                                      │  ║
+║  │  • Podstawowa mapa opcji (3 wymiary minimum)                        │  ║
+║  │  • Kluczowe konsekwencje dla top 2 opcji                            │  ║
+║  │  • Szybka ocena gotowości do decyzji                                │  ║
+║  │  • Najważniejsze ryzyka                                              │  ║
+║  │                                                                      │  ║
+║  │  Kiedy używać:                                                       │  ║
+║  │  → Pilna decyzja, mało czasu                                        │  ║
+║  │  → Wstępna orientacja przed głębszą analizą                         │  ║
+║  │  → Decyzja o niskiej stawce                                          │  ║
+║  └─────────────────────────────────────────────────────────────────────┘  ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐  ║
+║  │  [2] STANDARD  (45-90 min)                                          │  ║
+║  │                                                                      │  ║
+║  │  Co dostaniesz:                                                      │  ║
+║  │  • Pełna mapa opcji (4-6 wymiarów)                                  │  ║
+║  │  • Konsekwencje dla top 3-5 opcji (VERIFIED vs ASSUMED)             │  ║
+║  │  • Challenge: premortem, bias check, stress test założeń            │  ║
+║  │  • Strategiczne klastry opcji                                        │  ║
+║  │  • Pełny raport z sekwencją decyzji                                 │  ║
+║  │                                                                      │  ║
+║  │  Kiedy używać:                                                       │  ║
+║  │  → Ważna decyzja wymagająca przemyślenia                            │  ║
+║  │  → Potrzebujesz pewności przed działaniem                           │  ║
+║  │  → Decyzja o średniej/wysokiej stawce                               │  ║
+║  └─────────────────────────────────────────────────────────────────────┘  ║
+║                                                                            ║
+║  ┌─────────────────────────────────────────────────────────────────────┐  ║
+║  │  [3] DEEP  (2-4 godziny)                                            │  ║
+║  │                                                                      │  ║
+║  │  Co dostaniesz:                                                      │  ║
+║  │  • Wyczerpująca mapa WSZYSTKICH opcji                               │  ║
+║  │  • Głęboka analiza konsekwencji dla każdej opcji                    │  ║
+║  │  • Wielokrotne iteracje z feedback loops                            │  ║
+║  │  • External research gdzie potrzebny                                │  ║
+║  │  • Devil's advocate, black swan hunting                             │  ║
+║  │  • Pełna analiza zależności i punktów zwrotnych                     │  ║
+║  │                                                                      │  ║
+║  │  Kiedy używać:                                                       │  ║
+║  │  → Krytyczna, nieodwracalna decyzja                                 │  ║
+║  │  → Bardzo wysoka stawka (kariera, firma, życie)                     │  ║
+║  │  → Masz czas i chcesz maksymalnej pewności                          │  ║
+║  └─────────────────────────────────────────────────────────────────────┘  ║
+║                                                                            ║
+║  Wybierz: [1] / [2] / [3]                                                 ║
+║                                                                            ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+**Po wyborze użytkownika:**
+1. Zapisz wybrany poziom: `depth = quick | standard | deep`
+2. Przeskanuj input użytkownika pod kątem sygnałów strachu/obaw (patrz: FEAR DETECTION)
+3. Rozpocznij wykonanie od Step 0
+
+---
+
+## FEAR DETECTION (automatyczne)
+
+**Nie pytaj użytkownika o fear analysis. Wykryj automatycznie z języka.**
+
+Jeśli w opisie decyzji użytkownik użył słów/fraz:
+- "boję się", "martwię się", "obawiam się"
+- "co jeśli się nie uda", "a jeśli to nie zadziała"
+- "zablokowany", "nie wiem jak zacząć", "niemożliwe"
+- "ryzyko", "stracę", "porażka"
+- "paraliż", "nie mogę się zdecydować"
+- "wszyscy mówią że to złe", "nikt tego nie robi"
+
+**→ Włącz `fear_analysis = on`**
+
+Oznacza to:
+- W Step 0: dodaj Fear Inventory (E008), Control Analysis (E011), Blocker Analysis (E012)
+- W Step 4: dodaj Fear Resolution, Minimal Tests (E010), Growth Assessment (E014)
+- W raporcie: dodaj Section 8 (Fear Resolution)
+
+**Jeśli brak sygnałów strachu → `fear_analysis = off`** (standardowa eksploracja)
+
+---
 
 ## CORE PHILOSOPHY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  DEEP EXPLORE = SYSTEMATIC DIVERGENCE + CONSEQUENCE MAPPING + SYNTHESIS    │
+│  DEEP EXPLORE = KNOWLEDGE EXPANSION + UNCERTAINTY MAPPING + EXPLORATION     │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │  INPUT:   Decision problem, strategic question, complex choice              │
-│  OUTPUT:  Structured EXPLORATION MAP with options & consequences            │
+│  OUTPUT:  UNDERSTANDING (not just a map)                                    │
+│           • What you learned                                                │
+│           • What you still don't know                                       │
+│           • Options with VERIFIED vs ASSUMED consequences                   │
+│           • Decision readiness assessment                                   │
 │                                                                              │
-│  PRINCIPLE: NO DIMENSION = NO EXPLORATION                                   │
-│             Every option must be traced to its decision dimension           │
-│                                                                              │
-│  ANTI-PATTERN: PREMATURE CONVERGENCE                                        │
-│             Never narrow options before full exploration                    │
-│                                                                              │
-│  EXECUTION: Designed for LLM CLI (Claude, Gemini, Ollama, etc.)            │
-│             Single prompt → Structured exploration output                   │
+│  CORE PRINCIPLE: EXPAND KNOWLEDGE BEFORE MAPPING OPTIONS                    │
+│                  You cannot map territory you haven't explored              │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## THEORETICAL FOUNDATIONS
+## DEPTH LEVELS — Co wykonujesz na każdym poziomie
 
-### 1. Double Diamond (Design Council)
+### QUICK (depth = quick)
+
 ```
-    DIVERGENT          CONVERGENT         DIVERGENT          CONVERGENT
-    (Discover)         (Define)           (Develop)          (Deliver)
-         
-        ╱╲                                    ╱╲
-       ╱  ╲                                  ╱  ╲
-      ╱    ╲            ╱╲                  ╱    ╲            ╱╲
-     ╱      ╲          ╱  ╲                ╱      ╲          ╱  ╲
-    ╱        ╲        ╱    ╲              ╱        ╲        ╱    ╲
-
-   PHASE 1-2        PHASE 3-4           PHASE 5           USER DECIDES
+STEPS:           0 → 1 → 2 → 3 → 4 → 5 → 6  (wszystkie, ale skrócone)
+MAX ITERATIONS:  1 (brak feedback loops)
+RESEARCH:        Top 2-3 items z kolejki
+DIMENSIONS:      3 minimum
+OPTIONS:         Top 2 opcje analizowane głęboko
+CHALLENGE:       Tylko kluczowe założenia, basic bias check
+COVERAGE TARGET: C ≥ 12 = COMPREHENSIVE
 ```
 
-### 2. Cynefin Framework (Snowden)
-```
-┌─────────────────────────┬─────────────────────────┐
-│       COMPLEX           │      COMPLICATED        │
-│   Probe → Sense → Act   │  Sense → Analyze → Act │
-│   (Experiment first)    │  (Expert analysis)      │
-├─────────────────────────┼─────────────────────────┤
-│       CHAOTIC           │       CLEAR             │
-│   Act → Sense → Probe   │  Sense → Categorize →  │
-│   (Crisis mode)         │  Respond (Obvious)      │
-└─────────────────────────┴─────────────────────────┘
+### STANDARD (depth = standard)
 
-Deep Explore is designed for COMPLEX and COMPLICATED domains.
+```
+STEPS:           0 → 1 → 2 → 3 → 4 → 5 → 6  (pełne wykonanie)
+MAX ITERATIONS:  3 (feedback loops dozwolone)
+RESEARCH:        Wszystkie P1 i P2 items
+DIMENSIONS:      4-6 wymiarów
+OPTIONS:         Top 3-5 opcji analizowanych
+CHALLENGE:       Pełna procedura: premortem, black swan, bias check
+COVERAGE TARGET: C ≥ 25 = COMPREHENSIVE
 ```
 
-### 3. Morphological Analysis (Zwicky)
-Systematic exploration of ALL dimension combinations before selection.
+### DEEP (depth = deep)
 
-### 4. Real Options Theory
-Value of keeping options open. Decision = Value + Information from delay.
-
----
-
-## EXECUTION MODES
-
-### Quick Explore (QE) — Fast Mapping
 ```
-Time: 5-10 min | Methods: Tier 1 only | For: Orientation
-Output: Basic dimension map, key options, obvious constraints
-
-1. FRAME → Define vision, constraints
-2. PHASE 1 ONLY → Dimension Discovery
-3. OUTPUT → Basic Morphological Box
-
-Triggers: `QE`, `quick explore`, `--quick`, `-q`
-```
-
-### Standard Explore (SE) — Full Process
-```
-Time: 30-60 min | Methods: Tiers 1-3 | For: Complete exploration
-Output: Full map with consequences, stress-tested options
-
-1. FRAME → Vision + constraints + problem type
-2. PHASE 1 → MAP (Divergent)
-3. PHASE 2 → ILLUMINATE (Consequences)
-4. PHASE 3 → CHALLENGE (Adversarial)
-5. PHASE 4 → SYNTHESIZE (Clustering)
-6. OUTPUT → Full exploration map
-
-Triggers: `DE`, `explore`, `--full`, default
-```
-
-### Deep Explore (DE) — Maximum Breadth
-```
-Time: 60-120 min | Methods: All + Experiments | For: Strategic decisions
-
-Same as Standard + PHASE 5 (Experiment Design)
-+ Second-order effect analysis
-+ External validation suggestions
-
-Triggers: `DE --deep`, `--strategic`
+STEPS:           0 → 1 → 2 → 3 → 4 → 5 → 6  (pełne + pogłębione)
+MAX ITERATIONS:  Unlimited (do rozwiązania lub decyzji użytkownika)
+RESEARCH:        Wszystkie items + exploratory research
+DIMENSIONS:      Wyczerpujące odkrywanie
+OPTIONS:         Wszystkie viable opcje
+CHALLENGE:       Wielokrotne rundy, devil's advocate, external validation
+COVERAGE TARGET: C ≥ 35 = COMPREHENSIVE
 ```
 
 ---
 
-## QUICK EXECUTION PATH
+## FOUNDATIONAL METHODS
 
-**For most explorations, execute this sequence:**
+Deep Explore is built on these epistemological foundations:
+
+### Epistemological Core (E001-E007) — zawsze używane
+
+| ID | Method | Purpose |
+|----|--------|---------|
+| E001 | Abductive Reasoning | Generate hypotheses from observations |
+| E002 | Counterfactual Thinking | Identify causal factors and leverage points |
+| E003 | Minimal Assertions | Compress knowledge to actionable principles |
+| E004 | Boundary Analysis | Find limits where things stop working |
+| E005 | Causal Models | Map influence relationships |
+| E006 | Falsification | Test beliefs by trying to disprove them |
+| E007 | Information Questions | Identify highest-value questions |
+
+### Fear-Based Methods (E008-E014) — gdy fear_analysis = on
+
+| ID | Method | Purpose |
+|----|--------|---------|
+| E008 | Failure Reason Exploration | Transform fear into structured risk map |
+| E009 | Reverse Abduction | Discover paths by assuming success |
+| E010 | Cognitive MVP | Find smallest action that teaches something |
+| E011 | Control vs Influence Analysis | Separate controllable from uncontrollable |
+| E012 | Fundamental Block Analysis | Find true "walls" vs false walls |
+| E013 | Contrast Exploration | Learn from others' successes and failures |
+| E014 | Growth Test | Filter decisions by whether they develop you |
+
+---
+
+## EXECUTION FLOW
 
 ```
-1. FRAME
-   □ Define vision (what you want to achieve, not how)
-   □ List hard constraints (what's impossible)
-   □ Set abstraction level: STRATEGIC / TACTICAL / OPERATIONAL
-   □ Identify problem type: COMPLEX / COMPLICATED / CLEAR
-   □ Note existing biases and assumptions
-
-2. PHASE 1: MAP (Divergent)
-   📂 Loading method: 001_Dimension_Discovery.md
-   □ Execute #1 Dimension Discovery
-   
-   📂 Loading method: 002_Option_Enumeration.md
-   □ Execute #2 Option Enumeration
-   
-   📂 Loading method: 003_Constraint_Mapping.md
-   □ Execute #3 Constraint Mapping
-   
-   □ Build Morphological Box
-   □ Calculate Coverage Score (C)
-
-3. PHASE 2: ILLUMINATE (Still Divergent)
-   📂 Loading method: 011_Consequence_Analysis.md
-   □ Execute #11 Consequence Analysis
-   
-   📂 Loading method: 012_Reversibility_Check.md
-   □ Execute #12 Reversibility Check
-   
-   📂 Loading method: 013_Dependency_Analysis.md
-   □ Execute #13 Dependency Analysis
-   
-   □ Build Decision Consequence Map
-   □ Identify Points of No Return
-
-4. PHASE 3: CHALLENGE (Adversarial)
-   📂 Loading method: 021_Premortem.md
-   □ Execute #21 Premortem for top options
-   
-   📂 Loading method: 022_Black_Swan_Hunt.md
-   □ Execute #22 Black Swan Hunt
-   
-   □ Stress-test assumptions
-   □ Update options based on findings
-
-5. PHASE 4: SYNTHESIZE
-   □ Cluster natural option groups
-   □ Identify independent vs dependent decisions
-   □ Map critical path (what must be decided first)
-   □ Note what can be delayed (Real Options)
-
-6. OUTPUT: EXPLORATION MAP
-   □ Present full map without recommendation
-   □ Highlight key trade-offs
-   □ Note uncertainties and information gaps
-   □ Suggest experiments if COMPLEX domain
+                    ┌──────────────────────────────────────────┐
+                    │          FEEDBACK LOOPS                  │
+                    │     (tylko dla standard i deep)          │
+                    ▼                                          │
+┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐     │
+│ STEP 0  │───►│ STEP 1  │───►│ STEP 2  │───►│ STEP 3  │─────┤
+│ AUDIT   │    │ RESEARCH│    │   MAP   │    │ DEEPEN  │     │
+└─────────┘    └────┬────┘    └────┬────┘    └────┬────┘     │
+                    │              │              │           │
+                    └──────────────┴──────────────┘           │
+                                         │                   │
+                                         ▼                   │
+                    ┌─────────┐    ┌─────────┐    ┌─────────┐
+                    │ STEP 4  │───►│ STEP 5  │───►│ STEP 6  │
+                    │CHALLENGE│    │SYNTHESIZE    │ OUTPUT  │
+                    └─────────┘    └─────────┘    └─────────┘
 ```
 
 ---
 
-## COVERAGE SCORING SYSTEM
+## EXECUTION PATH
 
-### Coverage Score (C)
-
-| Exploration Quality | Points | Notes |
-|---------------------|--------|-------|
-| New dimension discovered | +2 | Fundamental axis of choice |
-| New option in dimension | +1 | Adds to possibility space |
-| Consequence mapped | +0.5 | Illuminates trade-off |
-| Constraint identified | +0.5 | Eliminates impossible |
-| Blind spot found | +1 | Previously unknown unknown |
-| Dependency discovered | +0.5 | Reveals decision sequence |
-| Assumption surfaced | +0.3 | Makes implicit explicit |
-
-### Coverage Thresholds
-
-| Score | Coverage Level | Meaning |
-|-------|----------------|---------|
-| C ≥ 20 | COMPREHENSIVE | Most of space explored |
-| 10 ≤ C < 20 | ADEQUATE | Key dimensions covered |
-| 5 ≤ C < 10 | PARTIAL | Major gaps likely |
-| C < 5 | INSUFFICIENT | Premature to decide |
-
-### Exploration Completeness Check
+**Po wyborze poziomu przez użytkownika, wykonaj:**
 
 ```
-Before allowing convergence, verify:
-□ All obvious dimensions identified (≥3)
-□ Each dimension has ≥2 options
-□ Key consequences mapped for each option
-□ Constraints eliminate <50% of combinations
-□ No dimension has only 1 remaining option (unless true constraint)
-```
+📂 Step 0: KNOWLEDGE AUDIT
+   Load: steps/step-00-knowledge-audit.md
 
----
+   □ Frame the decision (one sentence)
+   □ Assess stakes: LOW/MEDIUM/HIGH
+   □ Inventory: Known Facts, Assumptions, Known Unknowns
+   □ 📂 E001 → Surface Unknown Unknowns
+   □ Prioritize research needs
 
-## METHOD TIERS
+   IF fear_analysis = on:
+   □ 📂 E008 → Structure fears into risk map
+   □ 📂 E011 → Separate actionable concerns
+   □ 📂 E012 → Find true walls vs false walls
+   □ 📂 E009 → Reverse from success (if "impossible")
+   □ 📂 E013 → Gain context from others
+   → Fears become structured research queue
 
-### Tier 1 — Phase 1: MAP (ALL mandatory)
+   Output: Knowledge Map + Research Queue (+ Fear Map if fear_analysis=on)
 
-| # | Method | Purpose | File |
-|---|--------|---------|------|
-| 1 | Dimension Discovery | Find all axes of choice | `001_Dimension_Discovery.md` |
-| 2 | Option Enumeration | List all options per dimension | `002_Option_Enumeration.md` |
-| 3 | Constraint Mapping | Identify hard limits | `003_Constraint_Mapping.md` |
+   ↓ PROCEED if research queue is defined
+   ↓ STAY if framing is unclear
 
-### Tier 2 — Phase 2: ILLUMINATE (Select based on complexity)
+📂 Step 1: RESEARCH
+   Load: steps/step-01-research.md
 
-| Complexity Signal | Recommended Methods |
-|-------------------|---------------------|
-| Multiple stakeholders | #11, #14 (Consequence, Stakeholder Impact) |
-| Long-term implications | #12, #15 (Reversibility, Future Optionality) |
-| Technical dependencies | #13, #16 (Dependency, Integration Points) |
-| Resource constraints | #17, #18 (Resource Trade-off, Opportunity Cost) |
+   □ Execute research queue by priority
+   □ Use methods from: data/research-methods.md
+   □ Record findings with sources
+   □ Update Knowledge Map
+   □ Add new unknowns to queue if discovered
 
-### Tier 3 — Phase 3: CHALLENGE (Adversarial)
+   DEPTH ADJUSTMENT:
+   • quick: Research top 2-3 items only
+   • standard: Research all P1 and P2 items
+   • deep: Research all items + exploratory research
 
-| # | Method | Purpose |
-|---|--------|---------|
-| 21 | Premortem | Imagine failure, trace causes |
-| 22 | Black Swan Hunt | Find low-probability high-impact events |
-| 23 | Assumption Stress Test | Break each assumption |
-| 24 | Regret Minimization | What would you regret not considering? |
+   Output: Research Summary + Updated Knowledge Map
 
-### Tier 4 — Phase 4: SYNTHESIZE
+   ↓ PROCEED if critical unknowns addressed
+   ↓ STAY if more research needed (check iteration limit)
+   ↑ RETURN TO STEP 0 if framing changed
 
-| # | Method | Purpose |
-|---|--------|---------|
-| 31 | Option Clustering | Group similar strategies |
-| 32 | Decision Sequencing | What must be decided first |
-| 33 | Real Options Identification | What can be delayed |
-| 34 | Information Value Analysis | What to learn before deciding |
+📂 Step 2: MAP (Divergent)
+   Load: steps/step-02-map.md
 
----
+   □ 📂 M001 → Discover dimensions (axes of choice)
+   □ 📂 M002 → Enumerate options per dimension
+   □ 📂 M003 → Map hard and soft constraints
+   □ Build Morphological Box (see step file for format)
 
-## DECISION ARCHETYPES
+   DEPTH ADJUSTMENT:
+   • quick: 3 dimensions minimum
+   • standard: 4-6 dimensions
+   • deep: Exhaustive dimension discovery
 
-**Load:** `data/decision-archetypes.yaml`
+   Output: Option Map (draft)
 
-Common patterns in decision spaces:
+   ↓ PROCEED if dimensions are complete
+   ↑ RETURN TO STEP 1 if knowledge gaps found
 
-| ID | Archetype | Pattern | Typical Trap |
-|----|-----------|---------|--------------|
-| DA-001 | False Dichotomy | Only 2 options presented | There's always a third way |
-| DA-002 | Local Optimum | Best in current frame | Reframe reveals better options |
-| DA-003 | Sunk Cost Anchor | Past investment weighs | Only future matters |
-| DA-004 | Availability Bias | Recent/vivid options dominate | Systematic enumeration needed |
-| DA-005 | Premature Optimization | Optimizing before understanding | Explore before exploit |
-| DA-006 | Analysis Paralysis | Endless exploration | Set decision criteria upfront |
-| DA-007 | Hobson's Choice | Fake choice (one real option) | Challenge the constraint |
-| DA-008 | Buridan's Ass | Equal options, can't choose | They're probably not equal |
+📂 Step 3: DEEPEN
+   Load: steps/step-03-deepen.md
 
----
+   □ 📂 E002 → Apply Counterfactual Thinking to key options
+   □ 📂 E004 → Apply Boundary Analysis to key options
+   □ 📂 E005 → Apply Causal Models to understand relationships
+   □ 📂 M011 → Map consequences (mark VERIFIED vs ASSUMED)
+   □ 📂 M012 → Assess reversibility of each option
+   □ 📂 M013 → Map decision dependencies
 
-## EXPLORATION MAP FORMAT
+   DEPTH ADJUSTMENT:
+   • quick: Top 2 options only
+   • standard: Top 3-5 options
+   • deep: All viable options
 
-### Morphological Box (Phase 1 Output)
+   Output: Consequence Map with verification status
 
-```
-╔═══════════════════════════════════════════════════════════════════════════╗
-║                         MORPHOLOGICAL BOX                                  ║
-╠═══════════════════════════════════════════════════════════════════════════╣
-║                                                                            ║
-║  DIMENSION 1: [Name]                                                       ║
-║  ├── Option A: [description]                                               ║
-║  ├── Option B: [description]                                               ║
-║  └── Option C: [description]                                               ║
-║                                                                            ║
-║  DIMENSION 2: [Name]                                                       ║
-║  ├── Option A: [description]                                               ║
-║  └── Option B: [description]                                               ║
-║                                                                            ║
-║  DIMENSION 3: [Name]                                                       ║
-║  ├── Option A: [description]                                               ║
-║  ├── Option B: [description]                                               ║
-║  └── Option C: [description]                                               ║
-║                                                                            ║
-║  CONSTRAINTS (eliminate combinations):                                     ║
-║  • [D1:A + D2:B] = impossible because [reason]                            ║
-║  • [D3:C] requires [external condition]                                    ║
-║                                                                            ║
-║  VALID COMBINATIONS: [N] of [total possible]                              ║
-║                                                                            ║
-╚═══════════════════════════════════════════════════════════════════════════╝
-```
+   ↓ PROCEED if critical consequences verified
+   ↑ RETURN TO STEP 1 if consequences need research
 
-### Decision Consequence Map (Phase 2 Output)
+📂 Step 4: CHALLENGE (Adversarial)
+   Load: steps/step-04-challenge.md
 
-```
-╔═══════════════════════════════════════════════════════════════════════════╗
-║                      DECISION CONSEQUENCE MAP                              ║
-╠═══════════════════════════════════════════════════════════════════════════╣
-║                                                                            ║
-║  OPTION: [D1:A + D2:B + D3:C]                                             ║
-║  ─────────────────────────────────────────────────────────────────────    ║
-║                                                                            ║
-║  GAINS:                           │  COSTS:                                ║
-║  • [gain 1]                       │  • [cost 1]                            ║
-║  • [gain 2]                       │  • [cost 2]                            ║
-║                                   │                                        ║
-║  OPENS:                           │  CLOSES:                               ║
-║  • [future possibility 1]         │  • [option foreclosed 1]               ║
-║  • [future possibility 2]         │  • [option foreclosed 2]               ║
-║                                   │                                        ║
-║  REVERSIBILITY: [HIGH/MED/LOW]    │  POINT OF NO RETURN: [when]           ║
-║                                   │                                        ║
-║  DEPENDENCIES:                                                             ║
-║  • Requires [X] to be decided first                                        ║
-║  • Blocks decision on [Y] until [condition]                                ║
-║                                                                            ║
-║  UNCERTAINTIES:                                                            ║
-║  • [assumption 1] - confidence: [%]                                        ║
-║  • [assumption 2] - confidence: [%]                                        ║
-║                                                                            ║
-╚═══════════════════════════════════════════════════════════════════════════╝
+   □ 📂 E006 → Apply Falsification to key beliefs
+   □ 📂 M021 → Imagine failure, trace causes
+   □ 📂 M022 → Find low-probability high-impact events
+   □ 📂 M023 → Break assumptions one by one
+   □ Check for cognitive biases
+   □ Update map based on findings
+
+   IF fear_analysis = on:
+   □ 📂 E010 → Find smallest test to learn
+   □ 📂 E014 → Assess if path develops user
+   □ 📂 E008 → Revisit risks — which are now addressed?
+   □ Update Fear Map with verified/falsified concerns
+
+   DEPTH ADJUSTMENT:
+   • quick: Key beliefs only, basic bias check
+   • standard: Full challenge procedure
+   • deep: Multiple rounds, devil's advocate, external validation
+
+   Output: Challenged map with strengthened/weakened items
+           (+ Updated Fear Map with resolution status if fear_analysis=on)
+
+   ↓ PROCEED always (challenge is mandatory)
+
+📂 Step 5: SYNTHESIZE
+   Load: steps/step-05-synthesize.md
+
+   □ 📂 E003 → Compress insights to minimal assertions
+   □ Cluster natural strategic options
+   □ Identify decision sequence (what first, what can wait)
+   □ Assess decision readiness per item
+   □ 📂 E007 → Identify remaining gaps
+
+   Output: Synthesis ready for report
+
+   ↓ PROCEED to final output
+
+📂 Step 6: OUTPUT
+   Load: steps/step-06-output.md
+   Load template: data/exploration-report-template.md
+
+   □ Section 1: What We Learned
+   □ Section 2: What We Still Don't Know
+   □ Section 3: Option Map
+   □ Section 4: Strategic Clusters
+   □ Section 5: Consequence Map
+   □ Section 6: Decision Readiness
+   □ Section 7: Suggested Next Steps
+   □ Section 8: Fear Resolution (only if fear_analysis=on)
+
+   Output: EXPLORATION REPORT
 ```
 
 ---
 
-## ANTI-CONVERGENCE RULES
+## SCORING SYSTEM
+
+### Exploration Coverage Score (C)
+
+| Exploration Quality | Points |
+|---------------------|--------|
+| New dimension discovered | +2 |
+| New option in dimension | +1 |
+| Consequence VERIFIED | +1 |
+| Consequence ASSUMED | +0.3 |
+| Unknown Unknown surfaced | +1.5 |
+| Assumption falsified | +1 |
+| Boundary identified | +0.5 |
+| Causal relationship mapped | +0.5 |
+
+**When fear_analysis = on, additional:**
+
+| Fear Resolution Quality | Points |
+|------------------------|--------|
+| Fear classified | +0.5 |
+| False wall identified | +1 |
+| True wall confirmed | +1 |
+| Controllable concern found | +0.5 |
+| Success path discovered | +1.5 |
+| Comparable analyzed | +0.5 |
+
+### Coverage Thresholds (by depth)
+
+| Score | quick | standard | deep |
+|-------|-------|----------|------|
+| COMPREHENSIVE | C ≥ 12 | C ≥ 25 | C ≥ 35 |
+| ADEQUATE | C ≥ 8 | C ≥ 15 | C ≥ 25 |
+| PARTIAL | C ≥ 4 | C ≥ 8 | C ≥ 15 |
+| INSUFFICIENT | C < 4 | C < 8 | C < 15 |
+
+**Note:** When fear_analysis=on, thresholds increase by +5.
+
+---
+
+## CRITICAL RULES
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │  EXPLORATION COMMANDMENTS                                                    │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  1. NO RECOMMENDATION UNTIL PHASE 4 COMPLETE                                │
-│     Never suggest "best" option during exploration                          │
+│  1. ALWAYS START WITH INVOCATION                                            │
+│     Display the depth selection dialog before doing anything                │
+│     Wait for user choice before proceeding                                  │
 │                                                                              │
-│  2. PRESERVE ALL OPTIONS                                                    │
-│     Only eliminate by hard constraint, never by preference                  │
+│  2. KNOWLEDGE BEFORE MAPPING                                                │
+│     Never map options in a space you don't understand                       │
+│     Step 0 + Step 1 are NOT optional                                        │
 │                                                                              │
-│  3. DIMENSION BEFORE OPTION                                                 │
-│     "What are the axes of choice?" before "What should I choose?"           │
+│  3. VERIFY BEFORE CLAIMING                                                  │
+│     Mark every consequence as VERIFIED or ASSUMED                           │
+│     Critical assumptions MUST be verified or flagged                        │
 │                                                                              │
-│  4. CONSEQUENCE BEFORE JUDGMENT                                             │
-│     "What happens if X?" before "Is X good?"                                │
+│  4. RESPECT DEPTH LIMITS                                                    │
+│     quick = 1 iteration, no loops                                           │
+│     standard = max 3 iterations                                             │
+│     deep = until resolved                                                   │
 │                                                                              │
-│  5. USER CONVERGES, NOT AI                                                  │
-│     AI maps territory; User navigates                                       │
+│  5. AUTO-DETECT FEAR                                                        │
+│     Don't ask about fear analysis - detect from language                    │
+│     If detected, enable silently and include in report                      │
 │                                                                              │
-│  6. EXPLICIT TRADE-OFFS                                                     │
-│     Every option has costs; make them visible                               │
+│  6. USER DECIDES, AI EXPLORES                                               │
+│     Output is UNDERSTANDING, not recommendation                             │
+│     Present options fairly, let user weigh trade-offs                       │
 │                                                                              │
-│  7. ACKNOWLEDGE UNKNOWNS                                                    │
-│     Map what you don't know, not just what you know                         │
-│                                                                              │
-│  8. CHALLENGE "OBVIOUS" CONSTRAINTS                                         │
-│     "Why is that impossible?" - often it's not                              │
+│  7. LOAD FILES WHEN NEEDED                                                  │
+│     Announce: "📂 Loading [path]"                                           │
+│     Follow the procedure in the loaded file                                 │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## INTERACTION PROTOCOL
+## FILE LOADING PROTOCOL
 
-### When User Gives Preference
+When you need specific data, announce and load:
 
-```
-WRONG:
-User: "I prefer option B"
-AI: "Great, let's focus on B. Here are the details..."
-
-RIGHT:
-User: "I prefer option B"
-AI: "Noted. Before narrowing:
-     • B closes options [X, Y, Z] - are you okay with that?
-     • Have you considered why A might be better? [reasons]
-     • What would make you change to A or C?
-     
-     If you're confident after considering these, we can explore B deeper.
-     Otherwise, let's complete mapping first."
-```
-
-### When User Wants Answer
-
-```
-WRONG:
-User: "Just tell me what to do"
-AI: "You should do X because..."
-
-RIGHT:
-User: "Just tell me what to do"
-AI: "I understand the desire for clarity. Here's what I can offer:
-     
-     COVERAGE STATUS: [C score] - [level]
-     
-     If you must decide now:
-     • Lowest-risk option: [X] - because [reversible/safe]
-     • Highest-upside option: [Y] - but [risks]
-     • Most information-gathering: [Z] - learn before committing
-     
-     What I can't tell you:
-     • Which trade-offs matter most to YOU
-     • Your risk tolerance
-     • Future information you might get
-     
-     Would you like to:
-     [ ] Complete exploration (recommended if time allows)
-     [ ] Decide with current map (I'll note what's unexplored)
-     [ ] Design an experiment to learn more"
-```
+| Situation | Load | Announcement |
+|-----------|------|--------------|
+| Start Step 0 | `steps/step-00-knowledge-audit.md` | "📂 Loading Step 0: Knowledge Audit" |
+| Start Step 1 | `steps/step-01-research.md` | "📂 Loading Step 1: Research" |
+| Start Step 2 | `steps/step-02-map.md` | "📂 Loading Step 2: Map" |
+| Start Step 3 | `steps/step-03-deepen.md` | "📂 Loading Step 3: Deepen" |
+| Start Step 4 | `steps/step-04-challenge.md` | "📂 Loading Step 4: Challenge" |
+| Start Step 5 | `steps/step-05-synthesize.md` | "📂 Loading Step 5: Synthesize" |
+| Start Step 6 | `steps/step-06-output.md` | "📂 Loading Step 6: Output" |
+| Execute method | `data/method-procedures/[ID]_[Name].md` | "📂 Loading method: [Name]" |
+| Generate report | `data/exploration-report-template.md` | "📂 Loading report template" |
+| Scoring | `data/coverage-scoring.yaml` | "📂 Loading scoring rules" |
 
 ---
 
-## INTEGRATION WITH DEEP VERIFY
+## KEY PATHS
 
 ```
-WORKFLOW INTEGRATION
-─────────────────────────────────────────────────────────
-
-1. EXPLORE → DECIDE → IMPLEMENT → VERIFY
-
-   Deep Explore          Deep Verify
-   ────────────          ───────────
-   Map options     →     User decides     →     Create artifact     →     Verify artifact
-   
-2. VERIFY FINDING → EXPLORE ALTERNATIVES
-
-   Deep Verify finds issue  →  Deep Explore alternatives
-   "This approach has flaw"     "What other approaches exist?"
-   
-3. EXPLORE WITHIN CONSTRAINTS FROM VERIFY
-
-   Deep Verify constraints  →  Deep Explore within bounds
-   "Must be stateless"          "Options given stateless constraint"
+deep-explore-v2/
+├── workflow.md                           ← This file (start here)
+├── steps/step-{00-06}-*.md               ← Step procedures
+├── data/method-procedures/{ID}_*.md      ← Method procedures
+├── data/coverage-scoring.yaml            ← Scoring rules
+├── data/exploration-report-template.md   ← Output template
+└── data/research-methods.md              ← Research guidance
 ```
 
----
-
-## DIRECTORY STRUCTURE
-
-```
-deep-explore/
-├── workflow.md                 ← YOU ARE HERE
-├── data/
-│   ├── methods.csv                  # Method definitions
-│   ├── method-procedures/           # Individual method procedures
-│   │   ├── 001_Dimension_Discovery.md
-│   │   ├── 002_Option_Enumeration.md
-│   │   ├── 003_Constraint_Mapping.md
-│   │   ├── 011_Consequence_Analysis.md
-│   │   ├── 012_Reversibility_Check.md
-│   │   ├── 013_Dependency_Analysis.md
-│   │   ├── 021_Premortem.md
-│   │   ├── 022_Black_Swan_Hunt.md
-│   │   ├── 023_Assumption_Stress_Test.md
-│   │   ├── 024_Regret_Minimization.md
-│   │   ├── 031_Option_Clustering.md
-│   │   ├── 032_Decision_Sequencing.md
-│   │   ├── 033_Real_Options_Identification.md
-│   │   └── 034_Information_Value_Analysis.md
-│   ├── decision-archetypes.yaml     # Common decision patterns
-│   ├── coverage-scoring.yaml        # Scoring rules
-│   ├── exploration-template.md      # Output format
-│   └── examples.md                  # Worked examples
-└── steps/                           # Detailed step files
-    ├── step-00-frame.md
-    ├── step-01-map.md
-    ├── step-02-illuminate.md
-    ├── step-03-challenge.md
-    ├── step-04-synthesize.md
-    └── step-05-output.md
-```
-
----
-
-## CLI INVOCATION EXAMPLES
-
-### Claude CLI
-```bash
-# Quick explore
-claude "QE: What are my options for this product?" < context.md
-
-# Standard explore
-claude "DE: Explore architecture decisions" \
-  --context requirements.md constraints.md
-
-# Deep explore with domain
-claude "DE --strategic: Market entry strategy" < business_context.md
-```
-
-### With Deep Verify
-```bash
-# Explore then verify chosen option
-claude "DE: Database options" < requirements.md > exploration.md
-# User reviews, decides PostgreSQL
-claude "DV: Verify PostgreSQL choice" < postgres_design.md
-```
-
----
-
-## VERSION HISTORY
-
-- **V1.0** — Initial release based on Deep Verify patterns
+Method file naming: `{ID}_{Name}.md` where ID is E001-E014 or M001-M023.

@@ -1055,63 +1055,69 @@ Deep Verify + Deep Develop — Kompletna Specyfikacja
 
 Część I: Filozofia i Architektura
 1.1 Dwa Narzędzia, Jeden Ekosystem
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  DEEP VERIFY + DEEP DEVELOP ECOSYSTEM                                        │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│                        ┌─────────────────────────────┐                      │
-│                        │      USER / OTHER PLUGIN    │                      │
-│                        └──────────────┬──────────────┘                      │
-│                                       │                                      │
-│              ┌────────────────────────┼────────────────────────┐            │
-│              │                        │                        │            │
-│              ▼                        ▼                        ▼            │
-│  ┌───────────────────┐   ┌───────────────────┐   ┌───────────────────┐     │
-│  │   VS Code UI      │   │   Extension API   │   │   CLI Bridge      │     │
-│  │   (commands,      │   │   (programmatic   │   │   (headless       │     │
-│  │    menus, panels) │   │    access)        │   │    execution)     │     │
-│  └─────────┬─────────┘   └─────────┬─────────┘   └─────────┬─────────┘     │
-│            │                       │                       │                │
-│            └───────────────────────┼───────────────────────┘                │
-│                                    │                                         │
-│                                    ▼                                         │
-│            ┌───────────────────────────────────────────────┐                │
-│            │              CORE ENGINE                       │                │
-│            │                                                 │                │
-│            │  ┌─────────────────┐  ┌─────────────────────┐  │                │
-│            │  │  DEEP VERIFY    │  │   DEEP DEVELOP      │  │                │
-│            │  │                 │  │                     │  │                │
-│            │  │  • Sprawdza     │  │  • Planuje          │  │                │
-│            │  │  • Waliduje     │  │  • Analizuje        │  │                │
-│            │  │  • Raportuje    │  │  • Wykonuje         │  │                │
-│            │  │                 │  │  • Iteruje          │  │                │
-│            │  └────────┬────────┘  └──────────┬──────────┘  │                │
-│            │           │                      │              │                │
-│            │           └──────────┬───────────┘              │                │
-│            │                      │                          │                │
-│            │           ┌──────────▼──────────┐               │                │
-│            │           │   SHARED SERVICES   │               │                │
-│            │           │                     │               │                │
-│            │           │  • Context Collector│               │                │
-│            │           │  • CLI Adapter      │               │                │
-│            │           │  • Pattern Library  │               │                │
-│            │           │  • Method Engine    │               │                │
-│            │           │  • Config Manager   │               │                │
-│            │           └─────────────────────┘               │                │
-│            └───────────────────────────────────────────────┘                │
-│                                    │                                         │
-│                                    ▼                                         │
-│            ┌───────────────────────────────────────────────┐                │
-│            │           EXTERNAL CLI (Claude/Gemini/Ollama)  │                │
-│            └───────────────────────────────────────────────┘                │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│  DEEP VERIFY + DEEP DEVELOP ECOSYSTEM                                                                │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                      │
+│                        ┌─────────────────────────────┐                                               │
+│                        │      USER / OTHER PLUGIN    │                                               │
+│                        └──────────────┬──────────────┘                                               │
+│                                       │                                                              │
+│              ┌────────────────────────┼────────────────────────┐                                     │
+│              │                        │                        │                                     │
+│              ▼                        ▼                        ▼                                     │
+│  ┌───────────────────┐   ┌───────────────────┐   ┌───────────────────┐                               │
+│  │   VS Code UI      │   │   Extension API   │   │   CLI Bridge      │                               │
+│  │   (commands,      │   │   (programmatic   │   │   (headless       │                               │
+│  │    menus, panels) │   │    access)        │   │    execution)     │                               │
+│  └─────────┬─────────┘   └─────────┬─────────┘   └─────────┬─────────┘                               │
+│            │                       │                       │                                         │
+│            └───────────────────────┼───────────────────────┘                                         │
+│                                    │                                                                 │
+│                                    ▼                                                                 │
+│            ┌────────────────────────────────────────────────────────────────────────┐                │
+│            │              CORE ENGINE                                               │                │
+│            │                                                                        │                │
+│            │  ┌─────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐ │                │
+│            │  │  DEEP VERIFY    │  │   DEEP DEVELOP      │  │   DEEP EXPLORE      │ │                │
+│            │  │                 │  │                     │  │                     │ │                │
+│            │  │  • Sprawdza     │  │  • Planuje          │  │  • eksploruje       │ │                │
+│            │  │  • Waliduje     │  │  • Analizuje        │  │  • poznaje          │ │                │
+│            │  │  • Raportuje    │  │  • Wykonuje         │  │  • bada             │ │                │
+│            │  │                 │  │  • Iteruje          │  │  • wkyrywa          │ │                │
+│            │  └────────┬────────┘  └──────────┬──────────┘  └──────────┬──────────┘ │                │
+│            │           │                      │                        │            │                │
+│            │           └──────────┬───────────┘────────────────────────┘            │                │
+│            │                      │                                                 │                │
+│            │           ┌──────────▼──────────┐                                      │                │
+│            │           │   SHARED SERVICES   │                                      │                │
+│            │           │                     │                                      │                │
+│            │           │  • Context Collector│                                      │                │
+│            │           │  • CLI Adapter      │                                      │                │
+│            │           │  • Pattern Library  │                                      │                │
+│            │           │  • Method Engine    │                                      │                │
+│            │           │  • Config Manager   │                                      │                │
+│            │           └─────────────────────┘                                      │                │
+│            └────────────────────────────────────────────────────────────────────────┘                │
+│                                    │                                                                 │
+│                                    ▼                                                                 │
+│            ┌───────────────────────────────────────────────┐                                         │
+│            │           EXTERNAL CLI (Claude/Gemini/Ollama)  │                                        │
+│            └───────────────────────────────────────────────┘                                         │
+│                                                                                                      │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────┘
 1.2 Deep Verify vs Deep Develop
 AspektDeep VerifyDeep DevelopCelSprawdzić istniejąceStworzyć noweInputArtefakt do weryfikacjiProblem/zadanie do wykonaniaOutputRaport z findingsPlan + wykonanie + artefaktyKiedyPo stworzeniu czegośPrzed/podczas tworzeniaPytanie"Czy to jest poprawne?""Jak to zrobić najlepiej?"ZłożonośćJednokrokowa analizaWielokrokowy proces
 
 Część II: Deep Develop
 2.1 Czym Jest Deep Develop
 Deep Develop to asystent który na podstawie zadania użytkownika:
+
+
+Część III: Deep Explore
+32.1 Czym Jest Deep Develop
+Deep Develop to asystent który na podstawie zadania użytkownika:
+
 
 Analizuje kontekst i wymagania
 Planuje najlepsze podejście
