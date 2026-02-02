@@ -1,0 +1,16 @@
+# Deep Process — Work Items
+# Epics, Stories, Sprints, Tasks
+
+sequences:
+  epic: 1
+  story: 1
+  task: 1
+  sprint: 1
+
+epics: []
+
+stories: []
+
+sprints: []
+
+tasks: []

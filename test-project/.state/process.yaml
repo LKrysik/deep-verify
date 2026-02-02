@@ -1,0 +1,25 @@
+# Deep Process — Project Configuration
+# Generated: 2026-02-02
+
+process_id: project-management
+process_version: "1.0"
+process_path: ../src/core/deep-process/processes/project-management.md
+
+project:
+  name: "Testowy projekt"
+  description: "Kontrakt między Pythonem a LLM - wspólny mianownik w realizacji zadań"
+  created_at: 2026-02-02T10:00:00Z
+  created_by: user
+
+integrations:
+  azure_devops:
+    enabled: false
+  github:
+    enabled: false
+  mcp:
+    enabled: false
+
+settings:
+  auto_verify_gate: true
+  require_confirmation: true
+  strict_enforcement: true

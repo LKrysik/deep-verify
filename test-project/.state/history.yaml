@@ -1,0 +1,11 @@
+# Deep Process — History
+# Audit trail of all actions
+
+entries:
+  - id: 1
+    action: init-project
+    at: 2026-02-02T10:00:00Z
+    details:
+      project_name: "Testowy projekt"
+      process: project-management
+      integrations: none

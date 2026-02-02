@@ -1,172 +1,100 @@
 # Deep Process Engine
 
-> **Version:** 1.0
-> **Purpose:** Meta-framework for defining and executing processes via LLM CLI
-> **Philosophy:** LLM follows the process, state is tracked automatically, unknown unknowns are discovered
+> **Wersja:** 1.0
+> **Cel:** Meta-framework do definiowania i wykonywania procesów przez agenta AI.
+> **Filozofia:** Agent AI podąża za procesem, stan jest śledzony automatycznie, a niewiadome są aktywnie odkrywane.
 
 ---
 
-## Quick Start
+## Przeznaczenie
 
-### 1. Initialize a Project
+`Deep Process` to generyczny silnik wykonawczy, który umożliwia agentowi AI (LLM) niezawodne przeprowadzanie złożonych, wieloetapowych procesów. Działa jak system operacyjny, który dostarcza reguły, zarządza stanem i wykonuje kroki zdefiniowane w plikach procesów.
 
-```
-User: "Start a new project management project called MyApp"
-
-LLM will:
-1. Create .state/ directory
-2. Initialize project-state.yaml
-3. Show dashboard
-4. Recommend first action
-```
-
-### 2. Follow the Process
-
-```
-User: "What should I do next?"
-
-LLM will:
-1. Read current state
-2. Check planner rules
-3. Recommend next step
-4. Execute when confirmed
-```
-
-### 3. Check Status Anytime
-
-```
-User: "Show project status"
-
-LLM will:
-1. Display dashboard
-2. Show blocking items
-3. Show progress
-4. Recommend next action
-```
+W przeciwieństwie do specyficznych metodyk, ten silnik może uruchomić dowolny proces, który jest zdefiniowany zgodnie z jego architekturą.
 
 ---
 
-## Available Processes
+## Dostępne Procesy
 
-| Process | Domain | Phases | Use When |
-|---------|--------|--------|----------|
-| [project-management](processes/project-management.md) | Software Dev | 6 | Building software with epics/stories |
-| [ux-design](processes/ux-design.md) | UX Design | 6 | Designing user experiences |
-| [code-documentation](processes/code-documentation.md) | Documentation | 5 | Documenting codebases |
-| [custom-template](processes/custom-template.md) | Any | N | Creating your own process |
+| Proces | Domena | Fazy | Zastosowanie |
+|---|---|---|---|
+| [project-management](processes/project-management.md) | Zarządzanie projektem | 6 | Budowa oprogramowania z epikami i historyjkami |
+| [ux-design](processes/ux-design.md) | Projektowanie UX | 6 | Projektowanie doświadczeń użytkownika |
+| [code-documentation](processes/code-documentation.md) | Dokumentacja | 5 | Dokumentowanie istniejącej bazy kodu |
+| [custom-template](processes/custom-template.md) | Dowolna | N | Tworzenie własnego, niestandardowego procesu |
 
 ---
 
-## Architecture
+## Architektura
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           DEEP PROCESS ENGINE                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  ENGINE (How to execute)              PROCESSES (What to execute)           │
+│  ENGINE (Jak wykonywać)               PROCESSES (Co wykonywać)              │
 │  ├── executor.md                      ├── project-management.md             │
 │  ├── enforcer.md                      ├── ux-design.md                      │
 │  ├── state-manager.md                 ├── code-documentation.md             │
-│  └── integrations/                    └── custom-template.md                │
-│      ├── azure-devops.md                                                    │
-│      ├── github.md                    SCHEMAS (Validation)                  │
-│      └── mcp-template.md              ├── epic.schema.yaml                  │
+│  ├── unknown-detector.md              └── custom-template.md                │
+│  └── integrations/                                                          │
+│      ├── azure-devops.md              SCHEMAS (Walidacja)                   │
+│      └── github.md                    ├── epic.schema.yaml                  │
 │                                       ├── story.schema.yaml                 │
 │                                       └── sprint.schema.yaml                │
 │                                                                             │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  STATE (.state/)                      ARTIFACTS (artifacts/)                │
-│  ├── process.yaml                     ├── idea.md                           │
-│  ├── phase.yaml                       ├── prd.md                            │
-│  ├── items.yaml                       ├── epics/*.yaml                      │
-│  ├── decisions.yaml                   ├── stories/*.yaml                    │
-│  ├── unknowns.yaml                    └── ...                               │
-│  └── history.yaml                                                           │
+│  ├── process.yaml (konfiguracja)      ├── idea.md                           │
+│  ├── phase.yaml (gdzie jesteśmy)      ├── prd.md                            │
+│  ├── items.yaml (epiki, historyjki)   ├── epics/*.yaml                      │
+│  ├── decisions.yaml (decyzje)         ├── stories/*.yaml                    │
+│  ├── unknowns.yaml (niewiadome)       └── ...                               │
+│  └── history.yaml (audyt)                                                   │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Key Concepts
+## Kluczowe Koncepty
 
-### 1. Phases and Gates
+### 1. Fazy i Bramki (Phases and Gates)
 
-Every process has ordered phases. You can't skip phases. Between phases are **gates** with verification criteria.
+Każdy proces jest podzielony na uporządkowane fazy. Nie można ich pomijać. Pomiędzy fazami znajdują się **bramki** (gates) z kryteriami weryfikacji, które trzeba spełnić, aby przejść dalej.
 
 ```
-Phase 1 ──[Gate 0.70]──▶ Phase 2 ──[Gate 0.85]──▶ Phase 3
+Faza 1 ──[Bramka, próg: 0.70]──▶ Faza 2 ──[Bramka, próg: 0.85]──▶ Faza 3
 ```
 
-### 2. State Tracking
+### 2. Śledzenie Stanu (State Tracking)
 
-All state is in `.state/` directory. The LLM reads and updates it automatically.
+Cały stan projektu jest jawnie przechowywany w plikach YAML w katalogu `.state/`. Agent AI automatycznie odczytuje i aktualizuje te pliki, dzięki czemu praca może być wznawiana, a postęp jest zawsze widoczny.
 
-### 3. Enforcement
+### 3. Egzekwowanie Reguł (Enforcement)
 
-The LLM **must** follow rules in `engine/enforcer.md`. No skipping steps, no ignoring blockers.
+Agent AI **musi** przestrzegać reguł zdefiniowanych w pliku `engine/enforcer.md`. Gwarantuje to, że proces jest wykonywany poprawnie – bez pomijania kroków, ignorowania blokerów czy naruszania zależności.
 
-### 4. Unknown Unknowns
+### 4. Wykrywanie Niewiadomych (Unknown Unknowns)
 
-The system actively discovers things you don't know you don't know.
+Silnik, za pomocą `engine/unknown-detector.md`, aktywnie skanuje artefakty w poszukiwaniu ukrytych założeń, luk w logice i potencjalnych ryzyk, o których zespół mógł nie pomyśleć.
 
-### 5. Integrations
+### 5. Integracje
 
-Optionally sync with Azure DevOps, GitHub, or other tools.
-
----
-
-## File Reference
-
-| File | Purpose |
-|------|---------|
-| `engine/executor.md` | How LLM executes processes |
-| `engine/enforcer.md` | Rules LLM must follow |
-| `engine/state-manager.md` | How to manage .state/ |
-| `engine/integrations/*.md` | External integrations |
-| `processes/*.md` | Process definitions |
-| `schemas/*.yaml` | Validation schemas |
+System może opcjonalnie synchronizować postęp prac z zewnętrznymi narzędziami, takimi jak Azure DevOps czy GitHub, co pozwala na płynną integrację z istniejącymi przepływami pracy.
 
 ---
 
-## For LLM: Entry Points
+## Jak to działa?
 
-When user wants to work with Deep Process:
+1.  **Inicjalizacja:** Użytkownik wybiera proces (np. `project-management`), a system tworzy początkowy stan w katalogu `.state/`.
+2.  **Pętla Wykonania:**
+    a. Agent odczytuje aktualny stan i definicję procesu.
+    b. Na podstawie reguł i stanu, rekomenduje następny krok.
+    c. Po potwierdzeniu przez użytkownika, wykonuje krok, ściśle przestrzegając reguł z `enforcer.md`.
+    d. Po wykonaniu kroku aktualizuje pliki stanu.
+    e. Prezentuje użytkownikowi podsumowanie i nową rekomendację.
+3.  **Weryfikacja:** Przed przejściem do kolejnej fazy, uruchamiana jest procedura weryfikacji (bramka), która ocenia, czy dotychczasowe artefakty spełniają określone kryteria jakości.
 
-1. **New project:** Read `engine/executor.md` → Section 9.1 (Initialization)
-2. **Continue project:** Read `.state/phase.yaml` → Check current phase
-3. **Execute step:** Read process definition → Find current step
-4. **Check status:** Read all `.state/*.yaml` → Generate dashboard
-
----
-
-## Creating Custom Processes
-
-1. Copy `processes/custom-template.md`
-2. Define your phases (3-7 recommended)
-3. Define steps with requires/produces
-4. Define gates with criteria
-5. Test on real project
-
-See [custom-template.md](processes/custom-template.md) for full instructions.
-
----
-
-## Troubleshooting
-
-| Problem | Solution |
-|---------|----------|
-| "State not found" | Run initialization |
-| "Gate failed" | Address gaps listed in result |
-| "Action blocked" | Resolve blockers first |
-| "Integration failed" | Check auth, fall back to manual |
-
----
-
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2026-02-02 | Initial release |
+Dzięki takiemu podejściu, `Deep Process` przekształca LLM z narzędzia do generowania tekstu w niezawodnego partnera do realizacji skomplikowanych zadań.
