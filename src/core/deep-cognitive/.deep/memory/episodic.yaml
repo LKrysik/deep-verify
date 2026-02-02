@@ -1,0 +1,92 @@
+# Deep Cognitive — Episodic Memory
+# Records of what we did and what worked
+
+version: "0.1"
+project: null  # Set on init
+
+# ═══════════════════════════════════════════════════════════════
+# SESSIONS
+# ═══════════════════════════════════════════════════════════════
+
+sessions: []
+# Example:
+# - id: session-001
+#   date: 2026-02-01
+#   started: 2026-02-01T10:00:00Z
+#   ended: 2026-02-01T12:00:00Z
+#   duration_minutes: 120
+#
+#   phase_at_start: idea
+#   phase_at_end: specification
+#
+#   operations_performed:
+#     - operation: deep-challenge
+#       duration_minutes: 45
+#       outcome: success
+#     - operation: deep-verify
+#       duration_minutes: 15
+#       outcome: passed
+#
+#   decisions_made: [ADR-001]
+#   unknowns_discovered: 2
+#   unknowns_addressed: 1
+#
+#   key_learnings:
+#     - "User prefers mobile-first"
+#     - "Budget is limited"
+#
+#   what_worked:
+#     - "Probing questions about user needs"
+#
+#   what_didnt:
+#     - "Too many questions at once"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE COMPLETIONS
+# ═══════════════════════════════════════════════════════════════
+
+phase_completions: []
+# Example:
+# - phase: idea
+#   started: 2026-02-01T10:00:00Z
+#   completed: 2026-02-01T12:00:00Z
+#   sessions_count: 1
+#   operations_count: 3
+#   verification_score: 0.82
+#   key_artifacts: [docs/idea.md]
+#   key_decisions: [ADR-001]
+#   lessons:
+#     - "Start with problem validation"
+
+# ═══════════════════════════════════════════════════════════════
+# PATTERNS (What works in this project)
+# ═══════════════════════════════════════════════════════════════
+
+patterns:
+  user_preferences: []
+  # Example:
+  # - "Prefers simple solutions over clever ones"
+  # - "Values mobile experience highly"
+
+  effective_approaches: []
+  # Example:
+  # - "Ask about pain points first"
+  # - "Show options with trade-offs"
+
+  to_avoid: []
+  # Example:
+  # - "Don't assume technical knowledge"
+  # - "Avoid jargon in discussions"
+
+# ═══════════════════════════════════════════════════════════════
+# DECISION OUTCOMES (Track if decisions worked)
+# ═══════════════════════════════════════════════════════════════
+
+decision_outcomes: []
+# Example:
+# - decision_id: ADR-001
+#   decision: "Use React Native"
+#   made_in_phase: architecture
+#   outcome: positive
+#   outcome_notes: "Good DX, fast iteration"
+#   would_choose_again: true

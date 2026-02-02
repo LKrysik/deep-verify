@@ -1,0 +1,46 @@
+id: project-management
+version: "2.0"
+domain: software-development
+description: "Transform idea into working, tested software through structured phases"
+
+phases:
+  - id: ideation
+    name: "Ideation"
+    path: phases/1-ideation
+    entry_point: 1.1-capture-idea.md
+    
+  - id: specification
+    name: "Specification"
+    path: phases/2-specification
+    # entry_point will be defined when created
+
+  - id: architecture
+    name: "Architecture"
+    path: phases/3-architecture
+
+  - id: planning
+    name: "Planning"
+    path: phases/4-planning
+
+  - id: execution
+    name: "Execution"
+    path: phases/5-execution
+
+  - id: verification
+    name: "Verification"
+    path: phases/6-verification
+
+integrations:
+  azure_devops:
+    supported: true
+    work_item_mapping:
+      epic: Feature
+      story: "User Story"
+      task: Task
+      sprint: Iteration
+  github:
+    supported: true
+    mapping:
+      epic: Milestone
+      story: Issue
+      sprint: Project

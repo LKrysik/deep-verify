@@ -1,0 +1,217 @@
+# Deep Cognitive — Planner Rules
+# Version: 0.1 (PoC)
+# Purpose: "What to do next" recommendations
+
+version: "0.1"
+
+# ═══════════════════════════════════════════════════════════════
+# RULE EVALUATION ORDER
+# ═══════════════════════════════════════════════════════════════
+# Rules are evaluated in priority order (critical → high → medium → low)
+# First matching rule wins
+
+rules:
+  # ─────────────────────────────────────────────────────────────
+  # CRITICAL PRIORITY — Must address immediately
+  # ─────────────────────────────────────────────────────────────
+
+  - name: "Project not initialized"
+    priority: critical
+    condition:
+      project.name: ""
+    recommend:
+      action: init_project
+      reason: "Project not yet initialized"
+      message: "Run project initialization to set up Deep Cognitive tracking"
+
+  - name: "Unclear idea"
+    priority: critical
+    condition:
+      current.phase: idea
+      phases.idea.clarity_score: "< 0.7 OR null"
+    recommend:
+      operation: deep-challenge
+      reason: "Idea not clear enough to proceed"
+      message: "Crystallize your idea before moving to specification"
+
+  - name: "Blocking decisions exist"
+    priority: critical
+    condition:
+      current.blocking_items.length: "> 0"
+      current.blocking_items[].type: decision
+    recommend:
+      operation: deep-explore
+      target: "first blocking decision"
+      reason: "Decision blocking progress"
+      message: "Resolve blocking decision to unblock work"
+
+  # ─────────────────────────────────────────────────────────────
+  # HIGH PRIORITY — Should address soon
+  # ─────────────────────────────────────────────────────────────
+
+  - name: "Too many open questions"
+    priority: high
+    condition:
+      current.blocking_items.length: "> 3"
+      current.blocking_items[].type: question
+    recommend:
+      operation: deep-challenge
+      target: open_questions
+      reason: "Multiple unanswered questions blocking progress"
+      message: "Address open questions before continuing"
+
+  - name: "High-priority unknown exists"
+    priority: high
+    condition:
+      unknowns.to_explore.length: "> 0"
+      unknowns.to_explore[].priority: high
+    recommend:
+      operation: deep-explore
+      target: "highest priority unknown"
+      reason: "Critical unknown needs exploration"
+      message: "Explore high-priority unknown before it becomes a blocker"
+
+  # ─────────────────────────────────────────────────────────────
+  # MEDIUM PRIORITY — Consider addressing
+  # ─────────────────────────────────────────────────────────────
+
+  - name: "Phase nearly complete"
+    priority: medium
+    condition:
+      current.phase_progress: "> 0.85"
+      current.blocking_items.length: 0
+    recommend:
+      operation: deep-verify
+      target: "current phase gate"
+      reason: "Phase looks complete, verify before proceeding"
+      message: "Run verification to check gate readiness"
+
+  - name: "Medium-priority unknowns accumulating"
+    priority: medium
+    condition:
+      unknowns.to_explore.length: "> 2"
+    recommend:
+      operation: deep-explore
+      target: "oldest unknown"
+      reason: "Unknowns accumulating, should address"
+      message: "Consider exploring accumulated unknowns"
+
+  # ─────────────────────────────────────────────────────────────
+  # LOW PRIORITY — Optional / Continue current work
+  # ─────────────────────────────────────────────────────────────
+
+  - name: "Continue current work"
+    priority: low
+    condition:
+      always: true
+    recommend:
+      action: continue
+      reason: "No blockers detected"
+      message: "Continue with current task"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE-SPECIFIC RECOMMENDATIONS
+# ═══════════════════════════════════════════════════════════════
+# What operation is typically needed in each phase
+
+phase_defaults:
+  idea:
+    primary_operation: deep-challenge
+    goal: "Crystallize idea to clarity score >= 0.70"
+    typical_unknowns: [problem_validation, user_validation, scope_clarity]
+
+  specification:
+    primary_operation: deep-requirements
+    goal: "Define complete PRD with all requirements"
+    typical_unknowns: [feature_priority, technical_constraints, user_workflows]
+
+  architecture:
+    primary_operation: deep-architecture
+    goal: "Design system with all decisions made"
+    typical_unknowns: [technology_choices, scaling_strategy, integration_points]
+
+  implementation:
+    primary_operation: deep-develop
+    goal: "Implement working code for all stories"
+    typical_unknowns: [edge_cases, performance_issues, dependency_conflicts]
+
+  testing:
+    primary_operation: deep-verify
+    goal: "Verify all acceptance criteria met"
+    typical_unknowns: [untested_paths, integration_issues, deployment_gaps]
+
+# ═══════════════════════════════════════════════════════════════
+# GATE RECOMMENDATIONS
+# ═══════════════════════════════════════════════════════════════
+# What to do when a gate check happens
+
+gate_recommendations:
+  idea_to_spec:
+    on_pass:
+      message: "Idea crystallized! Ready for specification."
+      next_operation: deep-requirements
+      next_phase: specification
+
+    on_fail:
+      message: "Idea needs more clarity."
+      remediation_operation: deep-challenge
+      focus_areas:
+        - "Problem statement"
+        - "Target user"
+        - "Success criteria"
+        - "Scope boundaries"
+
+  spec_to_arch:
+    on_pass:
+      message: "Specification complete! Ready for architecture."
+      next_operation: deep-architecture
+      next_phase: architecture
+
+    on_fail:
+      message: "Specification has gaps."
+      remediation_operation: deep-requirements
+      focus_areas:
+        - "Missing requirements"
+        - "Conflicting requirements"
+        - "Unclear acceptance criteria"
+
+  arch_to_impl:
+    on_pass:
+      message: "Architecture sound! Ready for implementation."
+      next_operation: deep-develop
+      next_phase: implementation
+
+    on_fail:
+      message: "Architecture incomplete."
+      remediation_operation: deep-architecture
+      focus_areas:
+        - "Pending decisions"
+        - "Undefined interfaces"
+        - "Missing data models"
+
+  impl_to_test:
+    on_pass:
+      message: "Implementation complete! Ready for testing."
+      next_operation: deep-verify
+      next_phase: testing
+
+    on_fail:
+      message: "Implementation has issues."
+      remediation_operation: deep-develop
+      focus_areas:
+        - "Failing tests"
+        - "Missing features"
+        - "Code quality issues"
+
+  test_to_done:
+    on_pass:
+      message: "All verified! Project complete."
+      next_operation: null
+      next_phase: done
+
+    on_fail:
+      message: "Quality issues remain."
+      focus_areas:
+        - "Test coverage gaps"
+        - "Failed acceptance criteria"
+        - "Performance issues"

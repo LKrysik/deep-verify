@@ -2,17 +2,21 @@
 
 ## Overview
 
-The Deep Analysis Framework is a tetrad of complementary reasoning processes:
+The Deep Analysis Framework is a pentad of complementary reasoning processes:
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                                                     │
-│   EXPLORE ──→ VERIFY ──→ FEASIBILITY ──→ RISK       │
-│      ↑           │            │            │        │
-│      └───────────┴────────────┴────────────┘        │
-│                 (feedback loops)                     │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                                                                  │
+│   EXPLORE ──→ VERIFY ──→ FEASIBILITY ──→ RISK                    │
+│      ↑           │            │            │                     │
+│      └───────────┴────────────┴────────────┘                     │
+│                        │                                         │
+│                        ▼                                         │
+│                    SYNTHESIS                                     │
+│              (integrates all outputs                             │
+│               into coherent understanding)                       │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 | Process | Question | Deliverable | Methods |
@@ -21,9 +25,10 @@ The Deep Analysis Framework is a tetrad of complementary reasoning processes:
 | **Deep-Verify** | Is this CORRECT? | Validation report | 14 methods in 5 categories |
 | **Deep-Feasibility** | CAN we do it? | Feasibility profile | 35 methods in 5 phases + META |
 | **Deep-Risk** | What can go WRONG? | Risk register + mitigations | 44 methods in 6 phases + META |
+| **Deep-Synthesis** | What does it all MEAN? | Integrated understanding | 40 methods in 6 phases + META |
 
-**Why a tetrad, not sequential steps:**
-These are not a linear pipeline. They form a graph with feedback loops. Feasibility may invalidate Explore options. Risk assessment may reveal that mitigation itself is infeasible. Verification may surface impossibilities that reframe the entire decision. The integration guide defines HOW to navigate this graph.
+**Why a pentad, not sequential steps:**
+These are not a linear pipeline. They form a graph with feedback loops. Feasibility may invalidate Explore options. Risk assessment may reveal that mitigation itself is infeasible. Verification may surface impossibilities that reframe the entire decision. Synthesis integrates findings from all processes into coherent understanding — and may reveal emergent insights that trigger re-analysis. The integration guide defines HOW to navigate this graph.
 
 ---
 
@@ -31,9 +36,9 @@ These are not a linear pipeline. They form a graph with feedback loops. Feasibil
 
 ```
 <deep_analysis_framework>
-You are an expert analytical agent equipped with four complementary reasoning processes. Use them systematically to provide thorough, rigorous analysis.
+You are an expert analytical agent equipped with five complementary reasoning processes. Use them systematically to provide thorough, rigorous analysis.
 
-THE FOUR PROCESSES:
+THE FIVE PROCESSES:
 
 1. DEEP-EXPLORE: Maps the decision space. Use when the user needs to understand options, generate alternatives, or make a decision among choices.
    Phases: MAP → ILLUMINATE → CHALLENGE → SYNTHESIZE → CONVERGE
@@ -55,6 +60,11 @@ THE FOUR PROCESSES:
    Key strength: Risk interactions, cascade mapping, non-ergodic risk detection, defense design
    Key methods: Risk Genesis, Ergodicity Test, Cascade Mapping, Cobra Effect Check, Defense in Depth
 
+5. DEEP-SYNTHESIS: Integrates knowledge from multiple sources into coherent understanding. Use when diverse information needs combining, patterns need discovering across domains, or a unified framework needs building.
+   Phases: SCOPE → ACQUIRE → DECOMPOSE → RELATE → INTEGRATE → CRYSTALLIZE
+   Key strength: Cross-domain pattern discovery, contradiction resolution, emergent insight generation, knowledge compression
+   Key methods: Dialectical Integration, Analogical Structure Mapping, Conceptual Blending, Emergence Detection, Abductive Integration
+
 ROUTING LOGIC — Which process to invoke:
 
 PRIMARY SIGNAL → PROCESS:
@@ -62,13 +72,17 @@ PRIMARY SIGNAL → PROCESS:
 - "Is this correct?" / "Does this work?" / Validate claims → VERIFY
 - "Can we do this?" / "Is this achievable?" / Go/No-Go → FEASIBILITY
 - "What could go wrong?" / "How risky is this?" / Threat assessment → RISK
+- "What does this all mean?" / "How do these pieces fit together?" / Integration → SYNTHESIS
 
 COMPOUND SIGNALS → SEQUENCE:
-- "Should we do X?" → EXPLORE (options) → VERIFY (correctness) → FEASIBILITY (can we?) → RISK (what if?)
+- "Should we do X?" → EXPLORE (options) → VERIFY (correctness) → FEASIBILITY (can we?) → RISK (what if?) → SYNTHESIS (integrate all findings)
 - "Review this architecture" → VERIFY (correctness) → FEASIBILITY (scalability, resources) → RISK (failure modes)
-- "We're deciding between A and B" → EXPLORE (illuminate both) → VERIFY (both valid?) → FEASIBILITY (both achievable?) → RISK (compare risk profiles)
+- "We're deciding between A and B" → EXPLORE (illuminate both) → VERIFY (both valid?) → FEASIBILITY (both achievable?) → RISK (compare risk profiles) → SYNTHESIS (unified recommendation)
 - "Is this plan realistic?" → FEASIBILITY (primary) → RISK (what threatens it?)
 - "Debug this design" → VERIFY (primary) → RISK (what we missed)
+- "What have we learned from these projects?" → SYNTHESIS (primary) → EXPLORE (what new options emerge?)
+- "How do these reports/findings fit together?" → SYNTHESIS (primary)
+- "Make sense of this research" → SYNTHESIS (primary) → VERIFY (are findings valid?)
 
 SCALING — How deep to go:
 
@@ -76,8 +90,8 @@ SCALING — How deep to go:
 |-----------|---------|------|
 | Simple question | Single process, core methods only | Minutes |
 | Standard decision | 1-2 processes, standard depth | Hours |
-| Major decision | Full tetrad, comprehensive | Days |
-| Critical/irreversible | Full tetrad + META + validation | Week+ |
+| Major decision | Full pentad, comprehensive | Days |
+| Critical/irreversible | Full pentad + META + validation | Week+ |
 
 HANDOFF PROTOCOL:
 
@@ -92,6 +106,9 @@ Examples:
 - FEASIBILITY finds binding constraint → EXPLORE needs reframing
 - RISK finds non-ergodic threat → FEASIBILITY must assess mitigation feasibility
 - EXPLORE finds novel option → VERIFY must check correctness, FEASIBILITY must assess executability
+- SYNTHESIS discovers emergent pattern → VERIFY must check if pattern is valid, RISK must assess new threats
+- ALL processes complete → SYNTHESIS integrates into unified understanding
+- SYNTHESIS reveals contradiction → VERIFY resolves, EXPLORE generates alternatives
 
 FEEDBACK LOOPS:
 
@@ -100,6 +117,8 @@ Always check for these circular dependencies:
 - Feasibility conditions create new risks to monitor
 - Verification findings may invalidate explored options
 - Exploration of alternatives may introduce new verification needs
+- Synthesis findings may trigger re-exploration, re-verification, or re-assessment
+- Synthesis of risk + feasibility may reveal compound concerns invisible to either alone
 
 When a loop is detected, resolve by:
 1. Identifying the tightest constraint (what must be true for anything to work)
@@ -114,11 +133,13 @@ After completing analysis, always ask:
 - Is my analysis biased toward one process? (e.g., all Explore, no Verify)
 - Would a different sequence have been more efficient?
 - Is the analysis deep ENOUGH for the stakes involved?
+- Have I SYNTHESIZED findings or just listed them? (Collection ≠ synthesis)
 
 IMPORTANT CONSTRAINTS:
 - Never skip VERIFY for technical claims — optimism kills projects
 - Never skip FEASIBILITY for plans — planning fallacy is universal
 - Never skip RISK for irreversible decisions — non-ergodic risks can end the game
+- Never skip SYNTHESIS when multiple processes have been run — unintegrated findings miss emergent insights
 - Always apply META methods when stakes are high
 - For Complex (Cynefin) problems: probe, don't analyze
 </deep_analysis_framework>
@@ -138,6 +159,7 @@ User request received
 │   │       └── If options are technical → + VERIFY
 │   │       └── If options need execution → + FEASIBILITY
 │   │       └── If stakes are high → + RISK
+│   │       └── If multiple processes run → + SYNTHESIS (integrate)
 │   │
 │   ├── "Is this correct?" / Validate / Review
 │   │   └── → VERIFY (primary)
@@ -154,8 +176,14 @@ User request received
 │   │       └── If mitigation designed → FEASIBILITY (is mitigation feasible?)
 │   │       └── If non-ergodic risks found → FEASIBILITY (can we survive?)
 │   │
+│   ├── "What does this mean?" / "How do these fit together?" / Integration
+│   │   └── → SYNTHESIS (primary)
+│   │       └── If emergent pattern found → VERIFY (is pattern valid?)
+│   │       └── If contradiction found → EXPLORE (new options) or VERIFY (resolve)
+│   │       └── If actionable insight → FEASIBILITY + RISK (assess)
+│   │
 │   └── Compound / "Should we...?" / Full analysis
-│       └── → FULL TETRAD (sequence below)
+│       └── → FULL PENTAD (sequence below)
 │
 ├── What are the STAKES?
 │   │
@@ -166,16 +194,16 @@ User request received
 │   │   └── 1-2 processes, standard depth
 │   │
 │   ├── High (significant impact, hard to reverse)
-│   │   └── Full tetrad, comprehensive
+│   │   └── Full pentad, comprehensive
 │   │
 │   └── Critical (irreversible, existential)
-│       └── Full tetrad + META + validation + stakeholder review
+│       └── Full pentad + META + validation + stakeholder review
 │
 └── What DOMAIN is the problem? (Cynefin)
     │
     ├── Clear → Direct analysis, minimal process
     ├── Complicated → Expert-driven, full processes
-    ├── Complex → PROBE first, then analyze
+    ├── Complex → PROBE first, then analyze, SYNTHESIZE learnings
     └── Chaotic → ACT first, then stabilize, then analyze
 ```
 
@@ -183,23 +211,25 @@ User request received
 
 ## Sequencing Patterns
 
-### Pattern 1: Full Tetrad (Comprehensive)
+### Pattern 1: Full Pentad (Comprehensive)
 
 The default sequence for major decisions:
 
 ```
-EXPLORE                    VERIFY                    FEASIBILITY               RISK
-───────                    ──────                    ───────────               ────
-1. MAP options         →   4. Check correctness  →   7. Assess feasibility →  10. Identify risks
-2. ILLUMINATE effects      5. Find conflicts         8. Validate critical      11. Quantify severity
-3. CHALLENGE assumptions   6. Test impossibilities    9. Decide Go/No-Go       12. Design mitigations
-                                                                               13. Build monitoring
+EXPLORE                    VERIFY                    FEASIBILITY               RISK                     SYNTHESIS
+───────                    ──────                    ───────────               ────                     ─────────
+1. MAP options         →   4. Check correctness  →   7. Assess feasibility →  10. Identify risks   →   14. Integrate all
+2. ILLUMINATE effects      5. Find conflicts         8. Validate critical      11. Quantify severity     15. Find emergence
+3. CHALLENGE assumptions   6. Test impossibilities    9. Decide Go/No-Go       12. Design mitigations    16. Build framework
+                                                                               13. Build monitoring      17. Distill principles
 
 Feedback loops:
 - Step 6 (impossibility) → Step 1 (new options)
 - Step 9 (infeasible) → Step 1 (reframe) or Step 3 (new constraints)
 - Step 12 (mitigation) → Step 8 (is mitigation feasible?)
 - Step 10 (risks) → Step 7 (risks change feasibility)
+- Step 15 (emergence) → Step 4 (verify emergent pattern) or Step 1 (new options from insight)
+- Step 16 (framework) → may reveal gaps requiring more EXPLORE or VERIFY
 ```
 
 ### Pattern 2: Validate-First (Technical Review)
@@ -207,10 +237,10 @@ Feedback loops:
 For reviewing existing designs, architectures, or plans:
 
 ```
-VERIFY → FEASIBILITY → RISK → (EXPLORE if issues found)
+VERIFY → FEASIBILITY → RISK → (EXPLORE if issues found) → SYNTHESIS (if multiple processes ran)
 ```
 
-Start by checking correctness. If correct, assess feasibility. If feasible, assess risks. Only explore alternatives if issues found.
+Start by checking correctness. If correct, assess feasibility. If feasible, assess risks. Only explore alternatives if issues found. Synthesize if significant findings from multiple processes.
 
 ### Pattern 3: Feasibility-Gate (Go/No-Go)
 
@@ -231,14 +261,33 @@ For urgent situations or incident response:
 RISK (rapid identification) → FEASIBILITY (of response) → EXPLORE (alternatives if blocked)
 ```
 
-### Pattern 5: Iterative Deepening
+### Pattern 5: Synthesis-First (Knowledge Building)
+
+For research integration, learning from experience, or domain understanding:
+
+```
+SYNTHESIS (primary) → VERIFY (are findings valid?) → EXPLORE (what options emerge?) → FEASIBILITY/RISK (assess emerging options)
+```
+
+Start by integrating knowledge, then validate insights, then explore implications.
+
+### Pattern 6: Post-Mortem / Retrospective
+
+For learning from experience across multiple events:
+
+```
+SYNTHESIS (integrate incidents/experiences) → RISK (update risk model) → FEASIBILITY (assess preventive measures) → EXPLORE (new approaches)
+```
+
+### Pattern 7: Iterative Deepening
 
 For evolving understanding:
 
 ```
 Round 1: EXPLORE (quick) → VERIFY (quick) → FEASIBILITY (quick) → RISK (quick)
-Round 2: Deep dive into whatever process surfaced the biggest concern
-Round 3: Targeted analysis of specific findings
+Round 2: SYNTHESIS (integrate Round 1 findings) → identify biggest concern
+Round 3: Deep dive into the process that addresses the biggest concern
+Round 4: SYNTHESIS (re-integrate with new depth)
 ```
 
 ---
@@ -297,6 +346,33 @@ Round 3: Targeted analysis of specific findings
 | Risk-driven requirements | VERIFY | New requirements need conflict checking |
 | Cobra effect findings (#407) | EXPLORE | Need alternative mitigations |
 | Leading indicators (#501) | FEASIBILITY #404 | Feasibility decay triggers |
+| All risk findings | SYNTHESIS | Source material for integrated understanding |
+
+**SYNTHESIS produces → consumed by:**
+
+| Output | Consumer | How It's Used |
+|--------|----------|---------------|
+| Emergent patterns (#403) | VERIFY | Validate emergent insight is real, not apophenia |
+| Emergent patterns (#403) | RISK | New risk sources from cross-domain patterns |
+| Framework unification (#402) | EXPLORE | Reframe decision space using unified model |
+| Core insights (#501) | FEASIBILITY | New constraints or enablers discovered |
+| Contradictions unresolved (#407) | VERIFY | Logical resolution needed |
+| Contradictions unresolved (#407) | EXPLORE | Generate options to resolve |
+| Boundary conditions (#406) | RISK | Monitor for boundary violations |
+| Principles (#503) | ALL | General principles inform all processes |
+| Knowledge gaps (#206) | EXPLORE | Gaps suggest where to investigate |
+| Analogical transfers (#303) | EXPLORE | Cross-domain solutions to import |
+| Actionable conclusions (#505) | FEASIBILITY + RISK | Assess feasibility and risks of recommended actions |
+
+**ALL processes produce → consumed by SYNTHESIS:**
+
+| Output | From | Synthesis Use |
+|--------|------|---------------|
+| Options + trade-offs | EXPLORE | Source material for integration |
+| Correctness findings | VERIFY | Evidence base with validation status |
+| Feasibility profile | FEASIBILITY | Constraint landscape |
+| Risk register | RISK | Threat landscape |
+| All META findings | ALL | Bias and quality context for synthesis |
 
 ---
 
@@ -376,6 +452,38 @@ VERIFY finds conflict: "Requirement A contradicts Requirement B"
         └── → RISK: what new risks from the resolution?
 ```
 
+### Loop 6: Synthesis-Triggered Re-Analysis
+
+```
+SYNTHESIS discovers emergent pattern across process outputs
+    │
+    ├── TRIGGER: VERIFY — is the pattern valid?
+    │   └── If valid → RISK: does pattern reveal new threats?
+    │   └── If invalid → SYNTHESIS re-integrates without false pattern
+    │
+    ├── TRIGGER: EXPLORE — does pattern suggest new options?
+    │   └── New options → VERIFY → FEASIBILITY → RISK → back to SYNTHESIS
+    │
+    └── TRIGGER: FEASIBILITY — does pattern change feasibility assessment?
+        └── Re-assess affected dimensions
+```
+
+### Loop 7: Synthesis Contradiction Resolution
+
+```
+SYNTHESIS finds unresolved contradiction between process outputs
+(e.g., FEASIBILITY says "yes" but RISK says "unacceptable")
+    │
+    ├── TRIGGER: VERIFY — is the contradiction real or apparent?
+    │   └── Apparent → Different scopes or levels → acknowledge, don't force resolution
+    │   └── Real → Must resolve:
+    │       ├── EXPLORE: are there options that satisfy both?
+    │       └── FEASIBILITY: can we change constraints to resolve?
+    │
+    └── If irresolvable → SYNTHESIS documents as productive tension
+        with explicit decision criteria for when to favor each side
+```
+
 ---
 
 ## Process Selection Heuristics
@@ -388,17 +496,22 @@ VERIFY finds conflict: "Requirement A contradicts Requirement B"
 | "Is this theorem correct?" | VERIFY only | Pure correctness, no execution or risk |
 | "Can we deliver this by Friday?" | FEASIBILITY only | Specific constraint check |
 | "What are the risks of X?" | RISK only | Option already chosen, need risk profile |
+| "How do these reports fit together?" | SYNTHESIS only | Pure knowledge integration |
+| "What patterns do you see across these?" | SYNTHESIS only | Pattern discovery from existing material |
 
 ### When to Combine (Most Cases)
 
 | Signal | Sequence | Why This Order |
 |--------|----------|---------------|
-| "Should we use Kafka or Pulsar?" | EXPLORE → VERIFY → FEASIBILITY → RISK | Need full picture before deciding |
+| "Should we use Kafka or Pulsar?" | EXPLORE → VERIFY → FEASIBILITY → RISK → SYNTHESIS | Need full picture, then integrate for decision |
 | "Review this architecture" | VERIFY → FEASIBILITY → RISK | Already designed, need validation |
 | "Can we migrate to Unity Catalog?" | FEASIBILITY → RISK | Option known, need Go/No-Go |
 | "We're getting errors in pipeline" | VERIFY (find bug) → RISK (what else is affected?) | Debug first, then assess blast radius |
 | "Plan our Q3 OKRs" | EXPLORE → FEASIBILITY | Generate goals, then reality-check |
 | "This proposal seems too good" | VERIFY → FEASIBILITY → RISK | Suspicion = check correctness first |
+| "What did we learn from last 3 projects?" | SYNTHESIS (primary) → RISK (emerging patterns) | Learning = synthesis, then apply |
+| "Make sense of this vendor evaluation" | SYNTHESIS → VERIFY → FEASIBILITY | Integrate first, verify key claims, assess executability |
+| "How should we think about this domain?" | SYNTHESIS → EXPLORE | Build understanding, then generate options from it |
 
 ### When to Use META
 
@@ -459,6 +572,35 @@ FEASIBILITY #104 (Conway Alignment)
             → EXPLORE #14 (Stakeholder Impact)
 ```
 Check org-architecture alignment → assess org capability → find people concentration → understand stakeholder dynamics.
+
+### Synergy 6: Knowledge-to-Action Chain
+```
+SYNTHESIS #301 (Convergence-Divergence Mapping)
+    → SYNTHESIS #302 (Dialectical Tension Mapping)
+        → SYNTHESIS #401 (Dialectical Integration)
+            → EXPLORE (new options from resolved tensions)
+                → VERIFY + FEASIBILITY + RISK (assess new options)
+```
+Map disagreements → identify productive tensions → resolve into higher understanding → generate new options → validate.
+
+### Synergy 7: Learning Loop
+```
+RISK #504 (Post-Incident Feedback)
+    → SYNTHESIS #306 (Pattern Detection Across Sources)
+        → SYNTHESIS #503 (Principle Extraction)
+            → ALL processes (principles inform future analysis)
+```
+Learn from incidents → find patterns across incidents → extract general principles → apply to future work.
+
+### Synergy 8: Research-to-Decision Pipeline
+```
+SYNTHESIS (full cycle on research/domain knowledge)
+    → SYNTHESIS #505 (Actionability Assessment)
+        → EXPLORE (options from synthesized understanding)
+            → FEASIBILITY + RISK (assess options)
+                → SYNTHESIS (integrate process outputs into final recommendation)
+```
+Build domain understanding → identify actionable implications → generate options → assess → synthesize into recommendation.
 
 ---
 
@@ -521,6 +663,9 @@ Check org-architecture alignment → assess org capability → find people conce
 | **Single Process** | Only using EXPLORE (or only VERIFY, etc.) | At minimum: primary process + one complementary |
 | **All META** | Spending more time auditing the process than doing analysis | META should be ~10-15% of total effort |
 | **No META** | Never checking for bias in the analysis | Minimum: Planning Fallacy check for any estimate |
+| **Collection Without Synthesis** | Running 4 processes, listing findings, never integrating | After multiple processes, ALWAYS synthesize — list ≠ understanding |
+| **Premature Synthesis** | Synthesizing before adequate analysis | Ensure at least decomposition before attempting integration |
+| **Summary Disguised as Synthesis** | Summarizing sources without generating novel insight | Apply Shannon test: does output contain information NOT in any single source? |
 
 ### Handoff Anti-Patterns
 
@@ -661,6 +806,7 @@ The framework draws on theoretical foundations across all four processes:
 - `DEEP-VERIFY.md` — Logical/technical verification (14 methods)  
 - `DEEP-RISK-v2.md` — Risk assessment (44 methods)
 - `DEEP-FEASIBILITY.md` — Feasibility assessment (35 methods)
+- `DEEP-SYNTHESIS.md` — Knowledge synthesis (40 methods)
 
 ### Theoretical Sources
 - Perrow, C. (1984). Normal Accidents
@@ -679,3 +825,19 @@ The framework draws on theoretical foundations across all four processes:
 - Reason, J. (1990). Human Error
 - Knight, F. (1921). Risk, Uncertainty and Profit
 - Boehm, B. (1986). A Spiral Model of Software Development
+- Hegel, G.W.F. (1807). Phenomenology of Spirit
+- Piaget, J. (1952). The Origins of Intelligence in Children
+- Polanyi, M. (1966). The Tacit Dimension
+- Shannon, C. (1948). A Mathematical Theory of Communication
+- Gentner, D. (1983). Structure-Mapping: A Theoretical Framework for Analogy
+- Fauconnier, G. & Turner, M. (2002). The Way We Think: Conceptual Blending
+- Weick, K. (1995). Sensemaking in Organizations
+- Peirce, C.S. (1903). Harvard Lectures on Pragmatism
+- Kuhn, T. (1962). The Structure of Scientific Revolutions
+- Lakatos, I. (1978). The Methodology of Scientific Research Programmes
+- Feyerabend, P. (1975). Against Method
+- Popper, K. (1934). The Logic of Scientific Discovery
+- Glass, G. (1976). Primary, Secondary, and Meta-Analysis of Research
+- Glaser, B. & Strauss, A. (1967). The Discovery of Grounded Theory
+- Nonaka, I. & Takeuchi, H. (1995). The Knowledge-Creating Company
+- Anderson, L.W. & Krathwohl, D.R. (2001). A Taxonomy for Learning, Teaching, and Assessing
