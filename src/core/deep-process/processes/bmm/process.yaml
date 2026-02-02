@@ -1,0 +1,14 @@
+id: bmm
+version: "1.0"
+domain: business-modeling
+description: "Business Motivation Model process with Tech Lead and PM agents"
+
+phases:
+  - id: definition
+    name: "Definition"
+    path: phases/1-definition
+    entry_point: 1.1-define-vision.md
+
+  - id: execution
+    name: "Execution"
+    path: phases/2-execution # Placeholder

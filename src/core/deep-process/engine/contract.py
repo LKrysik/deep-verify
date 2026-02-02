@@ -14,6 +14,7 @@ class WorkflowContract:
     id: str
     name: Optional[str] = None
     type: str = "step"  # step, gate, process
+    context_menu: Optional[str] = None  # NEW: Trigger for dynamic menu
     inputs: List[str] = field(default_factory=list)
     outputs: List[str] = field(default_factory=list)
     output_contract: Optional[str] = None
@@ -58,6 +59,7 @@ class ContractParser:
                 id=data['id'],
                 name=data.get('name'),
                 type=data.get('type', 'step'),
+                context_menu=data.get('context_menu'), # NEW
                 inputs=data.get('inputs', []),
                 outputs=data.get('outputs', []),
                 output_contract=data.get('output_contract'),
