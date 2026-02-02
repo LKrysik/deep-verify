@@ -110,7 +110,7 @@ visible and helps identify valid/invalid combinations.
 
 ```
 □ Did mapping reveal new unknowns?
-  → YES: Return to Step 1
+  → YES: Return to Step 1 (if iterations remaining)
 
 □ Did mapping reveal we misunderstood the problem?
   → YES: Return to Step 0
@@ -118,7 +118,22 @@ visible and helps identify valid/invalid combinations.
 □ Is the map suspiciously simple?
   → YES: Challenge - are we missing dimensions?
 
+□ Are ALL options unacceptable?
+  → YES: Consider ABORT - no viable decision exists
+
 □ PROCEED TO STEP 3? [YES/NO]
+```
+
+---
+
+## Iteration Tracking
+
+```
+LOOP COUNT: Step 1 ↔ Step 2 iterations: [N]
+
+□ If looping more than [quick:1 / standard:3 / deep:5] times:
+  → STOP: Either proceed with current map or ABORT
+  → Endless refinement is not progress
 ```
 
 ---
@@ -126,5 +141,7 @@ visible and helps identify valid/invalid combinations.
 ## Transition
 
 - **If map is complete** → Proceed to Step 3
-- **If knowledge gaps found** → Return to Step 1
+- **If knowledge gaps found AND iterations remaining** → Return to Step 1
+- **If knowledge gaps found BUT max loops reached** → Proceed with gaps flagged
 - **If framing wrong** → Return to Step 0
+- **If no viable options exist** → Consider ABORT (return to Step 0)

@@ -121,15 +121,30 @@ EXTERNAL DEPENDENCIES:
 
 ```
 □ Did deepening reveal consequences we can't assess?
-  → YES: Return to Step 1
+  → YES: Return to Step 1 (if iterations remaining)
 
 □ Are critical consequences still ASSUMED?
-  → YES: Return to Step 1 to verify
+  → YES: Return to Step 1 to verify (if iterations remaining)
 
 □ Did we discover the problem is different?
   → YES: Return to Step 0
 
+□ Are ALL options' consequences unacceptable?
+  → YES: Consider ABORT - no good path exists
+
 □ PROCEED TO STEP 4? [YES/NO]
+```
+
+---
+
+## Iteration Tracking
+
+```
+VERIFICATION LOOP COUNT: [N]
+
+□ If returning to Step 1 more than [quick:1 / standard:2 / deep:3] times:
+  → STOP: Proceed with ASSUMED consequences marked as risks
+  → Perfect information is often unattainable
 ```
 
 ---
@@ -137,5 +152,7 @@ EXTERNAL DEPENDENCIES:
 ## Transition
 
 - **If consequences verified** → Proceed to Step 4
-- **If verification needed** → Return to Step 1
+- **If verification needed AND iterations remaining** → Return to Step 1
+- **If verification needed BUT max loops reached** → Proceed with assumptions flagged
 - **If reframe needed** → Return to Step 0
+- **If all consequences unacceptable** → Consider ABORT (return to Step 0)

@@ -3,7 +3,7 @@
 ```
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                      DEEP EXPLORE REPORT                                   ║
-║                      Version 2.1                                           ║
+║                      Version 2.1.1                                         ║
 ╠═══════════════════════════════════════════════════════════════════════════╣
 ║                                                                            ║
 ║  DECISION: [one sentence from Step 0]                                      ║
@@ -12,8 +12,14 @@
 ║  DEPTH: [quick | standard | deep]                                          ║
 ║  FEAR ANALYSIS: [on | off] (auto-detected)                                 ║
 ║                                                                            ║
-║  TIME: [total time invested]                                               ║
-║  COVERAGE SCORE: [C] - [COMPREHENSIVE/ADEQUATE/PARTIAL/INSUFFICIENT]      ║
+║  COVERAGE SCORE: [C] points - [COMPREHENSIVE/ADEQUATE/PARTIAL/INSUFFICIENT]║
+║  QUALITY GATE: [PASSED / FAILED]                                           ║
+║                                                                            ║
+║  QUALITY METRICS:                                                          ║
+║  ├── Verification ratio: [X]% (required: [Y]%)                            ║
+║  ├── Verified consequences: [N] (required: [M])                           ║
+║  ├── Assumptions tested: [N] (required: [M])                              ║
+║  └── Challenge items: [N] (premortem + biases)                            ║
 ║                                                                            ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 
@@ -183,6 +189,29 @@ Steps completed: [0-6]
 Methods used: [list]
 Research items: [count]
 Iterations: [count]
+
+SCORING BREAKDOWN:
+┌─────────────────────────────┬────────┬────────┐
+│ Category                    │ Count  │ Points │
+├─────────────────────────────┼────────┼────────┤
+│ Dimensions discovered       │ [N]    │ [×1.5] │
+│ Options enumerated          │ [N]    │ [×0.5] │
+│ Consequences VERIFIED       │ [N]    │ [×2.0] │
+│ Consequences ASSUMED        │ [N]    │ [×0.2] │
+│ Assumptions tested          │ [N]    │ [×1.5] │
+│ Assumptions falsified       │ [N]    │ [×2.0] │
+│ Unknown unknowns            │ [N]    │ [×1.5] │
+│ Boundaries identified       │ [N]    │ [×1.0] │
+│ Premortem causes            │ [N]    │ [×0.5] │
+│ Black swans                 │ [N]    │ [×0.5] │
+│ Biases checked              │ [N]    │ [×0.3] │
+├─────────────────────────────┼────────┼────────┤
+│ TOTAL                       │        │ [sum]  │
+└─────────────────────────────┴────────┴────────┘
+
+QUALITY GATE CHECK:
+• Verification ratio: [verified/(verified+assumed)]% — [✓/✗]
+• Minimums met: [all/partial/none] — [✓/✗]
 
 Limitations:
 • [what wasn't explored]

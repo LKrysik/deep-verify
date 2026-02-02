@@ -237,7 +237,8 @@ Deep Explore is built on these epistemological foundations:
    Output: Knowledge Map + Research Queue (+ Fear Map if fear_analysis=on)
 
    ↓ PROCEED if research queue is defined
-   ↓ STAY if framing is unclear
+   ↓ STAY if framing is unclear (max 3 attempts, then escalate)
+   ✖ ABORT if decision should not be made (premature/wrong question/blocked)
 
 📂 Step 1: RESEARCH
    Load: steps/step-01-research.md
@@ -258,6 +259,7 @@ Deep Explore is built on these epistemological foundations:
    ↓ PROCEED if critical unknowns addressed
    ↓ STAY if more research needed (check iteration limit)
    ↑ RETURN TO STEP 0 if framing changed
+   ✖ ABORT if research reveals decision should not be made
 
 📂 Step 2: MAP (Divergent)
    Load: steps/step-02-map.md
@@ -275,7 +277,8 @@ Deep Explore is built on these epistemological foundations:
    Output: Option Map (draft)
 
    ↓ PROCEED if dimensions are complete
-   ↑ RETURN TO STEP 1 if knowledge gaps found
+   ↑ RETURN TO STEP 1 if knowledge gaps found (check loop limit)
+   ✖ ABORT if no viable options exist
 
 📂 Step 3: DEEPEN
    Load: steps/step-03-deepen.md
@@ -295,7 +298,8 @@ Deep Explore is built on these epistemological foundations:
    Output: Consequence Map with verification status
 
    ↓ PROCEED if critical consequences verified
-   ↑ RETURN TO STEP 1 if consequences need research
+   ↑ RETURN TO STEP 1 if consequences need research (check loop limit)
+   ✖ ABORT if all consequences unacceptable
 
 📂 Step 4: CHALLENGE (Adversarial)
    Load: steps/step-04-challenge.md
@@ -321,7 +325,9 @@ Deep Explore is built on these epistemological foundations:
    Output: Challenged map with strengthened/weakened items
            (+ Updated Fear Map with resolution status if fear_analysis=on)
 
-   ↓ PROCEED always (challenge is mandatory)
+   ↓ PROCEED if challenge passed (normal path)
+   ↑ RETURN TO STEP 0 if fundamental reframe needed (rare, requires user agreement)
+   ✖ ABORT if all options are fatally flawed
 
 📂 Step 5: SYNTHESIZE
    Load: steps/step-05-synthesize.md
@@ -354,40 +360,66 @@ Deep Explore is built on these epistemological foundations:
 
 ---
 
-## SCORING SYSTEM
+## SCORING SYSTEM (V2.1.1)
+
+### Design Principles
+
+1. **Verification > Enumeration** - verifying is harder and more valuable than listing
+2. **Quality Gates** - minimum requirements must be met regardless of score
+3. **Diminishing Returns** - caps prevent gaming with excessive items
+4. **Verification Ratio** - must verify a percentage of consequences
 
 ### Exploration Coverage Score (C)
 
-| Exploration Quality | Points |
-|---------------------|--------|
-| New dimension discovered | +2 |
-| New option in dimension | +1 |
-| Consequence VERIFIED | +1 |
-| Consequence ASSUMED | +0.3 |
-| Unknown Unknown surfaced | +1.5 |
-| Assumption falsified | +1 |
-| Boundary identified | +0.5 |
-| Causal relationship mapped | +0.5 |
+| Category | Item | Points | Cap |
+|----------|------|--------|-----|
+| **DISCOVERY** | Dimension discovered | +1.5 | max 8 |
+| | Option enumerated | +0.5 | max 20 |
+| **VERIFICATION** | Consequence VERIFIED | +2.0 | - |
+| | Consequence ASSUMED | +0.2 | - |
+| | Assumption tested | +1.5 | - |
+| | Assumption falsified | +2.0 | - |
+| **ANALYSIS** | Unknown Unknown surfaced | +1.5 | - |
+| | Boundary identified | +1.0 | - |
+| | Causal relationship mapped | +1.0 | - |
+| **CHALLENGE** | Premortem cause found | +0.5 | - |
+| | Black swan identified | +0.5 | - |
+| | Bias checked | +0.3 | - |
+| | Belief stress tested | +0.5 | - |
 
 **When fear_analysis = on, additional:**
 
-| Fear Resolution Quality | Points |
-|------------------------|--------|
+| Fear Resolution | Points |
+|-----------------|--------|
 | Fear classified | +0.5 |
-| False wall identified | +1 |
-| True wall confirmed | +1 |
+| False wall identified | +1.5 |
+| True wall confirmed | +1.5 |
 | Controllable concern found | +0.5 |
-| Success path discovered | +1.5 |
+| Success path discovered | +2.0 |
 | Comparable analyzed | +0.5 |
+
+### Quality Gates (Minimum Requirements)
+
+| Requirement | quick | standard | deep |
+|-------------|-------|----------|------|
+| Dimensions (min) | 3 | 4 | 5 |
+| Options (min) | 6 | 12 | 15 |
+| Verified consequences (min) | 2 | 5 | 10 |
+| Assumptions tested (min) | 1 | 3 | 5 |
+| Verification ratio (min) | - | 30% | 50% |
+| Premortem causes (min) | - | 3 | 5 |
+| Biases checked (min) | - | - | 5 |
+
+**Failing quality gates caps the level regardless of score.**
 
 ### Coverage Thresholds (by depth)
 
 | Score | quick | standard | deep |
 |-------|-------|----------|------|
-| COMPREHENSIVE | C ≥ 12 | C ≥ 25 | C ≥ 35 |
-| ADEQUATE | C ≥ 8 | C ≥ 15 | C ≥ 25 |
-| PARTIAL | C ≥ 4 | C ≥ 8 | C ≥ 15 |
-| INSUFFICIENT | C < 4 | C < 8 | C < 15 |
+| COMPREHENSIVE | C ≥ 15 | C ≥ 35 | C ≥ 50 |
+| ADEQUATE | C ≥ 10 | C ≥ 22 | C ≥ 35 |
+| PARTIAL | C ≥ 5 | C ≥ 12 | C ≥ 20 |
+| INSUFFICIENT | C < 5 | C < 12 | C < 20 |
 
 **Note:** When fear_analysis=on, thresholds increase by +5.
 

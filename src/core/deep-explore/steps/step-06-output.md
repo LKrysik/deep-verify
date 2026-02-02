@@ -72,32 +72,69 @@ SECTION 8: FEAR RESOLUTION (when fear_analysis=on)
 📂 Load: `data/coverage-scoring.yaml`
 
 ```
-COVERAGE CALCULATION:
+COVERAGE CALCULATION (V2.1.1 - Quality over Quantity):
 
-Dimensions discovered:     [N] × 2 = [score]
-Options enumerated:        [N] × 1 = [score]
-Consequences VERIFIED:     [N] × 1 = [score]
-Consequences ASSUMED:      [N] × 0.3 = [score]
+DISCOVERY (with caps to prevent gaming):
+Dimensions discovered:     min([N], 8) × 1.5 = [score]
+Options enumerated:        min([N], 20) × 0.5 = [score]
+
+VERIFICATION (high value):
+Consequences VERIFIED:     [N] × 2.0 = [score]
+Consequences ASSUMED:      [N] × 0.2 = [score]
+Assumptions tested:        [N] × 1.5 = [score]
+Assumptions falsified:     [N] × 2.0 = [score]
+
+ANALYSIS:
 Unknown unknowns surfaced: [N] × 1.5 = [score]
-Assumptions falsified:     [N] × 1 = [score]
-Boundaries identified:     [N] × 0.5 = [score]
-Causal relationships:      [N] × 0.5 = [score]
+Boundaries identified:     [N] × 1.0 = [score]
+Causal relationships:      [N] × 1.0 = [score]
+
+CHALLENGE:
+Premortem causes:          [N] × 0.5 = [score]
+Black swans identified:    [N] × 0.5 = [score]
+Biases checked:            [N] × 0.3 = [score]
+Beliefs stress tested:     [N] × 0.5 = [score]
 
 IF fear_analysis=on:
 Fears classified:          [N] × 0.5 = [score]
-False walls identified:    [N] × 1 = [score]
-True walls confirmed:      [N] × 1 = [score]
+False walls identified:    [N] × 1.5 = [score]
+True walls confirmed:      [N] × 1.5 = [score]
 Controllable concerns:     [N] × 0.5 = [score]
-Success paths discovered:  [N] × 1.5 = [score]
+Success paths discovered:  [N] × 2.0 = [score]
 Comparables analyzed:      [N] × 0.5 = [score]
 
-TOTAL COVERAGE SCORE: [sum]
+RAW SCORE: [sum]
+```
 
-INTERPRETATION:
-C ≥ 25: COMPREHENSIVE
-15 ≤ C < 25: ADEQUATE
-8 ≤ C < 15: PARTIAL
-C < 8: INSUFFICIENT
+```
+QUALITY GATE CHECK (must pass to achieve level):
+
+┌────────────────────────────┬────────┬──────────┬────────┐
+│ Requirement                │ Quick  │ Standard │ Deep   │
+├────────────────────────────┼────────┼──────────┼────────┤
+│ Dimensions (min)           │ 3      │ 4        │ 5      │
+│ Options (min)              │ 6      │ 12       │ 15     │
+│ Verified consequences (min)│ 2      │ 5        │ 10     │
+│ Assumptions tested (min)   │ 1      │ 3        │ 5      │
+│ Verification ratio (min)   │ -      │ 30%      │ 50%    │
+│ Premortem causes (min)     │ -      │ 3        │ 5      │
+│ Biases checked (min)       │ -      │ -        │ 5      │
+└────────────────────────────┴────────┴──────────┴────────┘
+
+VERIFICATION RATIO = verified / (verified + assumed) × 100%
+Your ratio: [N]% — Required: [M]% — [✓ PASS / ✗ FAIL]
+
+QUALITY GATE: [PASSED / FAILED - reason]
+```
+
+```
+THRESHOLDS (by depth):
+
+Quick:    C ≥ 15 COMPREHENSIVE | C ≥ 10 ADEQUATE | C ≥ 5 PARTIAL
+Standard: C ≥ 35 COMPREHENSIVE | C ≥ 22 ADEQUATE | C ≥ 12 PARTIAL
+Deep:     C ≥ 50 COMPREHENSIVE | C ≥ 35 ADEQUATE | C ≥ 20 PARTIAL
+
+NOTE: Quality gate failure caps level regardless of score.
 ```
 
 ---

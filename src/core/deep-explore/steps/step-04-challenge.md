@@ -44,6 +44,9 @@ RESULT:
 
 📂 Load method: `data/method-procedures/M021_Premortem.md`
 
+**Note:** M021 uses the UNIFIED FAILURE TAXONOMY (shared with E008 from Step 0).
+If E008 was used earlier for fear analysis, review its output - some causes may already be classified.
+
 For top 2-3 options, imagine failure:
 
 ```
@@ -51,19 +54,28 @@ OPTION: [name]
 
 SCENARIO: "It's 12 months later. We chose this. It failed badly."
 
-WHAT WENT WRONG:
-• [cause 1] - could we have seen this? [Y/N]
-• [cause 2] - could we have seen this? [Y/N]
-• [cause 3] - could we have seen this? [Y/N]
+WHAT WENT WRONG (use UNIFIED TAXONOMY):
+┌────────────────────────────┬────────────┬──────────────┬──────────────────┐
+│ Cause                      │ Type       │ Preventable? │ Action           │
+├────────────────────────────┼────────────┼──────────────┼──────────────────┤
+│ [cause 1]                  │ STRUCTURAL │ NO           │ Contingency      │
+│ [cause 2]                  │ OPERATIONAL│ YES          │ Mitigate         │
+│ [cause 3]                  │ EXTERNAL   │ PARTIAL      │ Monitor          │
+│ [cause 4]                  │ COGNITIVE  │ YES          │ Verify first     │
+└────────────────────────────┴────────────┴──────────────┴──────────────────┘
 
-PREVENTABLE CAUSES:
-→ Add to risks and mitigation plan
+TYPE KEY (same as E008):
+• STRUCTURAL = Hard limits → Contingency or reject option
+• OPERATIONAL = Constraints → Mitigate before proceeding
+• EXTERNAL = Outside control → Monitor + contingency plan
+• COGNITIVE = Assumptions → Verify or dismiss
 
-UNPREVENTABLE CAUSES:
-→ Note as TRUE UNCERTAINTY
+SURVIVABILITY:
+• Worst case: [description]
+• Recoverable? [Y/N]
+• Reversibility: [HIGH/MED/LOW/IRREVERSIBLE]
 
-SURVIVABLE?
-→ If failure happens, can we recover?
+VERDICT: [PROCEED / PROCEED WITH CAUTION / RECONSIDER / REJECT]
 ```
 
 ### 04.3 Black Swan Hunt
@@ -346,4 +358,18 @@ RESOLUTION KEY:
 
 ## Transition
 
-- **Always proceed to Step 5** (challenge is mandatory, never skip)
+- **If challenge passed** → Proceed to Step 5
+- **If challenge reveals FUNDAMENTAL reframe needed** → Return to Step 0 (rare, use sparingly)
+- **If challenge reveals ALL options are fatally flawed** → ABORT exploration
+
+**Note:** Challenge normally leads forward. Backward transition is exceptional and requires:
+- Discovery that the core problem was misunderstood
+- Evidence that continuing would waste effort
+- User agreement to restart
+
+```
+CHALLENGE GATE:
+□ Did challenge reveal the decision itself is wrong?
+  → If YES: Return to Step 0 for reframe or ABORT
+  → If NO: Proceed to Step 5 (normal path)
+```

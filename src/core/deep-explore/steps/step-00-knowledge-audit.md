@@ -118,21 +118,27 @@ RESEARCH QUEUE:
 
 📂 Load method: `data/method-procedures/E008_Failure_Reason_Exploration.md`
 
+**Note:** E008 uses the UNIFIED FAILURE TAXONOMY (shared with M021 Premortem in Step 4).
+Use E008 here for vague fears; M021 later for specific option stress-testing.
+
 ```
 FEAR INVENTORY:
 "What am I afraid will go wrong?"
 
 ┌─────────────────────────────────────────────────────────────────┐
-│ Fear                          │ Type        │ Addressable?      │
+│ Fear                          │ Type        │ Status            │
 ├───────────────────────────────┼─────────────┼───────────────────┤
-│                               │ STR/OPR/COG │ Y/N               │
-│                               │ STR/OPR/COG │ Y/N               │
+│                               │ STRUCTURAL  │ BLOCKER/OK        │
+│                               │ OPERATIONAL │ ADDRESSABLE       │
+│                               │ EXTERNAL    │ MONITOR           │
+│                               │ COGNITIVE   │ VERIFY/DISMISS    │
 └───────────────────────────────┴─────────────┴───────────────────┘
 
-TYPE KEY:
-• STR = Structural (missing resources, skills, time)
-• OPR = Operational (execution risk, things that could go wrong)
-• COG = Cognitive (self-doubt, fear of judgment, uncertainty)
+UNIFIED TYPE KEY (used by E008 and M021):
+• STRUCTURAL = Hard limits (physics, law, economics) → cannot work around
+• OPERATIONAL = Constraints (resources, skills, time) → can potentially address
+• EXTERNAL = Outside control (market, technology, stakeholders) → monitor + contingency
+• COGNITIVE = Assumptions (untested beliefs, biases) → verify or dismiss
 ```
 
 📂 Load method: `data/method-procedures/E011_Control_Influence_Analysis.md`
@@ -181,6 +187,26 @@ REQUIRED CONDITIONS FOR SUCCESS:
 3. ___
 
 Which conditions are actually achievable? [list]
+```
+
+📂 Load method: `data/method-procedures/E013_Contrast_Exploration.md`
+
+```
+CONTRAST ANALYSIS:
+"Who has done something similar? What can I learn from them?"
+
+┌─────────────────────────────────────────────────────────────────┐
+│ Comparable                    │ Outcome     │ Key Lesson        │
+├───────────────────────────────┼─────────────┼───────────────────┤
+│                               │ SUCCESS/FAIL│                   │
+│                               │ SUCCESS/FAIL│                   │
+└───────────────────────────────┴─────────────┴───────────────────┘
+
+MY POSITION:
+• Similar to [who] because: ___
+• Different because: ___
+• Key advantage I have: ___
+• Key risk I share: ___
 ```
 
 **Add fear-related items to Research Queue.**
@@ -243,3 +269,46 @@ Which conditions are actually achievable? [list]
 - **If research queue has items** → Proceed to Step 1
 - **If research queue is empty** → Skip to Step 2 (rare)
 - **If frame is unclear** → Stay in Step 0, refine
+- **If decision should not be made** → ABORT exploration (see below)
+
+---
+
+## ABORT: When NOT to Decide
+
+Sometimes exploration reveals the decision should not be made at all. Valid reasons to ABORT:
+
+```
+□ PREMATURE: Critical information unavailable and cannot be obtained
+  → Output: "Wait until [condition] before deciding"
+
+□ WRONG QUESTION: The framed decision is not the real problem
+  → Output: "Reframe to [better question] instead"
+
+□ EXTERNAL DEPENDENCY: Decision depends on someone else's action first
+  → Output: "Blocked by [dependency], escalate to [who]"
+
+□ NO VIABLE OPTIONS: All options have unacceptable consequences
+  → Output: "No good options exist, consider [alternatives]"
+```
+
+**ABORT OUTPUT:**
+```
+╔═══════════════════════════════════════════════════════════════╗
+║  EXPLORATION ABORTED                                           ║
+╠═══════════════════════════════════════════════════════════════╣
+║  REASON: [PREMATURE / WRONG QUESTION / EXTERNAL / NO OPTIONS] ║
+║  RECOMMENDATION: [what to do instead]                          ║
+║  REVISIT WHEN: [condition for re-exploration]                  ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## Escalation: When Stuck in Step 0
+
+If frame remains unclear after 3 attempts:
+
+1. **Simplify**: Break into smaller sub-decisions
+2. **Consult**: Ask user for clarification or external input
+3. **Pivot**: Try different framing angle
+4. **Abort**: If still unclear, decision may be premature

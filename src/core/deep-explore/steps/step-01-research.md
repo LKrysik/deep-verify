@@ -112,8 +112,23 @@ ADD TO UNKNOWNS:
 
 ---
 
+## Iteration Tracking
+
+```
+ITERATION CHECK:
+Current iteration: [N] of max [quick:1 / standard:3 / deep:10]
+
+□ If max iterations reached AND critical unknowns remain:
+  → Proceed anyway, flag unknowns as TRUE UNCERTAINTY
+  → Or ABORT if unknowns are decision-critical
+```
+
+---
+
 ## Transition
 
 - **If critical unknowns addressed** → Proceed to Step 2
-- **If more research needed** → Stay in Step 1
+- **If more research needed AND iterations remaining** → Stay in Step 1
+- **If more research needed BUT max iterations reached** → Proceed with unknowns flagged
 - **If framing changed** → Return to Step 0
+- **If research reveals decision should not be made** → ABORT (return to Step 0)
