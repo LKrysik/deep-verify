@@ -1,14 +1,40 @@
 id: bmm
-version: "1.0"
+version: "3.0 (Enterprise Ready)"
 domain: business-modeling
-description: "Business Motivation Model process with Tech Lead and PM agents"
+description: "Complete OMG Business Motivation Model with Agents and Roadmap"
 
 phases:
-  - id: definition
-    name: "Definition"
-    path: phases/1-definition
+  - id: setup
+    name: "0. Setup (Agents & CLI)"
+    path: phases/0-setup
+    entry_point: 0.0-export-agents.md
+
+  - id: ends
+    name: "1. Define Ends (Vision & Goals)"
+    path: phases/1-ends
     entry_point: 1.1-define-vision.md
 
-  - id: execution
-    name: "Execution"
-    path: phases/2-execution # Placeholder
+  - id: means
+    name: "2. Define Means (Mission & Strategy)"
+    path: phases/2-means
+    entry_point: 2.1-define-mission.md
+
+  - id: influencers
+    name: "3. Identify Influencers"
+    path: phases/3-influencers
+    entry_point: 3.1-identify-influencers.md
+
+  - id: assessments
+    name: "4. Assess Impacts"
+    path: phases/4-assessments
+    entry_point: 4.1-assess-influencers.md
+
+  - id: realization
+    name: "5. Realization (Bridge to IT)"
+    path: phases/5-realization
+    entry_point: 5.1-map-strategy-to-epics.md
+
+  - id: reporting
+    name: "6. Reporting & Roadmap"
+    path: phases/6-reporting
+    entry_point: 6.1-generate-roadmap.md

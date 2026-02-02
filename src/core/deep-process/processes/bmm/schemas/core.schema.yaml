@@ -1,0 +1,14 @@
+# Vision Schema
+id: str
+statement: str
+description: str
+status: str # draft, active, retired
+
+---
+# Mission Schema
+id: str
+statement: str
+vision_id: str # Link to Vision
+components:
+  - str
+status: str
