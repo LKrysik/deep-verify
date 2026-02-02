@@ -1,0 +1,117 @@
+# Schema: Epic
+# Used for: artifacts/epics/EPIC-XXX.yaml
+
+type: object
+required:
+  - id
+  - title
+  - description
+  - status
+  - created_at
+
+properties:
+  id:
+    type: string
+    pattern: "^EPIC-\\d{3}$"
+    description: "Unique epic identifier"
+    example: "EPIC-001"
+
+  title:
+    type: string
+    minLength: 5
+    maxLength: 100
+    description: "Short, descriptive title"
+    example: "User Authentication"
+
+  description:
+    type: string
+    minLength: 20
+    description: "Detailed description of the epic"
+    example: "Complete authentication system including registration, login, and password reset"
+
+  requirements:
+    type: array
+    items:
+      type: string
+      pattern: "^(FR|NFR)-\\d{3}$"
+    description: "List of requirement IDs covered by this epic"
+    example: ["FR-001", "FR-002", "NFR-001"]
+
+  acceptance_criteria:
+    type: array
+    items:
+      type: string
+    minItems: 1
+    description: "High-level acceptance criteria"
+    example:
+      - "Users can register with email"
+      - "Users can login"
+      - "Password reset works"
+
+  status:
+    type: string
+    enum:
+      - defined
+      - in_progress
+      - done
+    description: "Current status of the epic"
+
+  stories:
+    type: array
+    items:
+      type: string
+      pattern: "^STORY-\\d{3}$"
+    description: "List of story IDs belonging to this epic"
+    example: ["STORY-001", "STORY-002"]
+
+  priority:
+    type: string
+    enum:
+      - must_have
+      - should_have
+      - could_have
+      - wont_have
+    description: "MoSCoW priority"
+
+  created_at:
+    type: string
+    format: date-time
+    description: "When the epic was created"
+
+  updated_at:
+    type: string
+    format: date-time
+    description: "When the epic was last updated"
+
+  # Integration IDs
+  azure_devops_id:
+    type: integer
+    description: "Azure DevOps Work Item ID (if synced)"
+
+  github_milestone_id:
+    type: integer
+    description: "GitHub Milestone ID (if synced)"
+
+# Example document
+example:
+  id: EPIC-001
+  title: "User Authentication"
+  description: "Complete authentication system including registration, login, password reset, and session management"
+  requirements:
+    - FR-001
+    - FR-002
+    - FR-003
+    - NFR-001
+  acceptance_criteria:
+    - "Users can register with email and password"
+    - "Users can login with email and password"
+    - "Users can reset forgotten password"
+    - "Sessions expire after 24 hours of inactivity"
+  status: defined
+  stories:
+    - STORY-001
+    - STORY-002
+    - STORY-003
+  priority: must_have
+  created_at: "2026-02-01T10:00:00Z"
+  azure_devops_id: 12345

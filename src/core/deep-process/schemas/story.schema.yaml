@@ -1,0 +1,180 @@
+# Schema: Story
+# Used for: artifacts/stories/STORY-XXX.yaml
+
+type: object
+required:
+  - id
+  - epic_id
+  - title
+  - description
+  - acceptance_criteria
+  - status
+  - created_at
+
+properties:
+  id:
+    type: string
+    pattern: "^STORY-\\d{3}$"
+    description: "Unique story identifier"
+    example: "STORY-001"
+
+  epic_id:
+    type: string
+    pattern: "^EPIC-\\d{3}$"
+    description: "Parent epic ID (required)"
+    example: "EPIC-001"
+
+  title:
+    type: string
+    minLength: 10
+    maxLength: 150
+    description: "User story title"
+    example: "User can register with email"
+
+  description:
+    type: string
+    minLength: 20
+    description: "Full user story description"
+    format: "As a [user], I want [goal] so that [benefit]"
+    example: "As a new user, I want to register with my email and password so that I can access the application"
+
+  acceptance_criteria:
+    type: array
+    items:
+      type: object
+      required:
+        - criterion
+      properties:
+        criterion:
+          type: string
+          description: "The acceptance criterion"
+        testable:
+          type: boolean
+          default: true
+          description: "Whether this criterion is testable"
+        verified:
+          type: boolean
+          description: "Whether this criterion has been verified"
+    minItems: 1
+    description: "List of acceptance criteria"
+    example:
+      - criterion: "Email format is validated"
+        testable: true
+      - criterion: "Password must be at least 8 characters"
+        testable: true
+
+  points:
+    type: integer
+    enum: [1, 2, 3, 5, 8, 13, 21]
+    description: "Story points (Fibonacci)"
+    example: 3
+
+  priority:
+    type: string
+    enum:
+      - must_have
+      - should_have
+      - could_have
+      - wont_have
+    description: "MoSCoW priority"
+
+  status:
+    type: string
+    enum:
+      - draft
+      - ready
+      - in_progress
+      - done
+      - reviewed
+      - verified
+      - blocked
+    description: "Current status"
+
+  blocked_by:
+    type: string
+    description: "ID of blocking item (DEC-XXX, UNK-XXX)"
+    example: "DEC-003"
+
+  sprint_id:
+    type: string
+    pattern: "^SPRINT-\\d{3}$"
+    description: "Sprint this story is assigned to"
+    example: "SPRINT-001"
+
+  assigned_to:
+    type: string
+    description: "Who is working on this story"
+
+  tags:
+    type: array
+    items:
+      type: string
+    description: "Tags for categorization"
+    example: ["auth", "backend", "security"]
+
+  dependencies:
+    type: array
+    items:
+      type: string
+      pattern: "^STORY-\\d{3}$"
+    description: "Stories this story depends on"
+
+  created_at:
+    type: string
+    format: date-time
+
+  updated_at:
+    type: string
+    format: date-time
+
+  started_at:
+    type: string
+    format: date-time
+    description: "When work started"
+
+  completed_at:
+    type: string
+    format: date-time
+    description: "When marked as done"
+
+  # Integration IDs
+  azure_devops_id:
+    type: integer
+  github_issue_id:
+    type: integer
+
+# Validation rules
+validation:
+  - rule: "blocked_by requires status: blocked"
+    check: "if blocked_by exists then status must be 'blocked'"
+
+  - rule: "sprint_id requires points"
+    check: "if sprint_id exists then points must be set"
+
+  - rule: "completed_at requires status: done+"
+    check: "if completed_at exists then status must be done/reviewed/verified"
+
+# Example document
+example:
+  id: STORY-001
+  epic_id: EPIC-001
+  title: "User can register with email"
+  description: "As a new user, I want to register with my email and password so that I can access the application"
+  acceptance_criteria:
+    - criterion: "Email format is validated"
+      testable: true
+    - criterion: "Password must be at least 8 characters"
+      testable: true
+    - criterion: "Confirmation email is sent"
+      testable: true
+    - criterion: "User cannot register with existing email"
+      testable: true
+  points: 3
+  priority: must_have
+  status: ready
+  sprint_id: SPRINT-001
+  tags:
+    - auth
+    - backend
+  created_at: "2026-02-01T10:30:00Z"
+  azure_devops_id: 12346
