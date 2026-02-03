@@ -1,0 +1,233 @@
+# Coverage Scoring Rules for Deep Explore V2.1.1
+# Redesigned: Quality over quantity, minimum requirements, verification emphasis
+
+# =============================================================================
+# DESIGN PRINCIPLES
+# =============================================================================
+# 1. Verification is more valuable than enumeration
+# 2. Minimum requirements must be met (quality gates)
+# 3. Diminishing returns prevent gaming
+# 4. Verification ratio matters
+# 5. Challenge phase is mandatory and scored
+
+# =============================================================================
+# SCORING WEIGHTS
+# =============================================================================
+scoring:
+  # Core exploration metrics
+  core:
+    # DISCOVERY (diminishing returns after threshold)
+    dimension_discovered: 1.5          # was 2.0 - reduced to prevent gaming
+    dimension_discovered_cap: 8        # max 8 dimensions count for score
+    option_enumerated: 0.5             # was 1.0 - reduced, options are easy
+    option_enumerated_cap: 20          # max 20 options count for score
+
+    # VERIFICATION (high value - this is the hard work)
+    consequence_verified: 2.0          # was 1.0 - DOUBLED, verification is key
+    consequence_assumed: 0.2           # was 0.3 - reduced, assumed is less valuable
+    assumption_tested: 1.5             # NEW: testing assumptions is valuable
+    assumption_falsified: 2.0          # was 1.0 - DOUBLED, falsification is hard
+
+    # ANALYSIS (medium value)
+    unknown_unknown_surfaced: 1.5      # unchanged - discovering blind spots is valuable
+    boundary_identified: 1.0           # was 0.5 - boundaries are important
+    causal_relationship_mapped: 1.0    # was 0.5 - understanding causation matters
+
+    # CHALLENGE (medium value - mandatory phase)
+    premortem_cause_found: 0.5         # was 0.3
+    black_swan_identified: 0.5         # was 0.3
+    bias_checked: 0.3                  # NEW: checking for bias
+    belief_stress_tested: 0.5          # NEW: stress testing beliefs
+
+  # Fear analysis metrics (when fear_analysis = on)
+  fear_analysis:
+    fear_classified: 0.5
+    false_wall_identified: 1.5         # was 1.0 - clearing false walls is valuable
+    true_wall_confirmed: 1.5           # was 1.0 - confirming true walls saves effort
+    controllable_concern_found: 0.5
+    success_path_discovered: 2.0       # was 1.5 - finding paths is key
+    comparable_analyzed: 0.5
+
+# =============================================================================
+# MINIMUM REQUIREMENTS (Quality Gates)
+# =============================================================================
+# Must meet ALL minimums to achieve each level
+# Failing minimums caps the score at lower level regardless of points
+
+minimum_requirements:
+  quick:
+    dimensions_min: 3
+    options_min: 6                     # at least 2 per dimension
+    verified_consequences_min: 2       # NEW: must verify something
+    assumptions_tested_min: 1          # NEW: must test at least 1 assumption
+
+  standard:
+    dimensions_min: 4
+    options_min: 12
+    verified_consequences_min: 5       # NEW: must verify key consequences
+    assumptions_tested_min: 3          # NEW: must test assumptions
+    verification_ratio_min: 0.3        # NEW: at least 30% verified vs assumed
+    premortem_causes_min: 3            # NEW: must do premortem
+
+  deep:
+    dimensions_min: 5
+    options_min: 15
+    verified_consequences_min: 10      # NEW: extensive verification required
+    assumptions_tested_min: 5          # NEW: thorough assumption testing
+    verification_ratio_min: 0.5        # NEW: at least 50% verified vs assumed
+    premortem_causes_min: 5            # NEW: thorough premortem
+    biases_checked_min: 5              # NEW: must check for biases
+
+# =============================================================================
+# THRESHOLDS (adjusted for new weights)
+# =============================================================================
+thresholds:
+  quick:
+    comprehensive: 15                  # was 12
+    adequate: 10                       # was 8
+    partial: 5                         # was 4
+    insufficient: 0
+    max_iterations: 1
+    description: "Szybka eksploracja - podstawy w 10-20 min"
+
+  standard:
+    comprehensive: 35                  # was 25
+    adequate: 22                       # was 15
+    partial: 12                        # was 8
+    insufficient: 0
+    max_iterations: 3
+    description: "Pełna eksploracja - 45-90 min"
+
+  deep:
+    comprehensive: 50                  # was 35
+    adequate: 35                       # was 25
+    partial: 20                        # was 15
+    insufficient: 0
+    max_iterations: 10
+    description: "Głęboka eksploracja - 2-4 godziny"
+
+# Fear analysis modifier
+fear_analysis_threshold_bonus: 5
+
+# =============================================================================
+# CALCULATION FORMULA
+# =============================================================================
+calculation: |
+  # STEP 1: Calculate raw score with caps
+
+  dimensions_score = min(dimensions, dimension_discovered_cap) × 1.5
+  options_score = min(options, option_enumerated_cap) × 0.5
+
+  verification_score =
+      (verified_consequences × 2.0)
+    + (assumed_consequences × 0.2)
+    + (assumptions_tested × 1.5)
+    + (assumptions_falsified × 2.0)
+
+  analysis_score =
+      (unknown_unknowns × 1.5)
+    + (boundaries × 1.0)
+    + (causal_relationships × 1.0)
+
+  challenge_score =
+      (premortem_causes × 0.5)
+    + (black_swans × 0.5)
+    + (biases_checked × 0.3)
+    + (beliefs_stress_tested × 0.5)
+
+  RAW_SCORE = dimensions_score + options_score + verification_score
+            + analysis_score + challenge_score
+
+  # STEP 2: Calculate verification ratio
+
+  total_consequences = verified_consequences + assumed_consequences
+  IF total_consequences > 0:
+    verification_ratio = verified_consequences / total_consequences
+  ELSE:
+    verification_ratio = 0
+
+  # STEP 3: Apply quality gate (minimum requirements check)
+
+  QUALITY_GATE = check_minimum_requirements(depth_level)
+
+  IF QUALITY_GATE.failed:
+    FINAL_LEVEL = min(calculated_level, QUALITY_GATE.max_level)
+    FLAG: "Quality gate failed: {QUALITY_GATE.reason}"
+
+  # STEP 4: Determine final score and level
+
+  FINAL_SCORE = RAW_SCORE
+  FINAL_LEVEL = lookup_threshold(FINAL_SCORE, depth_level)
+
+  # When fear_analysis = on, add fear metrics and adjust thresholds
+  IF fear_analysis = on:
+    fear_score =
+        (fears_classified × 0.5)
+      + (false_walls_identified × 1.5)
+      + (true_walls_confirmed × 1.5)
+      + (controllable_concerns × 0.5)
+      + (success_paths_discovered × 2.0)
+      + (comparables_analyzed × 0.5)
+
+    FINAL_SCORE = RAW_SCORE + fear_score
+    thresholds += fear_analysis_threshold_bonus
+
+# =============================================================================
+# OUTPUT FORMAT
+# =============================================================================
+output_format: |
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  COVERAGE SCORE                                                ║
+  ╠═══════════════════════════════════════════════════════════════╣
+  ║                                                                ║
+  ║  RAW SCORE: [X] points                                         ║
+  ║  LEVEL: [COMPREHENSIVE/ADEQUATE/PARTIAL/INSUFFICIENT]          ║
+  ║                                                                ║
+  ║  QUALITY METRICS:                                              ║
+  ║  ├── Verification ratio: [X]% (min: [Y]%)  [✓/✗]              ║
+  ║  ├── Verified consequences: [N] (min: [M]) [✓/✗]              ║
+  ║  ├── Assumptions tested: [N] (min: [M])    [✓/✗]              ║
+  ║  └── Biases checked: [N] (min: [M])        [✓/✗]              ║
+  ║                                                                ║
+  ║  QUALITY GATE: [PASSED/FAILED]                                 ║
+  ║  [If failed: reason and recommendation]                        ║
+  ║                                                                ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+# =============================================================================
+# EXAMPLES
+# =============================================================================
+examples:
+  gaming_attempt:
+    description: "Attempt to game with many dimensions/options but no verification"
+    input:
+      dimensions: 10
+      options: 30
+      verified_consequences: 0
+      assumed_consequences: 20
+    calculation:
+      dimensions_score: "min(10, 8) × 1.5 = 12"
+      options_score: "min(30, 20) × 0.5 = 10"
+      verification_score: "(0 × 2.0) + (20 × 0.2) = 4"
+      raw_score: 26
+      verification_ratio: "0 / 20 = 0%"
+      quality_gate: "FAILED - verified_consequences_min not met"
+    result: "Capped at PARTIAL despite 26 points"
+
+  quality_exploration:
+    description: "Focused exploration with verification emphasis"
+    input:
+      dimensions: 5
+      options: 15
+      verified_consequences: 8
+      assumed_consequences: 4
+      assumptions_tested: 4
+      assumptions_falsified: 2
+    calculation:
+      dimensions_score: "5 × 1.5 = 7.5"
+      options_score: "15 × 0.5 = 7.5"
+      verification_score: "(8 × 2.0) + (4 × 0.2) + (4 × 1.5) + (2 × 2.0) = 26.8"
+      raw_score: 41.8
+      verification_ratio: "8 / 12 = 67%"
+      quality_gate: "PASSED"
+    result: "COMPREHENSIVE with 41.8 points and 67% verification"

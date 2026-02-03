@@ -1,10 +1,10 @@
-# Deep Explore Process Manifest
+# Deep Risk Process Manifest
 # Minimal metadata - workflow.md is the source of truth
 
-id: deep-explore
-version: "2.1"
-domain: decision-exploration
-description: "Knowledge-First Decision Exploration"
+id: deep-risk
+version: "1.0"
+domain: risk-assessment
+description: "Systematic Risk Assessment - theory-grounded, interaction-aware"
 
 # Source of truth - self-contained executable
 workflow: workflow.md
@@ -18,3 +18,5 @@ paths:
   steps: steps/
   data: data/
   methods: data/method-procedures/
+  meta: meta/
+  patterns: data/risk-pattern-libraries/

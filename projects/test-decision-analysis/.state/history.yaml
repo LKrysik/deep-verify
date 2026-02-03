@@ -1,7 +1,0 @@
-entries:
-- action: project-created
-  at: '2026-02-03T00:33:33.698860'
-  details:
-    process_id: deep-explore
-    project_name: Test Decision Analysis
-  id: 1
