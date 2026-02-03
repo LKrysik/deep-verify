@@ -1,0 +1,14 @@
+integrations:
+  azure_devops:
+    enabled: false
+  github:
+    enabled: false
+process_id: deep-explore
+process_version: '1.0'
+project:
+  created_at: '2026-02-03T00:33:33.698860'
+  id: test-decision-analysis
+  name: Test Decision Analysis
+settings:
+  auto_verify_gate: true
+  require_confirmation: true

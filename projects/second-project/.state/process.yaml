@@ -1,0 +1,14 @@
+integrations:
+  azure_devops:
+    enabled: false
+  github:
+    enabled: false
+process_id: deep-explore
+process_version: '1.0'
+project:
+  created_at: '2026-02-03T00:34:04.717797'
+  id: second-project
+  name: Second Project
+settings:
+  auto_verify_gate: true
+  require_confirmation: true

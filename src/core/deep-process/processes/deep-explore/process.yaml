@@ -1,0 +1,268 @@
+# Deep Explore Process Definition
+# Converted from workflow.md to deep-process format
+
+id: deep-explore
+version: "2.1"
+domain: decision-exploration
+description: "Knowledge-First Decision Exploration - systematyczne eksplorowanie przestrzeni decyzyjnej"
+
+# Configuration
+config:
+  depth_levels:
+    - id: quick
+      name: "Quick"
+      time: "10-20 min"
+      max_iterations: 1
+      coverage_target: 15
+      description: "Szybka orientacja, pilne decyzje, niska stawka"
+
+    - id: standard
+      name: "Standard"
+      time: "45-90 min"
+      max_iterations: 3
+      coverage_target: 35
+      description: "Ważne decyzje, potrzebujesz pewności"
+
+    - id: deep
+      name: "Deep"
+      time: "2-4 godziny"
+      max_iterations: 10
+      coverage_target: 50
+      description: "Krytyczne, nieodwracalne decyzje, wysoka stawka"
+
+  flags:
+    - id: fear_analysis
+      trigger: auto  # Auto-detect from language
+      keywords:
+        - "boję się"
+        - "martwię się"
+        - "obawiam się"
+        - "co jeśli się nie uda"
+        - "ryzyko"
+        - "stracę"
+        - "porażka"
+        - "paraliż"
+        - "zablokowany"
+      effect: "Adds E008-E014 methods and Section 8 to report"
+
+# Phases
+phases:
+  - id: knowledge-audit
+    name: "Step 0: Knowledge Audit"
+    path: steps
+    entry_point: step-00-knowledge-audit.md
+    purpose: "Map what you know and don't know BEFORE exploring options"
+    outputs:
+      - knowledge_map
+      - research_queue
+      - fear_map  # when fear_analysis=on
+    gate:
+      criteria:
+        - "Decision framed clearly"
+        - "Research queue defined"
+      threshold: 0.7
+
+  - id: research
+    name: "Step 1: Research"
+    path: steps
+    entry_point: step-01-research.md
+    purpose: "Fill critical knowledge gaps identified in Step 0"
+    inputs:
+      - research_queue
+    outputs:
+      - research_summary
+      - updated_knowledge_map
+    gate:
+      criteria:
+        - "Critical unknowns addressed"
+        - "P1/P2 items researched"
+      threshold: 0.7
+
+  - id: map
+    name: "Step 2: Map (Divergent)"
+    path: steps
+    entry_point: step-02-map.md
+    purpose: "Map options systematically using morphological analysis"
+    outputs:
+      - dimensions
+      - options
+      - constraints
+      - morphological_box
+    gate:
+      criteria:
+        - "Minimum dimensions discovered"
+        - "Options enumerated"
+        - "Constraints mapped"
+      threshold: 0.8
+
+  - id: deepen
+    name: "Step 3: Deepen"
+    path: steps
+    entry_point: step-03-deepen.md
+    purpose: "Understand consequences at multiple abstraction levels"
+    methods:
+      - E002_Counterfactual_Thinking
+      - E004_Boundary_Analysis
+      - E005_Causal_Models
+      - M011_Consequence_Analysis
+      - M012_Reversibility_Check
+      - M013_Dependency_Analysis
+    outputs:
+      - consequence_map
+      - reversibility_assessment
+      - dependency_graph
+    gate:
+      criteria:
+        - "Consequences mapped with VERIFIED/ASSUMED status"
+        - "Reversibility assessed"
+      threshold: 0.8
+
+  - id: challenge
+    name: "Step 4: Challenge (Adversarial)"
+    path: steps
+    entry_point: step-04-challenge.md
+    purpose: "Stress-test for blind spots and weak thinking"
+    methods:
+      - E006_Falsification
+      - M021_Premortem
+      - M022_Black_Swan_Hunt
+      - M023_Assumption_Stress_Test
+    methods_fear:  # Additional when fear_analysis=on
+      - E010_Cognitive_MVP
+      - E014_Growth_Test
+    outputs:
+      - challenged_map
+      - bias_check_results
+      - fear_resolution  # when fear_analysis=on
+    gate:
+      criteria:
+        - "Key beliefs tested"
+        - "Premortem completed"
+        - "Biases checked"
+      threshold: 0.8
+
+  - id: synthesize
+    name: "Step 5: Synthesize"
+    path: steps
+    entry_point: step-05-synthesize.md
+    purpose: "Organize findings into actionable understanding"
+    methods:
+      - E003_Minimal_Assertions
+      - E007_Information_Questions
+    outputs:
+      - minimal_assertions
+      - strategic_clusters
+      - decision_sequence
+      - readiness_assessment
+    gate:
+      criteria:
+        - "Clusters defined"
+        - "Sequence established"
+      threshold: 0.9
+
+  - id: output
+    name: "Step 6: Output"
+    path: steps
+    entry_point: step-06-output.md
+    purpose: "Deliver complete exploration report"
+    template: data/exploration-report-template.md
+    outputs:
+      - exploration_report
+    sections:
+      - "Section 1: What We Learned"
+      - "Section 2: What We Still Don't Know"
+      - "Section 3: Option Map"
+      - "Section 4: Strategic Clusters"
+      - "Section 5: Consequence Map"
+      - "Section 6: Decision Readiness"
+      - "Section 7: Suggested Next Steps"
+      - "Section 8: Fear Resolution"  # when fear_analysis=on
+
+# Scoring
+scoring:
+  file: data/coverage-scoring.yaml
+  categories:
+    discovery:
+      dimension_discovered: 1.5
+      option_enumerated: 0.5
+      dimension_cap: 8
+      option_cap: 20
+    verification:
+      consequence_verified: 2.0
+      consequence_assumed: 0.2
+      assumption_tested: 1.5
+      assumption_falsified: 2.0
+    analysis:
+      unknown_unknown_surfaced: 1.5
+      boundary_identified: 1.0
+      causal_relationship_mapped: 1.0
+    challenge:
+      premortem_cause: 0.5
+      black_swan_identified: 0.5
+      bias_checked: 0.3
+      belief_stress_tested: 0.5
+    fear:  # when fear_analysis=on
+      fear_classified: 0.5
+      false_wall_identified: 1.5
+      true_wall_confirmed: 1.5
+      controllable_concern: 0.5
+      success_path_discovered: 2.0
+
+# Quality gates by depth
+quality_gates:
+  quick:
+    dimensions_min: 3
+    options_min: 6
+    verified_consequences_min: 2
+    assumptions_tested_min: 1
+  standard:
+    dimensions_min: 4
+    options_min: 12
+    verified_consequences_min: 5
+    assumptions_tested_min: 3
+    verification_ratio_min: 0.3
+    premortem_causes_min: 3
+  deep:
+    dimensions_min: 5
+    options_min: 15
+    verified_consequences_min: 10
+    assumptions_tested_min: 5
+    verification_ratio_min: 0.5
+    premortem_causes_min: 5
+    biases_checked_min: 5
+
+# Methods library reference
+methods:
+  epistemological:
+    - E001_Abductive_Reasoning
+    - E002_Counterfactual_Thinking
+    - E003_Minimal_Assertions
+    - E004_Boundary_Analysis
+    - E005_Causal_Models
+    - E006_Falsification
+    - E007_Information_Questions
+  fear_based:
+    - E008_Failure_Reason_Exploration
+    - E009_Reverse_Abduction
+    - E010_Cognitive_MVP
+    - E011_Control_Influence_Analysis
+    - E012_Fundamental_Block_Analysis
+    - E013_Contrast_Exploration
+    - E014_Growth_Test
+  mapping:
+    - M001_Dimension_Discovery
+    - M002_Option_Enumeration
+    - M003_Constraint_Mapping
+    - M011_Consequence_Analysis
+    - M012_Reversibility_Check
+    - M013_Dependency_Analysis
+    - M021_Premortem
+    - M022_Black_Swan_Hunt
+    - M023_Assumption_Stress_Test
+
+# File paths
+paths:
+  steps: steps/
+  methods: data/method-procedures/
+  scoring: data/coverage-scoring.yaml
+  report_template: data/exploration-report-template.md
