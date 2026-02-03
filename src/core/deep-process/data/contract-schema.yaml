@@ -1,0 +1,187 @@
+# Deep-Process v3.6 — Universal Contract Schema
+# YAML header required for every artifact
+
+schema_version: "3.6"
+description: "Universal Contract that every .md file in artifacts/ must have"
+
+contract:
+  type: object
+  required:
+    - dp_id
+    - dp_type
+    - dp_status
+    - version
+    - context
+    - semantic_hash
+    - transaction
+
+  properties:
+    dp_id:
+      type: string
+      pattern: "^[A-Z]+-[A-Z0-9-]+$"
+      description: |
+        Unique identifier following naming convention:
+        - VISION-XXX for vision documents
+        - ARCH-XXX for architecture
+        - EPIC-XXX for epics
+        - TASK-XXX for tasks
+        - PROC-XXX for processes
+        - DP-XXX for decision points
+      examples:
+        - "EPIC-USER-LOGIN"
+        - "ARCH-DATABASE-DESIGN"
+        - "PROC-MIGRATION-LEGACY"
+
+    dp_type:
+      type: string
+      enum:
+        - artifact      # Content document (vision, arch, epic, etc.)
+        - process       # Executable procedure
+        - decision-point # Human-in-the-loop checkpoint
+        - agent         # Role manifest
+      description: "Type of the document"
+
+    dp_status:
+      type: string
+      enum:
+        - NOW                 # Currently being worked on
+        - STALE               # Needs update (parent changed)
+        - COMMITTED           # Validated and saved
+        - FAILED              # Validation failed
+        - AWAITING_USER_INPUT # Decision point waiting for human
+        - BLOCKED             # Cannot proceed (dependency blocked)
+      description: "Current status in the workflow"
+
+    version:
+      type: string
+      const: "3.6"
+      description: "Deep-Process version (must be 3.6)"
+
+    context:
+      type: object
+      required:
+        - depends_on
+      properties:
+        depends_on:
+          type: array
+          items:
+            type: object
+            required:
+              - path
+              - type
+            properties:
+              path:
+                type: string
+                description: "Relative path to dependency"
+              type:
+                type: string
+                enum:
+                  - semantic_source  # Changes invalidate content
+                  - hard_constraint  # Changes invalidate logic
+                  - weak_reference   # Informational only
+                description: "How strongly this dependency affects the node"
+          description: "List of dependencies"
+
+        source_id:
+          type: string
+          description: "Original source for lineage tracking"
+
+        tags:
+          type: array
+          items:
+            type: string
+          description: "Classification tags"
+
+    semantic_hash:
+      type: array
+      items:
+        type: string
+        minLength: 5
+      minItems: 1
+      description: |
+        List of facts that must remain true regardless of text rewrites.
+        These are the "ground truth" of the document.
+        Format: "Category: Specific fact"
+      examples:
+        - "Auth: OAuth2 via Google"
+        - "MFA: Required for Admin"
+        - "Session: 24h JWT"
+        - "Platform: Web-first"
+
+    execution:
+      type: object
+      properties:
+        active_methods:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+            maximum: 166
+          description: "Method numbers injected by PM for this artifact"
+
+        logic_gates:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Conditional execution paths"
+
+        constraints:
+          type: array
+          items:
+            type: string
+          description: "Hard constraints that must not be violated"
+
+    transaction:
+      type: object
+      required:
+        - saga_id
+      properties:
+        saga_id:
+          type: string
+          pattern: "^tx-[0-9]+$"
+          description: "Current transaction ID"
+
+        previous_hash:
+          type: string
+          description: "Hash of previous version for rollback"
+
+        checkpoint:
+          type: string
+          format: date-time
+          description: "When this version was checkpointed"
+
+# Template for new artifacts
+template: |
+  ---
+  dp_id: "{TYPE}-{NAME}"
+  dp_type: "artifact"
+  dp_status: "NOW"
+  version: "3.6"
+
+  context:
+    depends_on:
+      - path: "artifacts/vision.md"
+        type: "semantic_source"
+
+  semantic_hash:
+    - "Fact 1: Description"
+    - "Fact 2: Description"
+
+  execution:
+    active_methods: []
+    logic_gates: {}
+
+  transaction:
+    saga_id: "tx-XXXX"
+    previous_hash: null
+  ---
+
+  # {Title}
+
+  ## Overview
+
+  {Content goes here}
+
+  ## Details
+
+  {More content}

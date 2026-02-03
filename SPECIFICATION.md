@@ -33,25 +33,29 @@ System nie jest chatbotem. Jest **Semantycznym Systemem Operacyjnym**, który wy
 
 ## 2. FILESYSTEM ARCHITECTURE (The Hardware)
 
-System opiera się na sztywnej strukturze katalogów, która pełni rolę bazy danych.
+Architektura oparta na modelu obiektowym: **Meta-Klasa (Silnik) -> Klasa (Definicja Procesu) -> Instancja (Wykonanie)**.
 
 ```text
 /project-root/
-├── .deep-process/                  # SYSTEM KERNEL (Hidden)
-│   ├── enforcer.md                 # BIOS: Method Translator & Invariants
-│   ├── state.json                  # GLOBAL REGISTRY (Graph DB)
-│   ├── backups/                    # SAGA LOG (Rollback storage)
-│   ├── agents/                     # ROLE MANIFESTS (PM, Architect, Validator)
-│   └── processes/                  # EXECUTABLE LOGIC (Templates with Gates)
+├── .deep-process/                  # META-CLASS CORE (The Engine)
+│   ├── enforcer.md                 # System Invariants (Base Logic)
+│   ├── registry.json               # Global Process Table
+│   ├── agents/                     # Base Roles (Validator, Orchestrator)
+│   └── processes/                  # DERIVED CLASSES (Definitions)
+│       ├── PROC-DEV/               # Klasa: Proces Deweloperski
+│       │   └── definition.md       # Logika specyficzna (What to do)
+│       └── PROC-MIGRATION/         # Klasa: Proces Migracji
+│           └── definition.md
 │
-├── artifacts/                      # USER SPACE (The Output)
-│   ├── vision.md
-│   ├── architecture.md
-│   └── ... (Subfolders allowed)
+├── artifacts/                      # INSTANCES (Runtime Objects)
+│   └── [PROCESS_CLASS]/            # Np. "PROC-DEV"
+│       └── [EXECUTION_ID]/         # Np. "sprint-24-login"
+│           ├── .deep-process/      # Local State (Inherited Context)
+│           ├── vision.md           # Wynik działania tej instancji
+│           └── ...
 │
-├── .claude/commands/               # CLI INTERFACE (Shims)
-│   ├── deep-process.json           # Entry point for Project Manager
-│   └── audit.json                  # Entry point for Validator
+├── .claude/commands/               # CLI INTERFACE
+│   └── ...
 │
 └── SPECIFICATION.md                # THIS FILE
 ```
@@ -266,12 +270,18 @@ Mechanizm importu procesów zewnętrznych (Legacy/Mental/External) do standardu 
 *   **Test Odwracalności (#114):** Symulacja: "Mając tylko te nowe pliki SRE, odtwórz opis oryginalnego procesu". Jeśli opis różni się od oryginału -> BŁĄD TRANSFORMACJI.
 
 ### 8.2. Obsługa Plików i Rejestracja (State Awareness)
-Nowo powstałe procesy są "widziane" przez system tylko wtedy, gdy zostaną zarejestrowane.
 
-1.  **Fizyczna Lokalizacja:**
-    Wszystkie przetransformowane procesy trafiają do: `artifacts/processes/[NAZWA_PROCESU]/`.
-2.  **Rejestracja w Grafie:**
-    Transformator musi zakończyć pracę blokiem `[UPDATE_STATE]`, który dodaje wpisy do `state.json` z tagiem `origin: migrated`.
+Proces migracji tworzy nową **Klasę Procesu**, która dziedziczy po Meta-Klasie Deep-Process.
+
+1.  **Nowa Klasa Procesu (Definicja):**
+    *   System generuje folder: `.deep-process/processes/[NAZWA_PROCESU]/`.
+    *   W środku umieszcza `definition.md`, który zawiera specyficzną logikę biznesową, ale w sekcji `inheritance` wskazuje na `.deep-process/enforcer.md`.
+
+2.  **Raport z Migracji (Instancja):**
+    *   Dokumentacja przebiegu transformacji trafia do: `artifacts/PROC-MIGRATION/[ID_MIGRACJI]/`.
+
+3.  **Rejestracja:**
+    *   Nowa klasa jest dodawana do indeksu dostępnych procesów. Od tej pory można ją instancjonować komendą `deep-process`.
 
 ---
 

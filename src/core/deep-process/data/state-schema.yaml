@@ -1,0 +1,224 @@
+# Deep-Process v3.6 — State Schema
+# The global registry that serves as the graph database
+
+schema_version: "3.6"
+description: "Schema for .deep-process/state.json - the system's memory"
+
+state:
+  type: object
+  required:
+    - version
+    - initialized_at
+    - last_modified
+    - nodes
+    - edges
+    - transactions
+
+  properties:
+    version:
+      type: string
+      pattern: "^3\\.6(\\.\\d+)?$"
+      description: "Deep-Process version"
+
+    initialized_at:
+      type: string
+      format: date-time
+      description: "When the system was bootstrapped"
+
+    last_modified:
+      type: string
+      format: date-time
+      description: "Last state update timestamp"
+
+    current_saga:
+      type: string
+      nullable: true
+      description: "Active transaction ID (null if none)"
+
+    nodes:
+      type: object
+      description: "All artifacts, processes, decision-points in the graph"
+      additionalProperties:
+        $ref: "#/definitions/node"
+
+    edges:
+      type: array
+      items:
+        $ref: "#/definitions/edge"
+      description: "Dependency relationships between nodes"
+
+    transactions:
+      type: array
+      items:
+        $ref: "#/definitions/transaction"
+      description: "Transaction log for rollback support"
+
+definitions:
+  node:
+    type: object
+    required:
+      - dp_id
+      - dp_type
+      - dp_status
+      - path
+      - semantic_hash
+    properties:
+      dp_id:
+        type: string
+        pattern: "^[A-Z]+-[A-Z0-9-]+$"
+        description: "Unique identifier (e.g., EPIC-USER-LOGIN)"
+
+      dp_type:
+        type: string
+        enum: [artifact, process, decision-point, agent]
+        description: "Node type"
+
+      dp_status:
+        type: string
+        enum: [NOW, STALE, COMMITTED, FAILED, AWAITING_USER_INPUT, BLOCKED]
+        description: "Current status"
+
+      path:
+        type: string
+        description: "Relative path to the file"
+
+      semantic_hash:
+        type: array
+        items:
+          type: string
+        description: "List of facts that must remain true"
+
+      created_at:
+        type: string
+        format: date-time
+
+      modified_at:
+        type: string
+        format: date-time
+
+      origin:
+        type: string
+        enum: [created, migrated, generated]
+        default: created
+
+      active_methods:
+        type: array
+        items:
+          type: integer
+        description: "Methods injected for this node"
+
+  edge:
+    type: object
+    required:
+      - from
+      - to
+      - type
+    properties:
+      from:
+        type: string
+        description: "Source node dp_id"
+
+      to:
+        type: string
+        description: "Target node dp_id"
+
+      type:
+        type: string
+        enum: [semantic_source, hard_constraint, weak_reference, blocks]
+        description: "Dependency type"
+
+      created_at:
+        type: string
+        format: date-time
+
+  transaction:
+    type: object
+    required:
+      - saga_id
+      - status
+      - started_at
+      - operations
+    properties:
+      saga_id:
+        type: string
+        pattern: "^tx-[0-9]+$"
+        description: "Transaction identifier"
+
+      status:
+        type: string
+        enum: [PENDING, COMMITTED, ROLLED_BACK]
+
+      started_at:
+        type: string
+        format: date-time
+
+      completed_at:
+        type: string
+        format: date-time
+        nullable: true
+
+      operations:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [CREATE, UPDATE, DELETE, FLAG_STALE]
+            target:
+              type: string
+              description: "dp_id of affected node"
+            backup_path:
+              type: string
+              description: "Path to backup file for rollback"
+
+# Example state.json
+example:
+  version: "3.6"
+  initialized_at: "2025-01-30T10:00:00Z"
+  last_modified: "2025-01-30T14:30:00Z"
+  current_saga: null
+  nodes:
+    VISION-001:
+      dp_id: "VISION-001"
+      dp_type: "artifact"
+      dp_status: "COMMITTED"
+      path: "artifacts/vision.md"
+      semantic_hash:
+        - "Target: Small teams (2-10 developers)"
+        - "Core value: Speed over perfection"
+        - "Platform: Web-first, mobile later"
+      created_at: "2025-01-30T10:05:00Z"
+      modified_at: "2025-01-30T10:05:00Z"
+      origin: "created"
+      active_methods: [71, 79, 152]
+
+    ARCH-001:
+      dp_id: "ARCH-001"
+      dp_type: "artifact"
+      dp_status: "STALE"
+      path: "artifacts/architecture.md"
+      semantic_hash:
+        - "Pattern: Modular monolith"
+        - "Database: PostgreSQL"
+        - "API: REST + WebSocket"
+      created_at: "2025-01-30T11:00:00Z"
+      modified_at: "2025-01-30T12:00:00Z"
+      origin: "created"
+      active_methods: [87, 114, 154]
+
+  edges:
+    - from: "ARCH-001"
+      to: "VISION-001"
+      type: "semantic_source"
+      created_at: "2025-01-30T11:00:00Z"
+
+  transactions:
+    - saga_id: "tx-0001"
+      status: "COMMITTED"
+      started_at: "2025-01-30T10:05:00Z"
+      completed_at: "2025-01-30T10:05:30Z"
+      operations:
+        - type: "CREATE"
+          target: "VISION-001"
+          backup_path: null
