@@ -142,6 +142,26 @@ IMPORTANT CONSTRAINTS:
 - Never skip SYNTHESIS when multiple processes have been run — unintegrated findings miss emergent insights
 - Always apply META methods when stakes are high
 - For Complex (Cynefin) problems: probe, don't analyze
+- After 3+ processes complete: consider CPCPA to find mega-critical points
+
+CROSS-PROCESS CRITICAL PATH ANALYSIS (CPCPA):
+An integrative method (not a sixth process) that identifies MEGA-CRITICAL POINTS where multiple dimensions of criticality converge on the same element.
+
+Six dimensions of criticality:
+- Temporal: What determines minimum time? (from FEASIBILITY)
+- Reliability: What failure cascades? (from RISK)
+- Value: What creates/destroys value? (from EXPLORE + SYNTHESIS)
+- Resource: What constrains throughput? (from FEASIBILITY)
+- Decision: Which choice determines others? (from EXPLORE)
+- Information: What knowledge gap blocks progress? (from SYNTHESIS)
+
+Run CPCPA when:
+- At least 3 processes have completed
+- You need to prioritize where to focus attention
+- You suspect hidden dependencies across process findings
+- You need to identify what MUST NOT FAIL
+
+A mega-critical point (3+ dimensions) requires disproportionate attention: protection, redundancy, monitoring, and contingency planning.
 </deep_analysis_framework>
 ```
 
@@ -216,18 +236,30 @@ User request received
 The default sequence for major decisions:
 
 ```
-EXPLORE                    VERIFY                    FEASIBILITY               RISK                     SYNTHESIS
-───────                    ──────                    ───────────               ────                     ─────────
-1. MAP options         →   4. Check correctness  →   7. Assess feasibility →  10. Identify risks   →   14. Integrate all
-2. ILLUMINATE effects      5. Find conflicts         8. Validate critical      11. Quantify severity     15. Find emergence
-3. CHALLENGE assumptions   6. Test impossibilities    9. Decide Go/No-Go       12. Design mitigations    16. Build framework
-                                                                               13. Build monitoring      17. Distill principles
+EXPLORE                    VERIFY                    FEASIBILITY               RISK                     
+───────                    ──────                    ───────────               ────                     
+1. MAP options         →   4. Check correctness  →   7. Assess feasibility →  10. Identify risks       
+2. ILLUMINATE effects      5. Find conflicts         8. Validate critical      11. Quantify severity    
+3. CHALLENGE assumptions   6. Test impossibilities    9. Decide Go/No-Go       12. Design mitigations   
+                                                                               13. Build monitoring     
+                                                         │
+                                                         ▼
+                                                      CPCPA (after 3+ processes)
+                                                         │
+                                                         ▼
+                                                     SYNTHESIS
+                                                     ─────────
+                                                     14. Integrate all
+                                                     15. Find emergence
+                                                     16. Build framework
+                                                     17. Distill principles
 
 Feedback loops:
 - Step 6 (impossibility) → Step 1 (new options)
 - Step 9 (infeasible) → Step 1 (reframe) or Step 3 (new constraints)
 - Step 12 (mitigation) → Step 8 (is mitigation feasible?)
 - Step 10 (risks) → Step 7 (risks change feasibility)
+- CPCPA (mega-critical point) → disproportionate attention, may trigger re-analysis
 - Step 15 (emergence) → Step 4 (verify emergent pattern) or Step 1 (new options from insight)
 - Step 16 (framework) → may reveal gaps requiring more EXPLORE or VERIFY
 ```
@@ -523,6 +555,8 @@ SYNTHESIS finds unresolved contradiction between process outputs
 | All scores are similar | Apply Simpson's Paradox Audit |
 | Dashboard all green | Apply Goodhart's Law Check |
 | High stakes, irreversible | Apply ALL META methods from every process |
+| 3+ processes completed | Run CPCPA to identify mega-critical points |
+| Unclear where to focus | Run CPCPA to find convergent criticalities |
 
 ---
 
@@ -646,6 +680,215 @@ Build domain understanding → identify actionable implications → generate opt
 - Re-assess feasibility of in-flight projects
 - Refresh risk registers
 - Challenge assumptions from previous quarters
+
+---
+
+## Cross-Process Critical Path Analysis (CPCPA)
+
+*An integrative method that identifies what is CRITICAL across all five processes. Not a sixth process, but a lens that synthesizes findings from the pentad to reveal mega-critical points.*
+
+### The Problem CPCPA Solves
+
+Each process identifies its own "critical" elements:
+- EXPLORE finds critical decisions and dependencies
+- VERIFY finds critical correctness concerns
+- FEASIBILITY finds binding constraints and critical path (temporal)
+- RISK finds critical risks and SPOFs
+- SYNTHESIS finds critical patterns and insights
+
+**But no single process answers:** "What is critical ACROSS ALL DIMENSIONS simultaneously?"
+
+A component might be:
+- On the temporal critical path (delay here = project delay)
+- A single point of failure (failure here = system failure)
+- A binding constraint (this limits everything else)
+- A critical decision point (this choice determines downstream options)
+- A critical knowledge gap (we don't understand this well enough)
+
+When multiple criticalities **converge on the same element** → that's a **mega-critical point** requiring disproportionate attention.
+
+### Six Dimensions of Criticality
+
+| Dimension | Question | Source Process | Detection Method |
+|-----------|----------|----------------|------------------|
+| **Temporal** | What determines minimum time? | FEASIBILITY #205 | Critical Path Method (CPM), longest dependency chain |
+| **Reliability** | What failure would cascade/paralyze? | RISK #306 | Min-cut analysis, SPOF detection |
+| **Value** | What creates/destroys the most value? | EXPLORE + SYNTHESIS | Value stream mapping, impact analysis |
+| **Resource** | What constrains throughput? | FEASIBILITY #102, #202 | Theory of Constraints, bottleneck identification |
+| **Decision** | Which decision determines others? | EXPLORE | Dependency analysis, option trees |
+| **Information** | What knowledge gap blocks progress? | FEASIBILITY #203, SYNTHESIS #206 | Knowledge dependency mapping |
+
+### CPCPA Method
+
+#### Step 1: Collect Criticality Data from Each Process
+
+| From Process | Extract | Format |
+|--------------|---------|--------|
+| **EXPLORE** | Critical decisions (gates that determine downstream) | `decisions[] → {decision, downstream_impact, reversibility}` |
+| **EXPLORE** | Key dependencies between options | `dependencies[] → {from, to, strength}` |
+| **VERIFY** | Critical correctness concerns | `concerns[] → {claim, if_wrong_impact, confidence}` |
+| **FEASIBILITY** | Binding constraint | `binding_constraint → {dimension, element, score}` |
+| **FEASIBILITY** | Critical path (temporal) | `critical_path[] → {task, duration, float}` |
+| **FEASIBILITY** | Resource bottlenecks | `bottlenecks[] → {resource, utilization, queue_depth}` |
+| **RISK** | High-severity risks | `critical_risks[] → {risk, composite_score, non_ergodic}` |
+| **RISK** | Min-cut elements | `spofs[] → {element, cut_size, blast_radius}` |
+| **RISK** | Cascade root risks | `cascade_roots[] → {risk, downstream_count}` |
+| **SYNTHESIS** | Critical knowledge gaps | `gaps[] → {gap, impact_on_synthesis, addressable}` |
+| **SYNTHESIS** | Unresolved contradictions | `contradictions[] → {tension, impact, resolution_status}` |
+
+#### Step 2: Map Elements to Criticality Dimensions
+
+Create a matrix: Elements × Dimensions
+
+```
+                    Temporal  Reliability  Value  Resource  Decision  Information
+                    ────────  ───────────  ─────  ────────  ────────  ───────────
+Delta merge logic      ●          ●          ●                           ●
+EPR calculation        ●          ●          ●                 ●
+Senior engineer                   ●                   ●                  ●
+Mars data format       ●                     ●                 ●         ●
+Databricks cluster               ●                   ●
+Q2 deadline            ●                     ●                 ●
+
+● = element is critical in this dimension
+```
+
+#### Step 3: Identify Mega-Critical Points
+
+**Mega-critical point:** Element with criticality in 3+ dimensions
+
+Rank by: `criticality_score = count(dimensions) × max(severity_in_any_dimension)`
+
+```
+MEGA-CRITICAL POINTS (3+ dimensions):
+
+1. EPR calculation logic — 4 dimensions (Temporal, Reliability, Value, Decision)
+   ├── On temporal critical path (delay = missed regulatory deadline)
+   ├── SPOF in reliability (bug = wrong filing = regulatory penalty)
+   ├── Core value delivery (the whole point of the project)
+   └── Decision gate (approach choice affects all downstream)
+   → REQUIRES: Disproportionate testing, review, documentation, backup plan
+
+2. Mars data format — 4 dimensions (Temporal, Value, Decision, Information)
+   ├── On critical path (waiting for spec = project delay)
+   ├── Value dependency (wrong format = rework)
+   ├── Decision dependency (format determines architecture choices)
+   └── Knowledge gap (we don't fully understand their data model)
+   → REQUIRES: Immediate clarification, format validation spike, assumption documentation
+
+3. Senior engineer — 3 dimensions (Reliability, Resource, Information)
+   ├── Key person SPOF (if unavailable, no one else knows the system)
+   ├── Resource bottleneck (100% utilized, queue forming)
+   └── Knowledge concentration (tacit knowledge not documented)
+   → REQUIRES: Knowledge transfer, documentation sprint, backup person identification
+```
+
+#### Step 4: Validate Criticality
+
+Not everything that LOOKS critical IS critical. Validate:
+
+| Validation Method | What It Tests | From Process |
+|-------------------|---------------|--------------|
+| **Float analysis** | Is temporal criticality real? (zero float = truly critical) | FEASIBILITY |
+| **Chaos probe** | Is reliability criticality real? (does failure actually cascade?) | RISK #110 |
+| **Sensitivity analysis** | Is value criticality real? (does change here change outcome?) | FEASIBILITY #207, SYNTHESIS |
+| **Utilization measurement** | Is resource criticality real? (is it actually the bottleneck?) | FEASIBILITY |
+| **Decision tree pruning** | Is decision criticality real? (do alternatives exist?) | EXPLORE |
+| **Knowledge test** | Is information criticality real? (can we proceed without it?) | SYNTHESIS |
+
+**False criticality** is dangerous — it wastes attention on non-bottlenecks while real bottlenecks are ignored.
+
+#### Step 5: Respond to Mega-Critical Points
+
+| Response Type | When | Actions |
+|---------------|------|---------|
+| **Protect** | Cannot eliminate criticality | Redundancy, buffers, monitoring, documentation |
+| **Reduce** | Can add parallel paths | Parallelize, add alternatives, decouple |
+| **Transfer** | Can shift criticality elsewhere | Redesign to move critical path, outsource |
+| **Accept** | Low severity despite criticality | Document, monitor, have contingency |
+
+For each mega-critical point, define:
+1. **Primary response** — how to address the criticality
+2. **Contingency** — what if the critical element fails anyway?
+3. **Monitoring** — how will we know if criticality is shifting?
+
+### Criticality Shift Detection
+
+Critical paths are not static. They shift when:
+- A task completes faster/slower than planned → new temporal critical path
+- A risk materializes → new reliability critical point
+- Requirements change → new value critical elements
+- Team changes → new resource bottleneck
+- Decision is made → new decision tree active
+
+**Monitoring protocol:**
+1. After each major milestone: re-run CPCPA Step 2-3
+2. After any process output changes significantly: check if mega-critical points changed
+3. Weekly (for active projects): quick criticality pulse check
+
+### Integration with Pentad Workflow
+
+CPCPA runs AFTER at least 3 processes have completed (minimum data for meaningful cross-process analysis):
+
+```
+EXPLORE → VERIFY → FEASIBILITY → RISK
+                       │
+                       ▼
+                    CPCPA ←───── Can run here (enough data)
+                       │
+                       ▼
+                  SYNTHESIS ←─── CPCPA findings feed into synthesis
+                       │
+                       ▼
+                    CPCPA ←───── Re-run after synthesis (may reveal new criticalities)
+```
+
+CPCPA output feeds into:
+- **SYNTHESIS** — mega-critical points are key elements for integration
+- **RISK** — mega-critical points need monitoring design
+- **FEASIBILITY** — if mega-critical point is infeasible, project is infeasible
+
+### CPCPA Output Template
+
+```
+CROSS-PROCESS CRITICAL PATH ANALYSIS
+
+Date: [When]
+Processes included: [Which processes contributed data]
+
+CRITICALITY MATRIX:
+[Element × Dimension matrix with ● marks]
+
+MEGA-CRITICAL POINTS (3+ dimensions):
+
+1. [Element]
+   Dimensions: [List]
+   Why critical in each: [Brief explanation per dimension]
+   Validation: [How confirmed]
+   Response: [Primary response]
+   Contingency: [If element fails]
+   Monitoring: [How to detect shift]
+
+2. [Element]
+   ...
+
+CRITICALITY SHIFTS TO WATCH:
+- [What could shift the critical path]
+- [Early indicators of shift]
+
+NEXT CPCPA: [When to re-run]
+```
+
+### Theoretical Grounding
+
+| Principle | Application in CPCPA |
+|-----------|---------------------|
+| **Theory of Constraints (Goldratt)** | System limited by ONE constraint. But which dimension's constraint is binding? CPCPA finds where constraints COMPOUND. |
+| **Min-Cut/Max-Flow (Ford-Fulkerson)** | Reliability critical path is the min-cut. CPCPA extends to multi-dimensional cuts. |
+| **Little's Law (L = λW)** | Queues reveal bottlenecks. CPCPA looks for queues across all dimensions — decisions waiting, knowledge waiting, not just tasks waiting. |
+| **Drum-Buffer-Rope (Goldratt)** | Protect the constraint with buffers. CPCPA identifies WHICH constraint to protect when multiple exist. |
+| **Value Stream Mapping (Lean)** | Map value flow, find waste. CPCPA extends to decision flow, knowledge flow, not just material/work flow. |
+| **DSM (Steward)** | Dependency Structure Matrix reveals coupling. CPCPA uses multi-dimensional DSM. |
 
 ---
 
@@ -841,3 +1084,8 @@ The framework draws on theoretical foundations across all four processes:
 - Glaser, B. & Strauss, A. (1967). The Discovery of Grounded Theory
 - Nonaka, I. & Takeuchi, H. (1995). The Knowledge-Creating Company
 - Anderson, L.W. & Krathwohl, D.R. (2001). A Taxonomy for Learning, Teaching, and Assessing
+- Ford, L.R. & Fulkerson, D.R. (1956). Maximal Flow Through a Network
+- Little, J. (1961). A Proof for the Queuing Formula: L = λW
+- Steward, D.V. (1981). The Design Structure System
+- Ohno, T. (1988). Toyota Production System: Beyond Large-Scale Production
+- Womack, J. & Jones, D. (1996). Lean Thinking
