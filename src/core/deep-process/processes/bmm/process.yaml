@@ -1,40 +1,53 @@
+# BMM Process Manifest
+# Minimal metadata - workflow.md is the source of truth
+
 id: bmm
-version: "3.0 (Enterprise Ready)"
-domain: business-modeling
-description: "Complete OMG Business Motivation Model with Agents and Roadmap"
+version: "3.0"
+domain: product-development
+description: "Business Motivation Model - From Idea to Working Product"
 
-phases:
-  - id: setup
-    name: "0. Setup (Agents & CLI)"
-    path: phases/0-setup
-    entry_point: 0.0-export-agents.md
+# Source of truth - self-contained executable
+workflow: workflow.md
 
-  - id: ends
-    name: "1. Define Ends (Vision & Goals)"
-    path: phases/1-ends
-    entry_point: 1.1-define-vision.md
+# Configuration
+config: config.yaml
 
-  - id: means
-    name: "2. Define Means (Mission & Strategy)"
-    path: phases/2-means
-    entry_point: 2.1-define-mission.md
+# Agents (optional, with contracts)
+agents:
+  index: agents/_index.yaml
+  files:
+    - agents/analyst.md
+    - agents/pm.md
+    - agents/architect.md
+    - agents/ux-designer.md
+    - agents/dev.md
+    - agents/sm.md
+    - agents/quinn.md
 
-  - id: influencers
-    name: "3. Identify Influencers"
-    path: phases/3-influencers
-    entry_point: 3.1-identify-influencers.md
+# Workflows by phase
+workflows:
+  phase-1-analysis:
+    - workflows/1-analysis/research/workflow.md
+    - workflows/1-analysis/create-product-brief/workflow.md
+  phase-2-planning:
+    - workflows/2-plan-workflows/create-prd/workflow.md
+    - workflows/2-plan-workflows/create-ux-design/workflow.md
+  phase-3-solutioning:
+    - workflows/3-solutioning/create-architecture/workflow.md
+    - workflows/3-solutioning/create-epics-and-stories/workflow.md
+    - workflows/3-solutioning/check-implementation-readiness/workflow.md
+  phase-4-implementation:
+    - workflows/4-implementation/sprint-planning/workflow.yaml
+    - workflows/4-implementation/sprint-status/workflow.yaml
+    - workflows/4-implementation/create-story/workflow.yaml
+    - workflows/4-implementation/dev-story/workflow.yaml
+    - workflows/4-implementation/code-review/workflow.yaml
+    - workflows/4-implementation/correct-course/workflow.yaml
+    - workflows/4-implementation/retrospective/workflow.yaml
 
-  - id: assessments
-    name: "4. Assess Impacts"
-    path: phases/4-assessments
-    entry_point: 4.1-assess-influencers.md
-
-  - id: realization
-    name: "5. Realization (Bridge to IT)"
-    path: phases/5-realization
-    entry_point: 5.1-map-strategy-to-epics.md
-
-  - id: reporting
-    name: "6. Reporting & Roadmap"
-    path: phases/6-reporting
-    entry_point: 6.1-generate-roadmap.md
+# File structure reference
+paths:
+  workflows: workflows/
+  agents: agents/
+  data: data/
+  schemas: schemas/

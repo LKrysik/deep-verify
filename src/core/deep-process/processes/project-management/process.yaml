@@ -1,7 +1,15 @@
 id: project-management
-version: "2.0"
+version: "2.1"
 domain: software-development
 description: "Transform idea into working, tested software through structured phases"
+
+# Default Configuration (Will be copied to .state/config.yaml on init)
+default_config:
+  paths:
+    artifacts: "artifacts/"
+    docs: "artifacts/"
+    code: "src/"
+    tests: "tests/"
 
 phases:
   - id: ideation

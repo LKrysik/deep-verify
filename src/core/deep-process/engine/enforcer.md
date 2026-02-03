@@ -35,9 +35,11 @@ You must manage these files as your long-term memory:
 
 ## 3. ARTIFACT RULES
 
-1.  **File Paths:** Always use the exact paths defined in the contract (e.g., `artifacts/stories/STORY-001.yaml`).
-2.  **Consistency:** Ensure that IDs inside files (e.g., `id: EPIC-001`) match the filename (`EPIC-001.yaml`) and the entry in `items.yaml`.
-3.  **Traceability:** When a story belongs to an epic, it MUST contain an `epic_id` field referencing a valid epic in the state.
+1.  **Path Resolution:** Contracts may use variables like `{paths.artifacts}`. You MUST resolve these using the values in `.state/config.yaml` before reading or writing.
+    *   *Example:* Contract says `{paths.artifacts}/idea.md`. Config says `artifacts: "output/"`. You write to `output/idea.md`.
+2.  **File Paths:** Always use the resolved, absolute paths.
+3.  **Consistency:** Ensure that IDs inside files match the filename and the entry in `items.yaml`.
+4.  **Traceability:** When a story belongs to an epic, it MUST contain an `epic_id` field.
 
 ---
 

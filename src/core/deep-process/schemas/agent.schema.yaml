@@ -1,0 +1,40 @@
+# Meta-Schema: Agent Definition
+# Validates: artifacts/agents/*.yaml
+
+type: object
+required:
+  - id
+  - name
+  - role
+  - base_prompt
+
+properties:
+  id:
+    type: string
+    description: "Unique agent ID"
+
+  name:
+    type: string
+    description: "Display name"
+
+  role:
+    type: string
+    description: "Short role description"
+
+  description:
+    type: string
+    description: "Detailed description of responsibilities"
+
+  base_prompt:
+    type: string
+    description: "The System Prompt that defines the persona"
+
+  skills:
+    type: array
+    items: { type: string }
+    description: "List of capabilities (e.g. 'python', 'architecture')"
+
+  tools:
+    type: array
+    items: { type: string }
+    description: "List of tool names this agent is allowed to use"

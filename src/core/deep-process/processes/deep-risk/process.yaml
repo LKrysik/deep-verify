@@ -6,17 +6,13 @@ version: "1.0"
 domain: risk-assessment
 description: "Systematic Risk Assessment - theory-grounded, interaction-aware"
 
-# Source of truth - self-contained executable
-workflow: workflow.md
+# Default Configuration for project workspace
+default_config:
+  paths:
+    artifacts: "artifacts/"
+    registers: "artifacts/risk-registers/"
+    assessments: "artifacts/assessments/"
 
-# Optional agent entry points
-agents:
-  - agent.md  # optional, not required
-
-# File structure reference
+# File structure reference for the engine
 paths:
   steps: steps/
-  data: data/
-  methods: data/method-procedures/
-  meta: meta/
-  patterns: data/risk-pattern-libraries/

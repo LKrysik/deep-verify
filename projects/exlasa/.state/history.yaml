@@ -1,0 +1,13 @@
+entries:
+  - id: 1
+    action: "init-project"
+    at: "2026-02-03T13:00:00Z"
+    details:
+      project_name: "exlasa"
+      process: "bmm"
+  - id: 2
+    action: "export-agents"
+    at: "2026-02-03T13:10:00Z"
+    details:
+      target: "gemini"
+      count: 3

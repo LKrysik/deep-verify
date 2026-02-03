@@ -6,15 +6,13 @@ version: "2.1"
 domain: decision-exploration
 description: "Knowledge-First Decision Exploration"
 
-# Source of truth - self-contained executable
-workflow: workflow.md
+# Default Configuration for project workspace
+default_config:
+  paths:
+    artifacts: "artifacts/"
+    research: "research/"
+    reports: "reports/"
 
-# Optional agent entry points
-agents:
-  - agent.md  # optional, not required
-
-# File structure reference
+# File structure reference for the engine
 paths:
   steps: steps/
-  data: data/
-  methods: data/method-procedures/

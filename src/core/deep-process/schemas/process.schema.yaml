@@ -1,0 +1,53 @@
+# Meta-Schema: Process Definition
+# Validates: processes/{process_id}/process.yaml
+
+type: object
+required:
+  - id
+  - version
+  - domain
+  - description
+  - phases
+
+properties:
+  id:
+    type: string
+    description: "Unique identifier for the process (folder name)"
+  
+  version:
+    type: string
+    description: "Semantic version of the process definition"
+  
+  domain:
+    type: string
+    description: "Functional domain (e.g., software-development, risk-assessment)"
+  
+  description:
+    type: string
+    description: "Human-readable summary of what this process achieves"
+
+  default_config:
+    type: object
+    description: "Default paths and settings to be copied to project .state/config.yaml"
+    properties:
+      paths:
+        type: object
+        properties:
+          artifacts: { type: string }
+          docs: { type: string }
+
+  phases:
+    type: array
+    description: "Ordered list of execution phases"
+    items:
+      type: object
+      required: [id, name, path]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        path: { type: string, description: "Relative path to phase directory" }
+        entry_point: { type: string, description: "First contract to execute (optional)" }
+
+  integrations:
+    type: object
+    description: "Supported external tool integrations"
