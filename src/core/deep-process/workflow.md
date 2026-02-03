@@ -189,6 +189,8 @@ This enables:
 │  PHASE 5: SYNC ──────────────────────────────────────────────────────────► │
 │    └── Operator approval → Write files → Update `.deep-process/state.json` │
 │                                                                             │
+│  [Q] QUIT ───────────────────────────────────────────────────────────────► │
+│    └── Save state → Release locks → Return to Project Manager              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -196,22 +198,24 @@ This enables:
 
 ## QUICK EXECUTION PATH
 
+**AUTO-BOOTSTRAP RULE:**
+If `.deep-process/` directory is missing → STOP reading. EXECUTE "BOOTSTRAP PROTOCOL" IMMEDIATELY.
+
 **Standard orchestration sequence:**
 
 ```
 📂 Loading data/state-schema.yaml
 
-1. BOOTSTRAP (First run only)
-   □ Initialize `.deep-process/` structure
-   □ Create empty `.deep-process/state.json`
-   □ Create `.deep-process/enforcer.md` (copy from `data/enforcer.md`)
-   □ Display Main Menu
+1. BOOTSTRAP / PROJECT MANAGER (Launcher)
+   □ Initialize/Load `.deep-process/` structure
+   □ Display Project Manager Menu ([N]ew, [M]igrate, [R]esume)
+   □ Operator selects Instance → Load Context
 
-2. SENSE PHASE
+2. SENSE PHASE (Deep-Pulse Loop Start)
    📂 Loading .deep-process/state.json
    □ Scan graph for STALE and BLOCKED nodes
    □ Build dependency topology
-   □ Present status menu to Operator
+   □ Present status menu to Operator (include [Q]uit option)
 
 3. PLAN PHASE
    □ Operator selects action
