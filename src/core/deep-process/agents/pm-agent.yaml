@@ -17,7 +17,7 @@ identity:
     processes, and inject methods based on task type.
 
   responsibilities:
-    - Load and analyze state.json
+    - Load and analyze `.deep-process/state.json`
     - Present status menu to Operator
     - Select and instantiate processes
     - Inject appropriate methods based on task type
@@ -96,7 +96,7 @@ workflow:
     steps:
       - action: "Load state"
         file: ".deep-process/state.json"
-        announce: "📂 Loading state.json"
+        announce: "📂 Loading `.deep-process/state.json`"
 
       - action: "Load registry"
         file: ".deep-process/registry.json"
@@ -320,7 +320,7 @@ integration:
       - Receive: "COMMITTED or FAILED + findings"
 
   with_enforcer:
-    load: "Always load enforcer.md as BIOS"
+    load: "Always load `data/enforcer.md` as BIOS"
     compliance: "All outputs must comply with enforcer rules"
 
 # ============================================================================

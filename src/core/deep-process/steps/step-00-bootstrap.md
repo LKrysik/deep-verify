@@ -15,11 +15,11 @@ Create the system kernel:
 
 ```
 📁 Create .deep-process/
-   ├── state.json          # Initialize empty state
-   ├── registry.json       # Initialize empty registry
-   ├── enforcer.md         # Copy from template
+   ├── state.json          # Initialize with `data/state-schema.yaml`
+   ├── registry.json       # Initialize with `data/registry-schema.yaml`
+   ├── enforcer.md         # Copy from `data/enforcer.md`
    ├── backups/            # Create empty directory
-   ├── agents/             # Copy agent manifests
+   ├── agents/             # Copy from `agents/`
    │   ├── pm-agent.yaml
    │   ├── validator-agent.yaml
    │   └── implementation-agent.yaml
@@ -116,8 +116,8 @@ TWOJE DYREKTYWY (BIOS):
 
 ZADANIE STARTOWE:
 1. Zmapuj obecną strukturę plików.
-2. Utwórz folder `.deep-process/` i pusty `state.json`.
-3. Utwórz `enforcer.md` z definicją metod.
+2. Utwórz folder `.deep-process/` i pusty `.deep-process/state.json`.
+3. Skopiuj `data/enforcer.md` do `.deep-process/enforcer.md`.
 4. Zgłoś gotowość wyświetlając Menu Główne.
 ```
 

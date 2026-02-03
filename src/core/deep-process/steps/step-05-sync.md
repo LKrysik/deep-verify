@@ -72,7 +72,7 @@ Verification: ✅
 
 ### Phase 5.3: State Update
 
-Update state.json with committed artifact:
+Update `.deep-process/state.json` with committed artifact:
 
 ```markdown
 ## State Update
@@ -167,7 +167,7 @@ Total flagged: {count}
 The SYNC phase produces:
 1. **Written artifact** in file system
 2. **Backup** of previous version (if update)
-3. **Updated state.json** with new status
+3. **Updated `.deep-process/state.json`** with new status
 4. **STALE flags** on dependent nodes
 
 ## Completion Display
@@ -214,7 +214,7 @@ Error at: {error_point}
 
 Rolling back:
 1. Restore from backup: {backup_path}
-2. Revert state.json to pre-SYNC
+2. Revert `.deep-process/state.json` to pre-SYNC
 3. Clear STALE flags set during SYNC
 
 Rollback complete. Artifact in previous state.

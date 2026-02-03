@@ -38,7 +38,7 @@ Execute mandatory anti-bias methods:
 
 ### Method #56: Liar's Trap
 
-📂 Loading method: 056_Liars_Trap.md
+📂 Loading method: `data/method-procedures/056_Liars_Trap.md`
 
 **Deception Vectors Examined:**
 
@@ -60,7 +60,7 @@ Vector 3: {identified_vector}
 
 ### Method #59: CUI BONO Test
 
-📂 Loading method: 059_CUI_BONO_Test.md
+📂 Loading method: `data/method-procedures/059_CUI_BONO_Test.md`
 
 | Decision | Beneficiary | Justification |
 |----------|-------------|---------------|
@@ -74,7 +74,7 @@ Vector 3: {identified_vector}
 
 ### Method #60: Approval Gradient Test
 
-📂 Loading method: 060_Approval_Gradient_Test.md
+📂 Loading method: `data/method-procedures/060_Approval_Gradient_Test.md`
 
 | Claim | Truth ← → Approval | Score | Status |
 |-------|-------------------|-------|--------|
@@ -94,7 +94,7 @@ Execute coherence methods:
 
 ### Method #93: DNA Inheritance Check
 
-📂 Loading method: 093_DNA_Inheritance_Check.md
+📂 Loading method: `data/method-procedures/093_DNA_Inheritance_Check.md`
 
 | Gene | System Pattern | Artifact | Status |
 |------|----------------|----------|--------|
@@ -110,7 +110,7 @@ Execute coherence methods:
 
 ### Method #95: Structural Isomorphism
 
-📂 Loading method: 095_Structural_Isomorphism.md
+📂 Loading method: `data/method-procedures/095_Structural_Isomorphism.md`
 
 | Metric | Baseline | Artifact | Delta | Status |
 |--------|----------|----------|-------|--------|
@@ -125,7 +125,7 @@ Execute coherence methods:
 
 ### Method #99: Multi-Artifact Coherence
 
-📂 Loading method: 099_Multi_Artifact_Coherence.md
+📂 Loading method: `data/method-procedures/099_Multi_Artifact_Coherence.md`
 
 | Check | Status | Issues |
 |-------|--------|--------|
@@ -140,7 +140,7 @@ Execute coherence methods:
 
 ### Method #100: Vocabulary Consistency
 
-📂 Loading method: 100_Vocabulary_Consistency.md
+📂 Loading method: `data/method-procedures/100_Vocabulary_Consistency.md`
 
 **Synonyms found:** {list}
 **Homonyms found:** {list}

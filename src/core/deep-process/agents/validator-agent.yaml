@@ -37,44 +37,44 @@ mandatory_methods:
   anti_bias:
     - method: 56
       name: "Liar's Trap"
-      file: "056_Liars_Trap.md"
+      file: "data/method-procedures/056_Liars_Trap.md"
       gate: "BLOCK_ON_FAIL"
       description: "Force self-examination of deception vectors"
 
     - method: 59
       name: "CUI BONO Test"
-      file: "059_CUI_BONO_Test.md"
+      file: "data/method-procedures/059_CUI_BONO_Test.md"
       gate: "FLAG_ON_FAIL"
       description: "Check who benefits from each decision"
 
     - method: 60
       name: "Approval Gradient Test"
-      file: "060_Approval_Gradient_Test.md"
+      file: "data/method-procedures/060_Approval_Gradient_Test.md"
       gate: "FLAG_ON_FAIL"
       description: "Detect people-pleasing bias"
 
   coherence:
     - method: 93
       name: "DNA Inheritance Check"
-      file: "093_DNA_Inheritance_Check.md"
+      file: "data/method-procedures/093_DNA_Inheritance_Check.md"
       gate: "FLAG_ON_FAIL"
       description: "Verify system gene inheritance"
 
     - method: 95
       name: "Structural Isomorphism"
-      file: "095_Structural_Isomorphism.md"
+      file: "data/method-procedures/095_Structural_Isomorphism.md"
       gate: "FLAG_ON_FAIL"
       description: "Compare structure against baseline"
 
     - method: 99
       name: "Multi-Artifact Coherence"
-      file: "099_Multi_Artifact_Coherence.md"
+      file: "data/method-procedures/099_Multi_Artifact_Coherence.md"
       gate: "BLOCK_ON_FAIL"
       description: "Check cross-artifact consistency"
 
     - method: 100
       name: "Vocabulary Consistency"
-      file: "100_Vocabulary_Consistency.md"
+      file: "data/method-procedures/100_Vocabulary_Consistency.md"
       gate: "FLAG_ON_FAIL"
       description: "Standardize terminology"
 
@@ -95,34 +95,34 @@ workflow:
       failure_action: "BLOCK or FLAG based on method config"
       steps:
         - announce: "📂 Loading method #56: Liar's Trap"
-        - execute: "056_Liars_Trap.md"
+        - execute: "data/method-procedures/056_Liars_Trap.md"
         - record: "findings"
 
         - announce: "📂 Loading method #59: CUI BONO Test"
-        - execute: "059_CUI_BONO_Test.md"
+        - execute: "data/method-procedures/059_CUI_BONO_Test.md"
         - record: "findings"
 
         - announce: "📂 Loading method #60: Approval Gradient"
-        - execute: "060_Approval_Gradient_Test.md"
+        - execute: "data/method-procedures/060_Approval_Gradient_Test.md"
         - record: "findings"
 
     - phase: "Coherence Checks"
       methods: [93, 95, 99, 100]
       steps:
         - announce: "📂 Loading method #93: DNA Inheritance"
-        - execute: "093_DNA_Inheritance_Check.md"
+        - execute: "data/method-procedures/093_DNA_Inheritance_Check.md"
         - record: "findings"
 
         - announce: "📂 Loading method #95: Structural Isomorphism"
-        - execute: "095_Structural_Isomorphism.md"
+        - execute: "data/method-procedures/095_Structural_Isomorphism.md"
         - record: "findings"
 
         - announce: "📂 Loading method #99: Multi-Artifact Coherence"
-        - execute: "099_Multi_Artifact_Coherence.md"
+        - execute: "data/method-procedures/099_Multi_Artifact_Coherence.md"
         - record: "findings"
 
         - announce: "📂 Loading method #100: Vocabulary Consistency"
-        - execute: "100_Vocabulary_Consistency.md"
+        - execute: "data/method-procedures/100_Vocabulary_Consistency.md"
         - record: "findings"
 
     - phase: "Semantic Hash Verification"

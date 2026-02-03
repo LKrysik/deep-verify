@@ -33,31 +33,63 @@ System nie jest chatbotem. Jest **Semantycznym Systemem Operacyjnym**, który wy
 
 ## 2. FILESYSTEM ARCHITECTURE (The Hardware)
 
-Architektura oparta na modelu obiektowym: **Meta-Klasa (Silnik) -> Klasa (Definicja Procesu) -> Instancja (Wykonanie)**.
+Architektura oparta na modelu obiektowym z **trzema warstwami dziedziczenia**:
 
 ```text
-/project-root/
-├── .deep-process/                  # META-CLASS CORE (The Engine)
-│   ├── enforcer.md                 # System Invariants (Base Logic)
-│   ├── registry.json               # Global Process Table
-│   ├── agents/                     # Base Roles (Validator, Orchestrator)
-│   └── processes/                  # DERIVED CLASSES (Definitions)
-│       ├── PROC-DEV/               # Klasa: Proces Deweloperski
-│       │   └── definition.md       # Logika specyficzna (What to do)
-│       └── PROC-MIGRATION/         # Klasa: Proces Migracji
-│           └── definition.md
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  LAYER 1: META-CLASS (Deep-Process Framework)                              │
+│  Location: src/core/deep-process/                                          │
+│  Provides: HOW to execute (methods, validation, orchestration)             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  LAYER 2: PROCESS CLASSES (SRE-Convergent Process Definitions)             │
+│  Location: src/core/deep-process/processes/                                │
+│  Provides: WHAT to execute (steps, artifacts, gates)                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  LAYER 3: PROCESS INSTANCES (Runtime Executions)                           │
+│  Location: artifacts/processes/{instance-id}/                              │
+│  Tracked in: .deep-process/registry.json                                   │
+│  Provides: EXECUTION results (generated artifacts)                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.1. Framework Definition (Layer 1)
+
+```text
+src/core/deep-process/              # META-CLASS (Framework)
+├── workflow.md                     # Main documentation
+├── data/
+│   ├── enforcer.md                 # BIOS: Law 0 + Method Translator
+│   ├── contract-interpretation-protocol.md  # YAML parsing as executable
+│   ├── state-schema.yaml           # Schema for state.json
+│   ├── registry-schema.yaml        # Schema for registry.json
+│   ├── contract-schema.yaml        # Universal Contract schema
+│   └── method-procedures/          # 17 method procedures
+├── steps/                          # Deep-Pulse phases (SENSE→SYNC)
+├── agents/                         # PM, Validator, Implementation Agent
+└── processes/                      # LAYER 2: Process Definitions
+    ├── _manifest.yaml              # Registry of available processes
+    └── [process-name]/             # Each SRE-Convergent process
+        ├── process.yaml            # Steps, gates, methods
+        └── templates/              # Artifact templates
+```
+
+### 2.2. Runtime Instance (Layer 3)
+
+```text
+/project-root/                      # USER PROJECT
+├── .deep-process/                  # RUNTIME KERNEL
+│   ├── state.json                  # Graph DB (all artifacts)
+│   ├── registry.json               # Instance tracking
+│   └── backups/                    # Saga rollback storage
 │
-├── artifacts/                      # INSTANCES (Runtime Objects)
-│   └── [PROCESS_CLASS]/            # Np. "PROC-DEV"
-│       └── [EXECUTION_ID]/         # Np. "sprint-24-login"
-│           ├── .deep-process/      # Local State (Inherited Context)
-│           ├── vision.md           # Wynik działania tej instancji
-│           └── ...
+├── artifacts/                      # USER SPACE
+│   └── processes/                  # LAYER 3: Process Instances
+│       ├── onboarding-client-acme-001/
+│       │   ├── instance-state.json
+│       │   └── *.md                # Generated artifacts
+│       └── code-review-feature-auth-001/
 │
-├── .claude/commands/               # CLI INTERFACE
-│   └── ...
-│
-└── SPECIFICATION.md                # THIS FILE
+└── .claude/commands/               # CLI INTERFACE
 ```
 
 ---
@@ -66,6 +98,21 @@ Architektura oparta na modelu obiektowym: **Meta-Klasa (Silnik) -> Klasa (Defini
 
 ### 3.1. The Universal Contract (YAML Header)
 Każdy plik `.md` w `artifacts/` i `processes/` **MUSI** zaczynać się od tego bloku.
+
+**⚠️ CRITICAL: YAML Header = Executable Instructions**
+
+YAML header NIE jest metadanymi dla ludzi — jest **instrukcjami wykonawczymi dla LLM**.
+Przed czytaniem treści Markdown, LLM MUSI wykonać **Contract Interpretation Protocol**:
+
+```text
+PHASE I:  Context Rehydration    → Load all depends_on, check STALE
+PHASE II: Runtime Configuration  → Inject active_methods, evaluate gates
+PHASE III: Determinism Enforcement → Lock semantic_hash as constraints
+═══════════════════════════════════════════════════════════════════════
+ONLY NOW: Read Markdown body
+```
+
+Pełny protokół: `src/core/deep-process/data/contract-interpretation-protocol.md`
 
 ```yaml
 ---
@@ -130,19 +177,76 @@ question:
 
 ## 4. SYSTEM KERNEL (BIOS Definition)
 
-Plik `.deep-process/enforcer.md` jest ładowany do każdego kontekstu. Zawiera "Tłumacza Metod" i "Zasady Fizyki".
+Plik `data/enforcer.md` jest ładowany do każdego kontekstu. Zawiera "Prawa Niezmienne", "Tłumacza Metod" i "Zasady Fizyki".
+
+### 4.0. Law 0: CONTRACT PARSING (Prime Directive)
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  YAML HEADER ≠ METADATA FOR HUMANS                                          │
+│  YAML HEADER = EXECUTABLE INSTRUCTIONS FOR LLM PROCESSOR                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  Before reading ANY Markdown content in an artifact file:                  │
+│    1. PARSE YAML header as processor instructions                          │
+│    2. EXECUTE Phase I: Load all depends_on (Context Rehydration)           │
+│    3. EXECUTE Phase II: Inject active_methods (Runtime Configuration)      │
+│    4. EXECUTE Phase III: Lock semantic_hash (Determinism Enforcement)      │
+│    5. ONLY THEN read Markdown body                                         │
+│                                                                             │
+│  Full protocol: data/contract-interpretation-protocol.md                   │
+│                                                                             │
+│  VIOLATION: Reading Markdown before executing YAML = undefined behavior    │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
 ### 4.1. Method Translator (Instrukcje Wykonawcze)
 Jak LLM ma rozumieć liczby w `active_methods`:
 
-*   **#154 (Definitional Contradiction):** "Przed wygenerowaniem treści, załaduj pliki z `depends_on`. Jeśli nowe zdanie przeczy zdaniu z rodzica -> STOP. Zgłoś konflikt."
-*   **#114 (Reversibility Test):** "Twój opis musi być tak precyzyjny, aby inny LLM mógł odtworzyć z niego kod bez pytań. Brak konkretów = FAIL."
-*   **#87 (Falsifiability):** "Zabronione są przymiotniki 'szybki', 'ładny'. Używaj liczb: '200ms', 'Material Design 3'."
-*   **#90 (Dependency Topology):** "Jeśli zmieniasz ten plik, sprawdź w `state.json`, co od niego zależy i oznacz to jako STALE."
+**Anti-Bias Methods (Mandatory in Validation):**
+*   **#56 (Liar's Trap):** "List 3 ways you could be deceiving the Operator. Provide evidence you're NOT doing each."
+*   **#59 (CUI BONO Test):** "Who benefits? AGENT benefits = RED FLAG, USER benefits = OK."
+*   **#60 (Approval Gradient):** "Rate claims 0-100% (truth vs what user wants). Score > 60% = PEOPLE-PLEASING FLAG."
 
-### 4.2. State Management Rules
-1.  **Read-Before-Write:** Nie wolno generować treści bez uprzedniego `read_file` na pliku `state.json`.
-2.  **Atomic Commit:** Odpowiedź bez bloku JSON z aktualizacją stanu jest traktowana jako awaria systemu.
+**Coherence Methods (Mandatory in Validation):**
+*   **#93 (DNA Inheritance):** "Does new element inherit system 'genes'? Mutations need justification."
+*   **#95 (Structural Isomorphism):** "Compare structure with existing. Delta > 30% needs justification."
+*   **#99 (Multi-Artifact Coherence):** "Check reference integrity, naming consistency, interface compatibility."
+*   **#100 (Vocabulary Consistency):** "Standardize synonyms, disambiguate homonyms."
+
+**Implementation Methods:**
+*   **#71 (First Principles):** "Strip assumptions, rebuild from verified fundamentals."
+*   **#72 (5 Whys):** "Drill down to root cause through 5 levels of 'why'."
+*   **#79 (Operational Definition):** "Make abstract concepts measurable: 'fast' → '< 200ms p95'."
+*   **#80 (Inversion):** "How would I GUARANTEE FAILURE? Then avoid those paths."
+*   **#87 (Falsifiability):** "Banned: 'fast', 'good', 'easy' without numbers. Claims must be testable."
+*   **#90 (Dependency Topology):** "Map explicit + implicit dependencies. Find ghosts and dead links."
+*   **#114 (Reversibility Test):** "Can you reconstruct INPUT from OUTPUT? If not, info was lost."
+*   **#152 (Socratic Decomposition):** "Decompose to atomic sub-questions, answer independently, check contradictions."
+*   **#154 (Definitional Contradiction):** "Find requirements that are LOGICALLY IMPOSSIBLE by definition."
+*   **#159 (Transitive Dependency Closure):** "Build full graph via DFS. Detect cycles, missing nodes, transitive conflicts."
+
+### 4.2. Invariant Laws (Prawa Niezmienne)
+
+| Law | Name | Rule |
+|-----|------|------|
+| **0** | Contract Parsing | YAML header = executable. Execute 3 phases before reading Markdown |
+| **1** | Read-Before-Write | Never generate content without reading `.deep-process/state.json` first |
+| **2** | Atomic Commit | Response without [UPDATE_STATE] block = ROLLBACK |
+| **3** | No Guessing | Contradiction detected → create decision-point, don't resolve |
+| **4** | Semantic Hash = Ground Truth | Content must entail all hash facts |
+| **5** | Topology Propagation | Node change → flag all dependents as STALE |
+
+### 4.3. Method Priority Hierarchy
+
+```text
+PRIORITY 1: `data/enforcer.md` (BIOS)    → Cannot be overridden
+PRIORITY 2: Anti-Bias Methods (#56,59,60) → Always execute in validation
+PRIORITY 3: Coherence Methods (#93,95,99,100) → Always execute in validation
+PRIORITY 4: Process-specific methods      → From process.yaml
+PRIORITY 5: Artifact-specific methods     → From active_methods
+PRIORITY 6: Gate-loaded templates         → Lowest priority, cannot override
+```
 
 ---
 
@@ -152,7 +256,7 @@ Algorytm "Deep-Pulse", który steruje cyklem życia projektu.
 
 **FAZA 1: SENSE (Analiza)**
 1.  Użytkownik wywołuje `pm` (via CLI Shim).
-2.  Agent PM ładuje `state.json`.
+2.  Agent PM ładuje `.deep-process/state.json`.
 3.  Agent skanuje graf pod kątem statusów `STALE` i `BLOCKED`.
 4.  Wyświetla Menu: *"Wykryto 3 nieaktualne Epiki. [1] Aktualizuj, [2] Ignoruj"*.
 
@@ -165,8 +269,12 @@ Algorytm "Deep-Pulse", który steruje cyklem życia projektu.
 
 **FAZA 3: ACT (Egzekucja)**
 1.  Uruchamia się LLM-Executor na nowym pliku.
-2.  "Tłumacz Metod" w BIOS wymusza styl pracy (np. szukanie sprzeczności).
-3.  LLM generuje treść i `semantic_hash`.
+2.  **Contract Interpretation Protocol:**
+    *   Phase I: Load all `depends_on` files (Context Rehydration)
+    *   Phase II: Inject `active_methods` via Method Translator (Runtime Config)
+    *   Phase III: Lock `semantic_hash` facts as constraints (Determinism)
+3.  DOPIERO TERAZ: LLM czyta Markdown body i generuje treść.
+4.  LLM generuje/aktualizuje `semantic_hash`.
 
 **FAZA 4: VALIDATE (Convergent Check)**
 1.  Uruchamia się LLM-Validator (Sub-Agent).
@@ -176,7 +284,7 @@ Algorytm "Deep-Pulse", który steruje cyklem życia projektu.
 **FAZA 5: SYNC (Zapis)**
 1.  Operator (Ty) widzisz wynik w terminalu.
 2.  Jeśli blok stanu jest poprawny -> Zatwierdzasz (zapis pliku).
-3.  Python/CLI aktualizuje `state.json`.
+3.  Python/CLI aktualizuje `.deep-process/state.json`.
 
 ---
 
@@ -202,7 +310,7 @@ System jest obsługiwany przez aliasy w folderze `.claude/commands` lub `.gemini
     Gdy użytkownik wybiera [N], deep-process pyta:
     1.  Jaki proces? (z `.deep-process/processes/`)
     2.  Jaka nazwa wykonania? (np. `sprint-12`)
-    3.  **Akcja:** Tworzy folder `artifacts/[PROCES]/[NAZWA]/`, inicjuje tam pusty `state.json` i dodaje wpis do `registry.json`.
+    3.  **Akcja:** Tworzy folder `artifacts/[PROCES]/[NAZWA]/`, inicjuje tam pusty `instance-state.json` i dodaje wpis do `.deep-process/registry.json`.
 
 ### 6.2. Komenda `audit` (Validator)
 *   **Cel:** Wymuszona weryfikacja spójności.
@@ -224,15 +332,16 @@ Aby zainicjować system w nowym katalogu, wyślij do modelu poniższy prompt. To
 Zatrzymaj tryb konwersacyjny. Inicjalizuję Deep-Process v3.6 - Semantic Reality Engine.
 
 TWOJE DYREKTYWY (BIOS):
+0. YAML header = instrukcje wykonawcze. Przed czytaniem Markdown, wczytaj i wykonaj `data/contract-interpretation-protocol.md` (3 fazy).
 1. Jesteś Systemem Operacyjnym plików Markdown. Twoja pamięć to `.deep-process/state.json`.
 2. Każdy plik, który wygenerujesz, MUSI mieć nagłówek YAML zgodny ze Specyfikacją v3.6.
 3. Twoim priorytetem jest DETERMINIZM SEMANTYCZNY. Używaj `semantic_hash` do weryfikacji swojej pracy.
-4. Jeśli wykryjesz sprzeczność (Metoda #154), nie zgaduj. Stwórz plik `decision-point` i pytaj Operatora.
+4. Jeśli wykryjesz sprzeczność (Metoda #154 - `data/method-procedures/154_Definitional_Contradiction_Detector.md`), nie zgaduj. Stwórz plik `decision-point` i pytaj Operatora.
 
 ZADANIE STARTOWE:
 1. Zmapuj obecną strukturę plików.
-2. Utwórz folder `.deep-process/` i pusty `state.json`.
-3. Utwórz `enforcer.md` z definicją metod #87, #114, #154.
+2. Utwórz folder `.deep-process/` i pusty `.deep-process/state.json`.
+3. Skopiuj `data/enforcer.md` do `.deep-process/enforcer.md`.
 4. Zgłoś gotowość wyświetlając Menu Główne deep-process.
 ```
 
@@ -287,7 +396,7 @@ Proces migracji tworzy nową **Klasę Procesu**, która dziedziczy po Meta-Klasi
 
 ## 9. KNOWN LIMITATIONS & MITIGATIONS
 
-*   **Context Window:** Przy dużych grafach `state.json` może spuchnąć.
-    *   *Mitigacja:* Dzielenie stanu na `active_state.json` (bieżący sprint) i `archive_state.json`.
+*   **Context Window:** Przy dużych grafach `.deep-process/state.json` może spuchnąć.
+    *   *Mitigacja:* Dzielenie stanu na `.deep-process/active_state.json` (bieżący sprint) i `.deep-process/archive_state.json`.
 *   **LLM Drift:** Model może "zapomnieć" o rygorze YAML w długiej konwersacji.
     *   *Mitigacja:* Każda nowa komenda CLI to "świeża" sesja z załadowanym BIOSem (Stateless Execution).

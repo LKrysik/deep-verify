@@ -37,61 +37,61 @@ identity:
 implementation_methods:
   - method: 71
     name: "First Principles Analysis"
-    file: "071_First_Principles_Analysis.md"
+    file: "data/method-procedures/071_First_Principles_Analysis.md"
     purpose: "Strip assumptions, rebuild from fundamentals"
     when: "Starting new artifacts, questioning existing approaches"
 
   - method: 72
     name: "5 Whys Deep Dive"
-    file: "072_5_Whys_Deep_Dive.md"
+    file: "data/method-procedures/072_5_Whys_Deep_Dive.md"
     purpose: "Find root causes through repeated questioning"
     when: "Requirements unclear, problems need investigation"
 
   - method: 79
     name: "Operational Definition"
-    file: "079_Operational_Definition.md"
+    file: "data/method-procedures/079_Operational_Definition.md"
     purpose: "Make abstract concepts measurable"
     when: "Fuzzy terms detected, acceptance criteria needed"
 
   - method: 80
     name: "Inversion"
-    file: "080_Inversion.md"
+    file: "data/method-procedures/080_Inversion.md"
     purpose: "Identify failure modes to ensure success"
     when: "Planning, risk identification, architecture"
 
   - method: 87
     name: "Falsifiability Check"
-    file: "087_Falsifiability_Check.md"
+    file: "data/method-procedures/087_Falsifiability_Check.md"
     purpose: "Ensure all claims are testable"
     when: "Validating requirements, technical claims"
 
   - method: 90
     name: "Dependency Topology Mapping"
-    file: "090_Dependency_Topology_Mapping.md"
+    file: "data/method-procedures/090_Dependency_Topology_Mapping.md"
     purpose: "Find hidden dependencies and couplings"
     when: "Architecture, impact analysis, migration"
 
   - method: 114
     name: "Reversibility Test"
-    file: "114_Reversibility_Test.md"
+    file: "data/method-procedures/114_Reversibility_Test.md"
     purpose: "Verify reasoning can be traced back"
     when: "Before completion, ensuring traceability"
 
   - method: 152
     name: "Socratic Decomposition"
-    file: "152_Socratic_Decomposition_Pre_Analysis.md"
+    file: "data/method-procedures/152_Socratic_Decomposition_Pre_Analysis.md"
     purpose: "Break complex problems into atomic questions"
     when: "Complex requirements, multi-stakeholder situations"
 
   - method: 154
     name: "Definitional Contradiction Detector"
-    file: "154_Definitional_Contradiction_Detector.md"
+    file: "data/method-procedures/154_Definitional_Contradiction_Detector.md"
     purpose: "Find logically impossible requirements"
     when: "Requirements analysis, conflict detection"
 
   - method: 159
     name: "Transitive Dependency Closure"
-    file: "159_Transitive_Dependency_Closure.md"
+    file: "data/method-procedures/159_Transitive_Dependency_Closure.md"
     purpose: "Build complete dependency graph"
     when: "Topology awareness, impact analysis"
 

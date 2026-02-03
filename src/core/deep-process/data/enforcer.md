@@ -21,12 +21,28 @@
 
 ## INVARIANT LAWS (Cannot Be Violated)
 
+### Law 0: CONTRACT PARSING (The Prime Directive)
+```
+YAML HEADER IS NOT METADATA — IT IS EXECUTABLE INSTRUCTIONS
+
+Before reading ANY Markdown content in an artifact file:
+  1. PARSE YAML header as processor instructions
+  2. EXECUTE Phase I: Load all depends_on (Context Rehydration)
+  3. EXECUTE Phase II: Inject active_methods (Runtime Configuration)
+  4. EXECUTE Phase III: Lock semantic_hash (Determinism Enforcement)
+  5. ONLY THEN read Markdown body
+
+Full protocol: data/contract-interpretation-protocol.md
+
+VIOLATION: Reading Markdown before executing YAML = undefined behavior
+```
+
 ### Law 1: READ-BEFORE-WRITE
 ```
 BEFORE generating ANY content:
-  1. Load state.json
+  1. Load `.deep-process/state.json`
   2. Identify target node and its dependencies
-  3. Load all parent artifacts
+  3. Execute CONTRACT PARSING (Law 0) on target and all dependencies
   4. Only then generate content
 
 VIOLATION: Generating content without reading dependencies = SYSTEM FAILURE
@@ -81,7 +97,7 @@ VERIFICATION: Content MUST logically entail ALL hash facts
 ### Law 5: TOPOLOGY PROPAGATION
 ```
 WHEN node A changes:
-  1. Query state.json for all nodes where depends_on includes A
+  1. Query `.deep-process/state.json` for all nodes where depends_on includes A
   2. For each dependent node:
      - IF dependency type is "semantic_source" or "hard_constraint"
      - THEN flag as STALE
@@ -380,7 +396,7 @@ OUTPUT: Graph visualization + cycle/conflict report
 
 | Code | Meaning | Recovery |
 |------|---------|----------|
-| E001 | Missing state.json read | Load state before proceeding |
+| E001 | Missing `.deep-process/state.json` read | Load state before proceeding |
 | E002 | No [UPDATE_STATE] block | Reject response, request retry |
 | E003 | Semantic hash violation | Rewrite content or update hash |
 | E004 | Unresolved contradiction | Create decision-point |
@@ -395,9 +411,9 @@ OUTPUT: Graph visualization + cycle/conflict report
 When initializing fresh system:
 
 ```
-1. Create .deep-process/ directory
-2. Initialize empty state.json with schema
-3. Load this enforcer.md as BIOS
+1. Create `.deep-process/` directory
+2. Initialize empty `.deep-process/state.json` with `data/state-schema.yaml`
+3. Load `data/enforcer.md` as BIOS
 4. Display main menu
 5. Await Operator command
 ```

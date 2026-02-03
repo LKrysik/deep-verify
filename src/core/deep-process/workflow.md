@@ -137,33 +137,33 @@ This enables:
 
 | # | Method | Purpose | File |
 |---|--------|---------|------|
-| 56 | Liar's Trap | Wymuś samoobserwację potencjalnych dróg oszustwa | `056_Liars_Trap.md` |
-| 59 | CUI BONO Test | Kto korzysta z decyzji? Agent vs User | `059_CUI_BONO_Test.md` |
-| 60 | Approval Gradient Test | Wykryj people-pleasing vs truth-telling | `060_Approval_Gradient_Test.md` |
+| 56 | Liar's Trap | Wymuś samoobserwację potencjalnych dróg oszustwa | `data/method-procedures/056_Liars_Trap.md` |
+| 59 | CUI BONO Test | Kto korzysta z decyzji? Agent vs User | `data/method-procedures/059_CUI_BONO_Test.md` |
+| 60 | Approval Gradient Test | Wykryj people-pleasing vs truth-telling | `data/method-procedures/060_Approval_Gradient_Test.md` |
 
 ### Coherence Methods (Spójność Wyniku)
 
 | # | Method | Purpose | File |
 |---|--------|---------|------|
-| 93 | DNA Inheritance Check | Czy element dziedziczy "geny" systemu? | `093_DNA_Inheritance_Check.md` |
-| 95 | Structural Isomorphism | Porównanie struktury nowego vs istniejącego | `095_Structural_Isomorphism.md` |
-| 99 | Multi-Artifact Coherence | Spójność między powiązanymi artefaktami | `099_Multi_Artifact_Coherence.md` |
-| 100 | Vocabulary Consistency | Spójność terminologii w całym systemie | `100_Vocabulary_Consistency.md` |
+| 93 | DNA Inheritance Check | Czy element dziedziczy "geny" systemu? | `data/method-procedures/093_DNA_Inheritance_Check.md` |
+| 95 | Structural Isomorphism | Porównanie struktury nowego vs istniejącego | `data/method-procedures/095_Structural_Isomorphism.md` |
+| 99 | Multi-Artifact Coherence | Spójność między powiązanymi artefaktami | `data/method-procedures/099_Multi_Artifact_Coherence.md` |
+| 100 | Vocabulary Consistency | Spójność terminologii w całym systemie | `data/method-procedures/100_Vocabulary_Consistency.md` |
 
 ### Implementation Methods (Dla Implementation Agenta)
 
 | # | Method | Purpose | File |
 |---|--------|---------|------|
-| 71 | First Principles Analysis | Fundamentalna analiza od podstaw | `071_First_Principles_Analysis.md` |
-| 72 | 5 Whys Deep Dive | Dotarcie do root cause | `072_5_Whys_Deep_Dive.md` |
-| 79 | Operational Definition | Operacjonalizacja abstrakcyjnych pojęć | `079_Operational_Definition.md` |
-| 80 | Inversion | Jak zagwarantować porażkę? Unikaj tego | `080_Inversion.md` |
-| 87 | Falsifiability Check | Czy twierdzenia są mierzalne i testowalne? | `087_Falsifiability_Check.md` |
-| 90 | Dependency Topology Mapping | Mapowanie ukrytych zależności | `090_Dependency_Topology_Mapping.md` |
-| 114 | Reversibility Test | Czy można odtworzyć input z output? | `114_Reversibility_Test.md` |
-| 152 | Socratic Decomposition | Dekompozycja na atomowe pod-pytania | `152_Socratic_Decomposition_Pre_Analysis.md` |
-| 154 | Definitional Contradiction | Wykrywanie sprzeczności definicyjnych | `154_Definitional_Contradiction_Detector.md` |
-| 159 | Transitive Dependency Closure | Pełny graf zależności z cyklami | `159_Transitive_Dependency_Closure.md` |
+| 71 | First Principles Analysis | Fundamentalna analiza od podstaw | `data/method-procedures/071_First_Principles_Analysis.md` |
+| 72 | 5 Whys Deep Dive | Dotarcie do root cause | `data/method-procedures/072_5_Whys_Deep_Dive.md` |
+| 79 | Operational Definition | Operacjonalizacja abstrakcyjnych pojęć | `data/method-procedures/079_Operational_Definition.md` |
+| 80 | Inversion | Jak zagwarantować porażkę? Unikaj tego | `data/method-procedures/080_Inversion.md` |
+| 87 | Falsifiability Check | Czy twierdzenia są mierzalne i testowalne? | `data/method-procedures/087_Falsifiability_Check.md` |
+| 90 | Dependency Topology Mapping | Mapowanie ukrytych zależności | `data/method-procedures/090_Dependency_Topology_Mapping.md` |
+| 114 | Reversibility Test | Czy można odtworzyć input z output? | `data/method-procedures/114_Reversibility_Test.md` |
+| 152 | Socratic Decomposition | Dekompozycja na atomowe pod-pytania | `data/method-procedures/152_Socratic_Decomposition_Pre_Analysis.md` |
+| 154 | Definitional Contradiction | Wykrywanie sprzeczności definicyjnych | `data/method-procedures/154_Definitional_Contradiction_Detector.md` |
+| 159 | Transitive Dependency Closure | Pełny graf zależności z cyklami | `data/method-procedures/159_Transitive_Dependency_Closure.md` |
 
 ---
 
@@ -175,7 +175,7 @@ This enables:
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  PHASE 1: SENSE ─────────────────────────────────────────────────────────► │
-│    └── Load state.json → Scan for STALE/BLOCKED → Display Menu             │
+│    └── Load `.deep-process/state.json` → Scan for STALE/BLOCKED → Menu     │
 │                                                                             │
 │  PHASE 2: PLAN ──────────────────────────────────────────────────────────► │
 │    └── Analyze task type → Inject methods → Create skeleton with YAML      │
@@ -187,7 +187,7 @@ This enables:
 │    └── LLM-Validator → Check: Content vs Hash vs Parents → COMMITTED/FAILED│
 │                                                                             │
 │  PHASE 5: SYNC ──────────────────────────────────────────────────────────► │
-│    └── Operator approval → Write files → Update state.json                 │
+│    └── Operator approval → Write files → Update `.deep-process/state.json` │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -202,9 +202,9 @@ This enables:
 📂 Loading data/state-schema.yaml
 
 1. BOOTSTRAP (First run only)
-   □ Initialize .deep-process/ structure
-   □ Create empty state.json
-   □ Create enforcer.md with Method Translator
+   □ Initialize `.deep-process/` structure
+   □ Create empty `.deep-process/state.json`
+   □ Create `.deep-process/enforcer.md` (copy from `data/enforcer.md`)
    □ Display Main Menu
 
 2. SENSE PHASE
@@ -238,7 +238,7 @@ This enables:
 6. SYNC PHASE
    □ Display result to Operator
    □ If valid → Operator approves
-   □ Write file + Update state.json
+   □ Write file + Update `.deep-process/state.json`
    □ Flag dependent nodes as STALE
 
 ```
@@ -318,7 +318,7 @@ src/core/deep-process/              # LAYER 1: META-CLASS (Framework)
 │               └── artifacts/processes/{instance-id}/                  │
 └───────────────────────────────────────────────────────────────────────┘
 
-registry.json tracks:
+`.deep-process/registry.json` tracks:
   - Which instances exist
   - Where their artifacts are stored
   - Current status and progress
@@ -329,7 +329,10 @@ registry.json tracks:
 
 ## UNIVERSAL CONTRACT (YAML Header)
 
-Every artifact MUST start with this header:
+Every artifact MUST start with this header.
+
+**CRITICAL:** YAML header is NOT metadata — it is EXECUTABLE INSTRUCTIONS.
+Before reading Markdown content, LLM must load and execute `data/contract-interpretation-protocol.md`.
 
 ```yaml
 ---
@@ -356,8 +359,8 @@ semantic_hash:
 execution:
   active_methods: [154, 114, 87]
   logic_gates:
-    if_mobile: "Use artifact/templates/mobile_screen.md"
-    if_web: "Use artifact/templates/web_page.md"
+    if_mobile: "Use artifacts/templates/mobile_screen.md"
+    if_web: "Use artifacts/templates/web_page.md"
 
 # === TRANSACTION ===
 transaction:
@@ -398,7 +401,7 @@ question:
 
 ### `deep-process` (Project Manager)
 - **Purpose:** Main dashboard and Process Launcher
-- **Behavior:** Load registry.json, display active processes, offer actions
+- **Behavior:** Load `.deep-process/registry.json`, display active processes, offer actions
 
 ```
 > SRE-Convergent Manager
@@ -436,8 +439,8 @@ TWOJE DYREKTYWY (BIOS):
 
 ZADANIE STARTOWE:
 1. Zmapuj obecną strukturę plików.
-2. Utwórz folder `.deep-process/` i pusty `state.json`.
-3. Utwórz `enforcer.md` z definicją metod.
+2. Utwórz folder `.deep-process/` i pusty `.deep-process/state.json`.
+3. Skopiuj `data/enforcer.md` do `.deep-process/enforcer.md`.
 4. Zgłoś gotowość wyświetlając Menu Główne.
 ```
 
@@ -483,7 +486,8 @@ src/core/deep-process/
 │   ├── registry-schema.yaml        # Schema for registry.json (instance tracking)
 │   ├── contract-schema.yaml        # Universal Contract schema
 │   ├── decision-point-schema.yaml  # Decision Point schema
-│   ├── enforcer.md                 # BIOS - Method Translator
+│   ├── enforcer.md                 # BIOS - Method Translator & Law 0
+│   ├── contract-interpretation-protocol.md  # How to parse YAML as executable
 │   ├── method-translator.yaml      # Method definitions
 │   ├── method-procedures/          # Individual method files (17 methods)
 │   │   ├── 056_Liars_Trap.md           # Anti-bias
@@ -556,8 +560,16 @@ project-root/
 │  SYSTEM COMMANDMENTS                                                        │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
+│  0. CONTRACT PARSING (Law 0 - Prime Directive)                              │
+│     YAML header = executable instructions, NOT metadata                     │
+│     Phase I: Load depends_on (Context Rehydration)                          │
+│     Phase II: Inject methods (Runtime Configuration)                        │
+│     Phase III: Lock semantic_hash (Determinism Enforcement)                 │
+│     ONLY THEN read Markdown body                                            │
+│     See: data/contract-interpretation-protocol.md                           │
+│                                                                             │
 │  1. READ-BEFORE-WRITE                                                       │
-│     Never generate content without first reading state.json                 │
+│     Never generate content without first reading `.deep-process/state.json` │
 │                                                                             │
 │  2. ATOMIC COMMIT                                                           │
 │     Response without [UPDATE_STATE] block = system failure (ROLLBACK)       │

@@ -14,7 +14,7 @@ Execute content generation with Implementation Agent, applying injected methods.
 ```markdown
 ## Context Loading
 
-📂 Loading enforcer.md (BIOS)
+📂 Loading `data/enforcer.md` (BIOS)
 📂 Loading skeleton: {artifact_path}
 
 ### Dependencies
