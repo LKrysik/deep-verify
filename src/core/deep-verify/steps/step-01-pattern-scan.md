@@ -240,6 +240,12 @@ Check conditions in this order:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
+│  CHECK 0: execution_mode == "Quick"?                               │
+│           → YES: STOP. Load steps/step-04-verdict.md               │
+│                  Set earlyExit: true                                │
+│                  Set earlyExitReason: "Quick Verify Mode"           │
+│           → NO: Continue to Check 1                                 │
+├─────────────────────────────────────────────────────────────────────┤
 │  CHECK 1: S ≥ 6 AND at least one Pattern Library match?            │
 │           → YES: STOP. Load steps/step-04-verdict.md               │
 │                  Set earlyExit: true                                │
@@ -316,6 +322,7 @@ earlyExitReason: [reason or null]
 
 | Condition | Next Step | Note |
 |-----------|-----------|------|
+| Quick Mode | `steps/step-04-verdict.md` | Fast triage |
 | S ≥ 6 + Pattern | `steps/step-04-verdict.md` | Early REJECT |
 | S ≥ 6, no Pattern | `steps/step-02-targeted.md` | Needs confirmation |
 | 4 ≤ S < 6 | `steps/step-02-targeted.md` | BORDERLINE, mandatory 2+3 |

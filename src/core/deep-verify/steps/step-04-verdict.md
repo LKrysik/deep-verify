@@ -114,15 +114,19 @@ VERDICT: _______________
 
 ```
 □ At least one CRITICAL finding survived Phase 3
+  (SKIP if Quick Mode)
   Finding: _____________________
 
 □ Pattern Library match exists OR Phase 2 confirmation obtained
+  (Pattern match required if Quick Mode)
   Evidence: _____________________
 
 □ False Positive Checklist completed (from Phase 3)
+  (SKIP if Quick Mode)
   Result: _____/5 checked
 
 □ Steel-man arguments addressed
+  (SKIP if Quick Mode)
   Arguments that held: _____/3
 
 If any unchecked → Document exception:
@@ -139,9 +143,11 @@ Exception: _____________________
   Confirm: _____________________
 
 □ If IMPORTANT findings existed, all were resolved in Phase 3
+  (N/A for Quick Mode - should not have IMPORTANT findings)
   Confirm: _____________________
 
 □ Steel-man for REJECT was attempted and failed
+  (SKIP if Quick Mode)
   Confirm: _____________________
 
 If any unchecked → Document exception:

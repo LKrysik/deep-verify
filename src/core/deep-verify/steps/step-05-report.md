@@ -296,27 +296,34 @@ report_generated: true
 
 ### Pattern Candidate Check
 
-**After delivering the report, check if a pattern candidate note should be included:**
+**After delivering the report, check execution mode:**
 
 ```
-Any CRITICAL finding that survived Phase 3 WITHOUT a Pattern Library match?
+IF execution_mode == "Deep" AND CRITICAL finding survived Phase 3 without match:
+  -> AUTOMATICALLY load steps/step-06-pattern-candidate.md
+  -> Proceed to Phase 6 immediately.
 
-[ ] Yes -> Add a QUIET NOTE to the end of the report (passive, not interactive):
+ELSE (Standard/Quick Mode):
+  Check if a pattern candidate note should be included:
 
-    ────────────────────────────────────
-    PATTERN CANDIDATE NOTE
-    ────────────────────────────────────
-    Finding [F_id] ([description]) has no Pattern Library match.
-    Reason this may be a new pattern: [one sentence explanation].
-    To evaluate: request Phase 6 (Pattern Candidate Evaluation).
+  Any CRITICAL finding that survived Phase 3 WITHOUT a Pattern Library match?
 
-    IMPORTANT: This is a passive note, NOT an interactive question.
-    Do NOT ask the user if they want to run Phase 6.
-    The user reads the note and decides on their own.
+  [ ] Yes -> Add a QUIET NOTE to the end of the report (passive, not interactive):
 
-    If user later requests Phase 6 -> Load steps/step-06-pattern-candidate.md
+      ────────────────────────────────────
+      PATTERN CANDIDATE NOTE
+      ────────────────────────────────────
+      Finding [F_id] ([description]) has no Pattern Library match.
+      Reason this may be a new pattern: [one sentence explanation].
+      To evaluate: request Phase 6 (Pattern Candidate Evaluation).
 
-[ ] No  -> Workflow complete, no note needed
+      IMPORTANT: This is a passive note, NOT an interactive question.
+      Do NOT ask the user if they want to run Phase 6.
+      The user reads the note and decides on their own.
+
+      If user later requests Phase 6 -> Load steps/step-06-pattern-candidate.md
+
+  [ ] No  -> Workflow complete, no note needed
 ```
 
 ---

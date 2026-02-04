@@ -23,95 +23,61 @@
 
 ## EXECUTION MODES
 
-### Quick Verify (QV) — Fast Triage
-```
-Time: 2-5 min | Methods: Tier 1 only | For: Rapid assessment
+**Selection:** Mode is determined in **Phase 0 (Setup)** via CLI flags or interactive prompt.
 
-1. SETUP → Assess stakes, note biases
-2. PHASE 1 ONLY → Pattern Scan (3 methods)
-3. VERDICT → Apply thresholds
-4. REPORT → Note "QV mode" in output
+### 1. Quick Verify (QV) — Fast Triage
+*   **Time:** 2-5 min
+*   **Scope:** Phase 0 + Phase 1 ONLY
+*   **Goal:** Rapid assessment, sanity check
+*   **Triggers:** `--quick`, `-q`, or interactive selection
 
-Triggers: `QV`, `quick`, `--quick`, `-q`
-```
+### 2. Standard Verify (SV) — Full Process
+*   **Time:** 15-45 min
+*   **Scope:** Phase 0 through Phase 5
+*   **Goal:** Complete verification with adversarial review
+*   **Triggers:** Default, `--full`, or interactive selection
 
-### Standard Verify (SV) — Full Process
-```
-Time: 15-45 min | Methods: Tiers 1-3 | For: Complete verification
-
-1. SETUP → Stakes + bias assessment
-2. PHASE 1 → Pattern Scan (mandatory)
-3. PHASE 2 → Targeted Analysis (if no early exit)
-4. PHASE 3 → Adversarial Review (MANDATORY)
-5. VERDICT → Final determination
-6. REPORT → Full structured output
-
-Triggers: `DV`, `verify`, `--full`, default
-```
-
-### Deep Verify (DV) — Maximum Rigor
-```
-Time: 30-60 min | Methods: All + Pattern Candidate | For: HIGH stakes
-
-Same as Standard + Phase 6 (Pattern Candidate Evaluation)
-+ Enhanced adversarial review
-+ Multiple verification passes
-
-Triggers: `DV --deep`, `--high-stakes`
-```
+### 3. Deep Verify (DV) — Maximum Rigor
+*   **Time:** 30-60 min
+*   **Scope:** Standard + Phase 6 (Pattern Candidate Evaluation)
+*   **Goal:** High stakes, finding new patterns
+*   **Triggers:** `--deep`, `--high-stakes`, or interactive selection
 
 ---
 
-## QUICK EXECUTION PATH
+## WORKFLOW LOGIC
 
-**For most verifications, execute this sequence:**
+**Execute the following sequence based on selected MODE:**
 
-```
-📂 Loading data/pattern-library.yaml
+1.  **SETUP (All Modes)**
+    *   Assess stakes, note biases, record metadata.
 
-1. SETUP
-   □ Assess stakes: LOW/MEDIUM/HIGH
-   □ Note biases, select mode (Standard/Blind)
-   □ Record artifact metadata
+2.  **PHASE 1: PATTERN SCAN (All Modes)**
+    *   Execute Tier 1 Methods (#71, #100, #17).
+    *   Check Pattern Library.
+    *   Calculate Score (S).
+    *   **DECISION POINT:**
+        *   If **Quick Verify**: STOP here. Proceed directly to REPORT.
+        *   If **Early Exit condition met** (S ≥ 6 with pattern OR S ≤ -3): STOP. Proceed directly to VERDICT -> REPORT.
+        *   Otherwise: Continue to PHASE 2.
 
-2. PHASE 1: PATTERN SCAN (mandatory)
-   📂 Loading data/method-procedures/071_First_Principles_Analysis.md
-   □ Execute #71 First Principles Analysis
+3.  **PHASE 2: TARGETED (Standard/Deep Only)**
+    *   Select methods based on signals.
+    *   Execute methods.
 
-   📂 Loading data/method-procedures/100_Vocabulary_Consistency.md
-   □ Execute #100 Vocabulary Audit
+4.  **PHASE 3: ADVERSARIAL (Standard/Deep Only)**
+    *   **MANDATORY** unless Early Exit occurred.
+    *   Devil's Advocate & Steel-man.
 
-   📂 Loading data/method-procedures/017_Abstraction_Laddering.md
-   □ Execute #17 Abstraction Laddering
+5.  **PHASE 4: VERDICT (Standard/Deep Only)**
+    *   Final Score calculation.
 
-   □ Check findings against pattern-library.yaml
-   □ Calculate S score
+6.  **PHASE 5: REPORT (All Modes)**
+    *   Generate output.
+    *   Note if "Quick Verify" mode was used.
 
-   EARLY EXIT CONDITIONS:
-   → S ≥ 6 with pattern match → REJECT
-   → S ≤ -3 and stakes ≠ HIGH → ACCEPT
-
-3. PHASE 2: TARGETED (if no early exit)
-   □ Select 2-4 methods based on Phase 1 signals
-   □ Execute each method
-   □ Update S after each
-
-4. PHASE 3: ADVERSARIAL (MANDATORY except early exit with pattern)
-   📂 Loading data/method-procedures/063_Challenge_from_Critical_Perspective.md
-   □ Devil's advocate on IMPORTANT+ findings
-   □ Steel-man opposite verdict
-   □ Adjust S based on findings that weaken
-
-5. VERDICT
-   → S ≥ 6  → REJECT
-   → S ≤ -3 → ACCEPT
-   → else   → UNCERTAIN
-
-6. REPORT
-   📂 Loading data/report-template.md
-   □ Fill all sections with actual data
-   □ Output complete report
-```
+7.  **PHASE 6: PATTERN CANDIDATE (Deep Only)**
+    *   Evaluates critical findings for new patterns.
 
 ---
 
@@ -513,19 +479,14 @@ jobs:
           fi
 ```
 
-### IDE Integration (Generic)
-```
-Commands to expose:
-- DV Quick (Ctrl+Shift+Q) → QV current file
-- DV Full (Ctrl+Shift+V) → SV current file
-- DV Selection → DV selected text
-- DV Compare → Compare doc with code
-```
+### IDE Integration (Conceptual)
+Developers can configure their IDEs to trigger the CLI agent:
+
+*   **Quick Check:** Map keybinding to `<cli> run .<cli>/commands/deep-verify --quick <current_file>`
+*   **Full Verify:** Map keybinding to `<cli> run .<cli>/commands/deep-verify <current_file>`
 
 ---
 
 ## VERSION HISTORY
 
-- **V3.0** — Unified CLI workflow, domain patterns, multi-mode support
-- **V2.0** — Modular with separate method procedure files
 - **V12.2** — Original with bias mitigation, mandatory Phase 3
