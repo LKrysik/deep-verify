@@ -24,13 +24,25 @@ Follow the **Interaction Sequence** below strictly. Stop and wait for the user's
 
 ---
 
+## 0.0 Argument Parsing (Internal)
+
+**Before starting the menu, analyze the `USER ARGUMENTS` section from the prompt:**
+
+1.  **Flags:** Look for `--quick`, `-q`, `--deep`, `--full`. Set `execution_mode` if found.
+2.  **Artifact:** Look for any **non-flag string** (does not start with `-`).
+    *   *Example:* `/deep-verify src/main.py` -> Artifact is `src/main.py`.
+    *   *Example:* `/deep-verify --deep @src/core` -> Artifact is `src/core`.
+    *   If found, set `artifact` variable immediately.
+
+---
+
 ## Interaction Sequence
 
 ### Step 1: Verification Mode
 
 **Logic:**
-1.  Check if `execution_mode` was provided via CLI flags (e.g., `--quick`, `--deep`).
-2.  If **YES**: Log the selection and proceed immediately to Step 2.
+1.  Check if `execution_mode` was set via CLI flags in step 0.0.
+2.  If **YES**: Log the selection (e.g., "Mode: Deep Verify (selected via flag)") and **SKIP** to Step 2.
 3.  If **NO**: Display the menu below and **HALT**.
 
 > **Prompt to User:**
@@ -46,8 +58,13 @@ Follow the **Interaction Sequence** below strictly. Stop and wait for the user's
 ### Step 2: Artifact Definition
 
 **Logic:**
-1.  Check if the artifact path was provided in the initial prompt/context.
-2.  If **YES**: Confirm it and proceed to Step 3.
+1.  Check if `artifact` was detected in step 0.0 (Argument Parsing) or context.
+2.  If **YES**:
+    *   State: "Target Artifact: [artifact_path]"
+    *   Ask: "Is this correct? (Y/N)"
+    *   **HALT** and wait.
+    *   If user says Y -> Proceed to Step 3.
+    *   If user says N -> Ask for new path.
 3.  If **NO**: Ask the user to define the target.
 
 > **Prompt to User:**
@@ -94,7 +111,7 @@ After completing the sequence above, update the working document frontmatter:
 ```yaml
 ---
 workflow: deep-verify
-artifact: "[Path provided in Step 2]"
+artifact: "[Path from Step 2]"
 started: "[current ISO timestamp]"
 execution_mode: [Quick / Standard / Deep]
 stakes: [LOW / MEDIUM / HIGH]

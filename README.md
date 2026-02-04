@@ -12,25 +12,30 @@ To use it, you must have a Large Language Model (LLM) agent capable of reading f
 
 ## 🚀 How to Use (Execution)
 
-To "run" Deep Verify, instruct your LLM agent to execute the master workflow file against your target artifact.
+The simplest way to run Deep Verify is using the built-in CLI command shortcut.
 
-**Command Structure:**
-> "Execute the process defined in `src/core/deep-verify/workflow.md` to verify [TARGET_FILE]. [Optional: Pay special attention to X]."
+### 1. Command Shortcut (Simplest)
+Just type the command followed by the path to the artifact you want to verify:
+*   **`/deep-verify [TARGET_FILE]`**
 
-**Examples:**
+Example: `/deep-verify src/auth_service.py`
+
+### 2. Manual Invocation
+Alternatively, you can instruct your LLM agent to execute the master workflow file directly:
 *   `@gemini run src/core/deep-verify/workflow.md on src/auth_service.py`
-*   `@claude please verify docs/api_spec.md using the workflow in src/core/deep-verify/workflow.md.`
+*   `@claude please verify docs/api_spec.md using src/core/deep-verify/workflow.md.`
 
 ---
 
 ## 🛠️ The 6-Phase Workflow
 
-1.  **Phase 0: Setup** — Assess stakes (Low/Med/High) and mitigate bias (Blind Mode).
+1.  **Phase 0: Setup** — Interactive configuration. Assess stakes (Low/Med/High), mitigate bias (Blind Mode), and select execution mode.
 2.  **Phase 1: Pattern Scan** — Rapidly identify "Red Flags" using Tier 1 methods.
-3.  **Phase 2: Targeted Analysis** — Deep dives based on Phase 1 signals.
-4.  **Phase 3: Adversarial Validation (MANDATORY)** — Critical attack on findings to ensure they survive scrutiny.
+3.  **Phase 2: Targeted Analysis** — Deep dives based on Phase 1 signals (e.g., "Absolute Claims" trigger "Theoretical Impossibility Check").
+4.  **Phase 3: Adversarial Validation (MANDATORY)** — Critical attack on findings ("Devil's Advocate") to ensure they survive scrutiny.
 5.  **Phase 4: Verdict** — Final calculation of the Evidence Score (S).
 6.  **Phase 5: Report** — Generation of a standardized report with actionable recommendations.
+7.  **Phase 6: Pattern Candidate** — (Deep Mode Only) Evaluation of new impossibility patterns for the library.
 
 ---
 
@@ -43,18 +48,48 @@ To "run" Deep Verify, instruct your LLM agent to execute the master workflow fil
 
 ---
 
-## 🧰 Core Methods
+## 🌐 Supported Domains
 
-*   **First Principles Analysis:** Rebuild from fundamental truths to verify core claims.
-*   **Theoretical Impossibility Check:** Check claims against known theorems (CAP, FLP, Rice's).
-*   **Definitional Contradiction Detector:** Find requirements that are mutually exclusive by definition.
-*   **Grounding Check:** Verify if claims have explicit evidence or are ungrounded assertions.
-*   **Strange Loop Detection:** Identify circular reasoning in justification graphs.
-*   **Contraposition Inversion:** Invert claims to reveal unhandled failure modes.
-*   **Constructive Counterexample:** Actively attempt to break a claimed property with a specific scenario.
-*   **Vocabulary Consistency:** Scan for synonyms (confusion) and homonyms (contradiction).
-*   **Abstraction Laddering:** Check coherence between high-level goals and implementation details.
-*   **Challenge from Critical Perspective:** Adversarial "Devil's Advocate" review to find weaknesses.
+Deep Verify includes specialized pattern libraries for specific domains:
+
+*   **Core:** Universal impossibilities (Theorems, Logical Contradictions).
+*   **Agile Process:** Sprint planning, user stories, and estimation gaming.
+*   **Documentation:** API consistency, code examples, and versioning.
+*   **Fiction:** Narrative consistency, time travel logic, and world-building rules.
+*   **IaC:** Infrastructure as Code (Terraform/CloudFormation) state and drift issues.
+*   **Medical Research:** Clinical trials, FDA/HIPAA compliance, and statistical validity.
+*   **Microservices:** Distributed systems, CAP theorem, and API contracts.
+*   **PRD:** Product requirements, scope creep, and stakeholder conflicts.
+
+---
+
+## 🧰 Method Catalog
+
+Deep Verify employs **18 specialized methods** grouped by tier and function:
+
+### Tier 1: Mandatory Scan (Phase 1)
+*   **#71 First Principles Analysis:** Rebuild from fundamental truths to verify core claims.
+*   **#100 Vocabulary Consistency:** Scan for synonyms (confusion) and homonyms (contradiction).
+*   **#17 Abstraction Laddering:** Check coherence between high-level goals and implementation details.
+
+### Tier 2: Targeted Analysis (Phase 2)
+*   **#78 Assumption Excavation:** Surface and stress-test hidden assumptions.
+*   **#84 Coherence Check:** Verify internal consistency across document sections.
+*   **#85 Grounding Check:** Verify if claims have explicit evidence or are ungrounded assertions.
+*   **#86 Topological Hole Detection:** Find structural gaps (dead ends, sinks) in the system graph.
+*   **#87 Falsifiability Check:** Verify claims can be tested or are unfalsifiable by theorem.
+*   **#109 Contraposition Inversion:** Invert claims to reveal unhandled failure modes.
+*   **#116 Strange Loop Detection:** Identify circular reasoning in justification graphs.
+*   **#130 Assumption Torture:** Test assumption sensitivity (10%, 50%, 100% error).
+*   **#153 Theoretical Impossibility Check:** Check claims against known theorems (CAP, FLP, Rice's).
+*   **#154 Definitional Contradiction Detector:** Find requirements that are mutually exclusive by definition.
+*   **#159 Transitive Dependency Closure:** Find indirect dependency cycles and conflicts.
+*   **#162 Theory-Dependence Verification:** Verify theoretical claims have proper backing.
+*   **#163 Existence Proof Demand:** Challenge unproven capability claims.
+*   **#165 Constructive Counterexample:** Actively attempt to break a claimed property with a specific scenario.
+
+### Tier 3: Adversarial (Phase 3)
+*   **#63 Challenge from Critical Perspective:** Adversarial "Devil's Advocate" review to find weaknesses.
 
 ---
 
