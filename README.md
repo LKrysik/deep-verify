@@ -1,5 +1,7 @@
 # Deep Verify V3.0
 
+![Deep Verify Logo](logo_small.png)
+
 **Deep Verify** is a rigorous, universal verification workflow designed for **LLM CLIs (e.g., Gemini CLI, Claude CLI)**. It transforms the verification of software artifacts—from code and documentation to architecture and product requirements—into a structured, evidence-based process.
 
 Unlike standard "reviews" which can be subjective, Deep Verify uses a **Pattern Intelligence** engine and a quantitative **Evidence Score** to provide objective verdicts.
