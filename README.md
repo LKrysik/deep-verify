@@ -12,18 +12,25 @@ To use it, you must have a Large Language Model (LLM) agent capable of reading f
 
 ## 🚀 How to Use (Execution)
 
-The simplest way to run Deep Verify is using the built-in CLI command shortcut.
+Deep Verify is designed for interactive use within an LLM CLI environment.
 
-### 1. Command Shortcut (Simplest)
-Just type the command followed by the path to the artifact you want to verify:
+### 1. Start your LLM CLI
+Launch your preferred agent (e.g., **Gemini CLI**, **Claude CLI**, or others) in your terminal.
+
+### 2. Run the Workflow
+Instruct the agent to use the master workflow file to verify your target file or directory. You can also specify particular aspects to focus on, such as **consistency**, **logical gaps**, **missing edge cases**, or **architectural alignment**.
+
+**Basic Command:**
+*   `Use the process in @src/core/deep-verify/workflow.md to verify [path/to/target]`
+
+**Example with specific focus:**
+*   `@gemini use @src/core/deep-verify/workflow.md to verify src/api/ and pay special attention to consistency, missing edge cases, and potential logical holes.`
+
+### 3. Command Shortcut (Simplest)
+If you have the shortcut configured, just type the command followed by the path:
 *   **`/deep-verify [TARGET_FILE]`**
 
 Example: `/deep-verify src/auth_service.py`
-
-### 2. Manual Invocation
-Alternatively, you can instruct your LLM agent to execute the master workflow file directly:
-*   `@gemini run src/core/deep-verify/workflow.md on src/auth_service.py`
-*   `@claude please verify docs/api_spec.md using src/core/deep-verify/workflow.md.`
 
 ---
 
@@ -60,36 +67,6 @@ Deep Verify includes specialized pattern libraries for specific domains:
 *   **Medical Research:** Clinical trials, FDA/HIPAA compliance, and statistical validity.
 *   **Microservices:** Distributed systems, CAP theorem, and API contracts.
 *   **PRD:** Product requirements, scope creep, and stakeholder conflicts.
-
----
-
-## 🧰 Method Catalog
-
-Deep Verify employs **18 specialized methods** grouped by tier and function:
-
-### Tier 1: Mandatory Scan (Phase 1)
-*   **#71 First Principles Analysis:** Rebuild from fundamental truths to verify core claims.
-*   **#100 Vocabulary Consistency:** Scan for synonyms (confusion) and homonyms (contradiction).
-*   **#17 Abstraction Laddering:** Check coherence between high-level goals and implementation details.
-
-### Tier 2: Targeted Analysis (Phase 2)
-*   **#78 Assumption Excavation:** Surface and stress-test hidden assumptions.
-*   **#84 Coherence Check:** Verify internal consistency across document sections.
-*   **#85 Grounding Check:** Verify if claims have explicit evidence or are ungrounded assertions.
-*   **#86 Topological Hole Detection:** Find structural gaps (dead ends, sinks) in the system graph.
-*   **#87 Falsifiability Check:** Verify claims can be tested or are unfalsifiable by theorem.
-*   **#109 Contraposition Inversion:** Invert claims to reveal unhandled failure modes.
-*   **#116 Strange Loop Detection:** Identify circular reasoning in justification graphs.
-*   **#130 Assumption Torture:** Test assumption sensitivity (10%, 50%, 100% error).
-*   **#153 Theoretical Impossibility Check:** Check claims against known theorems (CAP, FLP, Rice's).
-*   **#154 Definitional Contradiction Detector:** Find requirements that are mutually exclusive by definition.
-*   **#159 Transitive Dependency Closure:** Find indirect dependency cycles and conflicts.
-*   **#162 Theory-Dependence Verification:** Verify theoretical claims have proper backing.
-*   **#163 Existence Proof Demand:** Challenge unproven capability claims.
-*   **#165 Constructive Counterexample:** Actively attempt to break a claimed property with a specific scenario.
-
-### Tier 3: Adversarial (Phase 3)
-*   **#63 Challenge from Critical Perspective:** Adversarial "Devil's Advocate" review to find weaknesses.
 
 ---
 
